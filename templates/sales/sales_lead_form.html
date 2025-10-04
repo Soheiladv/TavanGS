@@ -1,0 +1,196 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block title %}
+    {% if object %}ویرایش سرنخ فروش{% else %}ایجاد سرنخ فروش جدید{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <!-- Header -->
+    <div class="mb-8">
+        <div class="flex items-center">
+            <i class="fas fa-user-plus text-primary text-3xl ml-3"></i>
+            <h1 class="text-3xl font-bold text-gray-900">
+                {% if object %}ویرایش سرنخ فروش{% else %}ایجاد سرنخ فروش جدید{% endif %}
+            </h1>
+        </div>
+        <p class="text-gray-600 mt-2">
+            {% if object %}ویرایش اطلاعات سرنخ فروش{% else %}ثبت سرنخ فروش جدید در سیستم{% endif %}
+        </p>
+    </div>
+
+    <!-- Back Navigation -->
+    <div class="mb-6">
+        <a href="{% url 'sales:sales_lead_list' %}" class="inline-flex items-center text-primary hover:text-primary-dark transition">
+            <i class="fas fa-arrow-right ml-2"></i>
+            بازگشت به فهرست سرنخ‌ها
+        </a>
+    </div>
+
+    <!-- Form -->
+    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+        <div class="p-6">
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Source and Status -->
+                    <div>
+                        <label for="{{ form.source.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            {{ form.source.label }}
+                        </label>
+                        {{ form.source }}
+                        {% if form.source.errors %}
+                            <div class="text-red-600 text-sm mt-1">{{ form.source.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div>
+                        <label for="{{ form.status.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            {{ form.status.label }}
+                        </label>
+                        {{ form.status }}
+                        {% if form.status.errors %}
+                            <div class="text-red-600 text-sm mt-1">{{ form.status.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Contact Information -->
+                    <div>
+                        <label for="{{ form.full_name.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            {{ form.full_name.label }}
+                        </label>
+                        {{ form.full_name }}
+                        {% if form.full_name.errors %}
+                            <div class="text-red-600 text-sm mt-1">{{ form.full_name.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div>
+                        <label for="{{ form.email.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            {{ form.email.label }}
+                        </label>
+                        {{ form.email }}
+                        {% if form.email.errors %}
+                            <div class="text-red-600 text-sm mt-1">{{ form.email.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div>
+                        <label for="{{ form.phone.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            {{ form.phone.label }}
+                        </label>
+                        {{ form.phone }}
+                        {% if form.phone.errors %}
+                            <div class="text-red-600 text-sm mt-1">{{ form.phone.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div>
+                        <label for="{{ form.company.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            {{ form.company.label }}
+                        </label>
+                        {{ form.company }}
+                        {% if form.company.errors %}
+                            <div class="text-red-600 text-sm mt-1">{{ form.company.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div>
+                        <label for="{{ form.job_title.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            {{ form.job_title.label }}
+                        </label>
+                        {{ form.job_title }}
+                        {% if form.job_title.errors %}
+                            <div class="text-red-600 text-sm mt-1">{{ form.job_title.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Product Interest -->
+                    <div>
+                        <label for="{{ form.product_interest.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            {{ form.product_interest.label }}
+                        </label>
+                        {{ form.product_interest }}
+                        {% if form.product_interest.errors %}
+                            <div class="text-red-600 text-sm mt-1">{{ form.product_interest.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Estimated Value -->
+                    <div>
+                        <label for="{{ form.estimated_value.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            {{ form.estimated_value.label }}
+                        </label>
+                        <div class="flex">
+                            {{ form.estimated_value }}
+                            <select name="currency" class="form-control w-20 mr-2">
+                                <option value="IRR">ریال</option>
+                                <option value="USD">دلار</option>
+                                <option value="EUR">یورو</option>
+                            </select>
+                        </div>
+                        {% if form.estimated_value.errors %}
+                            <div class="text-red-600 text-sm mt-1">{{ form.estimated_value.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Assignment -->
+                    <div>
+                        <label for="{{ form.assigned_to.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            {{ form.assigned_to.label }}
+                        </label>
+                        {{ form.assigned_to }}
+                        {% if form.assigned_to.errors %}
+                            <div class="text-red-600 text-sm mt-1">{{ form.assigned_to.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Contact Dates -->
+                    <div>
+                        <label for="{{ form.last_contact_date.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            {{ form.last_contact_date.label }}
+                        </label>
+                        {{ form.last_contact_date }}
+                        {% if form.last_contact_date.errors %}
+                            <div class="text-red-600 text-sm mt-1">{{ form.last_contact_date.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div>
+                        <label for="{{ form.next_follow_up.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            {{ form.next_follow_up.label }}
+                        </label>
+                        {{ form.next_follow_up }}
+                        {% if form.next_follow_up.errors %}
+                            <div class="text-red-600 text-sm mt-1">{{ form.next_follow_up.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Notes -->
+                <div>
+                    <label for="{{ form.notes.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                        {{ form.notes.label }}
+                    </label>
+                    {{ form.notes }}
+                    {% if form.notes.errors %}
+                        <div class="text-red-600 text-sm mt-1">{{ form.notes.errors.0 }}</div>
+                    {% endif %}
+                </div>
+                
+                <!-- Submit Buttons -->
+                <div class="flex justify-end space-x-4 space-x-reverse pt-6 border-t">
+                    <a href="{% url 'sales:sales_lead_list' %}" class="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition">
+                        انصراف
+                    </a>
+                    <button type="submit" class="px-6 py-2 bg-primary text-white rounded-md hover:bg-primary-dark transition">
+                        {% if object %}به‌روزرسانی{% else %}ایجاد{% endif %}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

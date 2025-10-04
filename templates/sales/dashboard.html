@@ -1,0 +1,103 @@
+{% extends 'base/base.html' %}
+{% load static i18n %}
+
+{% block title %}داشبورد فروش{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-10">
+    <div class="flex items-center justify-between mb-8">
+        <div>
+            <h1 class="text-3xl font-bold text-gray-900">داشبورد فروش</h1>
+            <p class="text-gray-600 mt-2">میانبرهای مدیریت نسخه‌ها، دانلودها و لیدهای فروش</p>
+        </div>
+        <div class="flex space-x-3 space-x-reverse">
+            <a href="{% url 'sales:version_list' %}" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-opacity-90">لیست نسخه‌ها</a>
+            <a href="{% url 'sales:demo_request' %}" class="border border-primary text-primary px-4 py-2 rounded-lg hover:bg-primary hover:text-white">درخواست دمو</a>
+            <a href="{% url 'sales:pricing_request' %}" class="border border-secondary text-secondary px-4 py-2 rounded-lg hover:bg-secondary hover:text-white">درخواست قیمت</a>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Versions -->
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center">
+                    <i class="fas fa-code-branch text-primary text-2xl ml-3"></i>
+                    <h2 class="text-xl font-semibold">مدیریت نسخه‌ها</h2>
+                </div>
+                {% if user.is_staff %}
+                <a href="#" class="text-primary text-sm">+ نسخه جدید (CRUD مستقل)</a>
+                {% endif %}
+            </div>
+            <ul class="space-y-2 text-gray-700">
+                <li><a href="{% url 'sales:version_list' %}" class="hover:text-primary">مشاهده همه نسخه‌ها</a></li>
+                <li><a href="#" class="hover:text-primary text-gray-500">CRUD نسخه‌ها (غیرفعال - Admin)</a></li>
+            </ul>
+        </div>
+
+        <!-- Downloads / Trials -->
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center">
+                    <i class="fas fa-download text-green-600 text-2xl ml-3"></i>
+                    <h2 class="text-xl font-semibold">دانلودها و نسخه‌های آزمایشی</h2>
+                </div>
+            </div>
+            <ul class="space-y-2 text-gray-700">
+                <li><a href="{% url 'sales:demo_request' %}" class="hover:text-primary">درخواست دمو</a></li>
+                <li><a href="{% url 'sales:pricing_request' %}" class="hover:text-primary">درخواست قیمت</a></li>
+                {% if user.is_staff %}
+                <li><a href="#" class="hover:text-primary text-gray-500">جلسات دانلود (غیرفعال - Admin)</a></li>
+                {% endif %}
+            </ul>
+        </div>
+
+        <!-- Leads -->
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center">
+                    <i class="fas fa-user-tie text-purple-600 text-2xl ml-3"></i>
+                    <h2 class="text-xl font-semibold">سرنخ‌های فروش</h2>
+                </div>
+                {% if user.is_staff %}
+                <a href="#" class="text-primary text-sm">+ سرنخ جدید (CRUD مستقل)</a>
+                {% endif %}
+            </div>
+            <ul class="space-y-2 text-gray-700">
+                {% if user.is_staff %}
+                <li><a href="#" class="hover:text-primary text-gray-500">CRUD سرنخ‌ها (غیرفعال - Admin)</a></li>
+                <li><a href="{% url 'sales:demo_request' %}" class="hover:text-primary">درخواست‌های دمو</a></li>
+                <li><a href="{% url 'sales:pricing_request' %}" class="hover:text-primary">درخواست‌های قیمت</a></li>
+                {% endif %}
+            </ul>
+        </div>
+
+        <!-- Cross-links -->
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center mb-4">
+                <i class="fas fa-sitemap text-amber-600 text-2xl ml-3"></i>
+                <h2 class="text-xl font-semibold">میانبرها</h2>
+            </div>
+            <ul class="space-y-2 text-gray-700">
+                <li><a href="{% url 'products:list' %}" class="hover:text-primary">محصولات</a> {% if user.is_staff %}<a href="#" class="text-xs text-gray-500 ml-2">(غیرفعال)</a>{% endif %}</li>
+                <li><a href="{% url 'services:list' %}" class="hover:text-primary">خدمات</a> {% if user.is_staff %}<a href="#" class="text-xs text-gray-500 ml-2">(غیرفعال)</a>{% endif %}</li>
+                <li><a href="{% url 'tickets:dashboard' %}" class="hover:text-primary">داشبورد تیکت‌ها</a></li>
+                <li><a href="{% url 'settings_app:control_dashboard' %}" class="hover:text-primary">کنترل‌پنل سایت</a></li>
+            </ul>
+        </div>
+
+        <!-- Guides -->
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center mb-4">
+                <i class="fas fa-book text-gray-600 text-2xl ml-3"></i>
+                <h2 class="text-xl font-semibold">راهنما</h2>
+            </div>
+            <ul class="space-y-2 text-gray-700 text-sm leading-6">
+                <li>برای ایجاد نسخه جدید از CRUD مستقل استفاده کنید.</li>
+                <li>برای دمو/قیمت از لینک‌های بالا استفاده کنید.</li>
+                <li>می‌توانید لیدها را در بخش سرنخ‌ها مدیریت و وضعیت را تغییر دهید.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

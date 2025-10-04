@@ -1,0 +1,4 @@
+/* Ensure Font Awesome finds its webfonts under our static path */
+:root {
+	--fa-font-path: "/static/vendor/fontawesome/webfonts";
+}

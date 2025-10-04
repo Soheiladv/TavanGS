@@ -1,0 +1,696 @@
+{% extends "base/base.html" %}  
+{% load i18n static %}
+
+{% block extra_css %} 
+    <link href="https://visjs.github.io/vis-network/standalone/umd/vis-network.min.css" rel="stylesheet" type="text/css" />
+    
+{% endblock %}
+
+{% block content %}
+<div class="main-container">
+    <div class="container-fluid">
+        <div class="page-header">
+            <h1 class="page-title">
+                <i class="bi bi-diagram-3"></i> {% trans "مدیریت پیشرفته دیتابیس" %}
+            </h1>
+        </div>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-pills" id="main-tab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="graph-tab" data-bs-toggle="pill" data-bs-target="#graph-content" type="button" role="tab">
+                            <i class="bi bi-diagram-3 me-2"></i> {% trans "نمودار روابط" %}
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="actions-tab" data-bs-toggle="pill" data-bs-target="#actions-content" type="button" role="tab">
+                            <i class="bi bi-tools me-2"></i> {% trans "عملیات دیتابیس" %}
+                        </button>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="card-body">
+                <div class="tab-content" id="main-tab-content">
+                    <!-- تب نمودار روابط -->
+                    <div class="tab-pane fade show active" id="graph-content" role="tabpanel">
+                        <div class="alert alert-info">
+                            <i class="bi bi-info-circle me-2"></i>
+                            {% trans "این نمودار ارتباط بین تمام مدل‌های دیتابیس را نمایش می‌دهد. برای جستجو از Ctrl+F استفاده کنید." %}
+                        </div>
+
+                        <div id="graph-container">
+                            <div class="graph-controls">
+                                <button type="button" class="btn" id="fit-graph" title="{% trans 'تنظیم نمای نمودار' %}">
+                                    <i class="bi bi-fullscreen"></i>
+                                </button>
+                                <button type="button" class="btn" id="screenshot-graph" title="{% trans 'ذخیره نمودار' %}">
+                                    <i class="bi bi-camera"></i>
+                                </button>
+                            </div>
+                            <div id="model-relations-graph"></div>
+                        </div>
+
+                        <div class="graph-legend mt-3">
+                            <div class="d-flex flex-wrap gap-3">
+                                <div><span class="badge bg-primary me-2">FK</span> {% trans "کلید خارجی" %}</div>
+                                <div><span class="badge bg-success me-2">M2M</span> {% trans "رابطه چند به چند" %}</div>
+                                <div><span class="badge bg-danger me-2">O2O</span> {% trans "رابطه یک به یک" %}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- تب عملیات دیتابیس -->
+                    <div class="tab-pane fade" id="actions-content" role="tabpanel">
+                        <div class="alert alert-warning-custom">
+                            <i class="bi bi-exclamation-triangle me-2"></i>
+                            {% trans "هشدار: عملیات ریست داده‌ها غیرقابل بازگشت است. قبل از انجام عملیات از داده‌های خود بک‌آپ بگیرید." %}
+                        </div>
+
+                        <ul class="nav nav-pills mb-4" id="actions-sub-tab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="reset-tab" data-bs-toggle="pill" data-bs-target="#reset-content" type="button" role="tab">
+                                    <i class="bi bi-eraser me-2"></i> {% trans "ریست داده‌ها" %}
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="backup-tab" data-bs-toggle="pill" data-bs-target="#backup-content" type="button" role="tab">
+                                    <i class="bi bi-cloud-arrow-down me-2"></i> {% trans "بک‌آپ گیری" %}
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="backup-manage-tab" data-bs-toggle="pill" data-bs-target="#backup-manage-content" type="button" role="tab">
+                                    <i class="bi bi-gear me-2"></i> {% trans "مدیریت بک‌آپ" %}
+                                </button>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content" id="actions-sub-content">
+                            <!-- محتوای ریست داده‌ها -->
+                            <div class="tab-pane fade show active" id="reset-content" role="tabpanel">
+                                <form id="reset-form">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="action" value="reset">
+
+                                    <div class="mb-3">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <h5 class="mb-0">{% trans "انتخاب مدل‌ها برای ریست" %}</h5>
+                                            <div>
+                                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="toggleCheckboxes('reset-form', true)">
+                                                    <i class="bi bi-check-all me-1"></i> {% trans "انتخاب همه" %}
+                                                </button>
+                                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="toggleCheckboxes('reset-form', false)">
+                                                    <i class="bi bi-x-square me-1"></i> {% trans "لغو انتخاب" %}
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <div class="table-container">
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th width="50">{% trans "انتخاب" %}</th>
+                                                        <th>{% trans "نام مدل" %}</th>
+                                                        <th>{% trans "اپلیکیشن" %}</th>
+                                                        <th>{% trans "روابط" %}</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for model in models %}
+                                                    <tr>
+                                                        <td>
+                                                            <input type="checkbox" class="form-check-input" name="models" value="{{ model.key }}" id="reset-{{ model.key }}">
+                                                        </td>
+                                                        <td>
+                                                            <label for="reset-{{ model.key }}" class="form-check-label">{{ model.verbose_name }}</label>
+                                                        </td>
+                                                        <td>
+                                                            <span class="badge bg-light text-dark">{{ model.app_label }}</span>
+                                                        </td>
+                                                        <td>
+                                                            {% if model.relations %}
+                                                                <div class="d-flex flex-wrap gap-1">
+                                                                    {% for rel in model.relations|slice:":3" %}
+                                                                        <span class="badge
+                                                                            {% if rel.type == 'ForeignKey' %}bg-primary
+                                                                            {% elif rel.type == 'ManyToManyField' %}bg-success
+                                                                            {% elif rel.type == 'OneToOneField' %}bg-danger
+                                                                            {% else %}bg-secondary{% endif %}">
+                                                                            {{ rel.related_model_verbose_name|truncatechars:15 }}
+                                                                        </span>
+                                                                    {% endfor %}
+                                                                    {% if model.relations|length > 3 %}
+                                                                        <span class="badge bg-secondary">+{{ model.relations|length|add:"-3" }}</span>
+                                                                    {% endif %}
+                                                                </div>
+                                                            {% else %}
+                                                                <span class="text-muted">{% trans "بدون رابطه" %}</span>
+                                                            {% endif %}
+                                                        </td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <button type="button" class="btn btn-danger btn-action" onclick="confirmReset()">
+                                        <i class="bi bi-trash3 me-2"></i> {% trans "ریست داده‌های انتخاب شده" %}
+                                    </button>
+                                </form>
+                            </div>
+
+                            <!-- محتوای بک‌آپ گیری -->
+                            <div class="tab-pane fade" id="backup-content" role="tabpanel">
+                                <form id="backup-form">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="action" value="backup">
+
+                                    <div class="mb-3">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <h5 class="mb-0">{% trans "انتخاب مدل‌ها برای بک‌آپ" %}</h5>
+                                            <div>
+                                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="toggleCheckboxes('backup-form', true)">
+                                                    <i class="bi bi-check-all me-1"></i> {% trans "انتخاب همه" %}
+                                                </button>
+                                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="toggleCheckboxes('backup-form', false)">
+                                                    <i class="bi bi-x-square me-1"></i> {% trans "لغو انتخاب" %}
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <div class="table-container">
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th width="50">{% trans "انتخاب" %}</th>
+                                                        <th>{% trans "نام مدل" %}</th>
+                                                        <th>{% trans "اپلیکیشن" %}</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for model in models %}
+                                                    <tr>
+                                                        <td>
+                                                            <input type="checkbox" class="form-check-input" name="models" value="{{ model.key }}" id="backup-{{ model.key }}">
+                                                        </td>
+                                                        <td>
+                                                            <label for="backup-{{ model.key }}" class="form-check-label">{{ model.verbose_name }}</label>
+                                                        </td>
+                                                        <td>
+                                                            <span class="badge bg-light text-dark">{{ model.app_label }}</span>
+                                                        </td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label for="backup-password" class="form-label">{% trans "رمز عبور بک‌آپ" %}</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                                            <input type="password" class="form-control" id="backup-password" name="password" required minlength="8" placeholder="{% trans 'حداقل 8 کاراکتر' %}">
+                                        </div>
+                                        <div class="form-text">{% trans "این رمز برای بازگردانی بک‌آپ ضروری است." %}</div>
+                                    </div>
+
+                                    <button type="button" class="btn btn-primary btn-action" onclick="confirmBackup()">
+                                        <i class="bi bi-save me-2"></i> {% trans "ایجاد بک‌آپ" %}
+                                    </button>
+                                </form>
+                            </div>
+
+                            <!-- محتوای مدیریت بک‌آپ -->
+                            <div class="tab-pane fade" id="backup-manage-content" role="tabpanel">
+                                <div class="alert alert-info">
+                                    <i class="bi bi-info-circle me-2"></i>
+                                    {% trans "در این بخش می‌توانید فایل‌های بک‌آپ موجود را مدیریت کنید." %}
+                                </div>
+
+                                <div class="row mb-4">
+                                    <div class="col-md-6">
+                                        <div class="card border-primary">
+                                            <div class="card-header bg-primary text-white">
+                                                <h6 class="mb-0">
+                                                    <i class="bi bi-cloud-arrow-up me-2"></i> {% trans "سیستم بک‌آپ جدید" %}
+                                                </h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <p class="card-text">{% trans "سیستم مدرن و پیشرفته مدیریت بک‌آپ با قابلیت‌های کامل" %}</p>
+                                                <div class="d-grid gap-2">
+                                                    <a href="{% url 'backup:list' %}" class="btn btn-primary">
+                                                        <i class="bi bi-list-ul me-2"></i> {% trans "مشاهده فایل‌ها" %}
+                                                    </a>
+                                                    <a href="{% url 'backup:create' %}" class="btn btn-outline-primary">
+                                                        <i class="bi bi-plus-circle me-2"></i> {% trans "ایجاد بک‌آپ جدید" %}
+                                                    </a>
+                                                    <a href="{% url 'backup:mysql' %}" class="btn btn-outline-success">
+                                                        <i class="bi bi-database me-2"></i> {% trans "MySQL استاندارد" %}
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <div class="card border-secondary">
+                                            <div class="card-header bg-secondary text-white">
+                                                <h6 class="mb-0">
+                                                    <i class="bi bi-gear me-2"></i> {% trans "سیستم بک‌آپ قدیمی" %}
+                                                </h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <p class="card-text">{% trans "سیستم قدیمی مدیریت بک‌آپ (برای سازگاری)" %}</p>
+                                                <div class="d-grid gap-2">
+                                                    <a href="/backup-admin/" class="btn btn-secondary">
+                                                        <i class="bi bi-list-ul me-2"></i> {% trans "مشاهده فایل‌ها" %}
+                                                    </a>
+                                                    <a href="/backup-admin/create/" class="btn btn-outline-secondary">
+                                                        <i class="bi bi-plus-circle me-2"></i> {% trans "ایجاد بک‌آپ جدید" %}
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="card border-success">
+                                            <div class="card-header bg-success text-white">
+                                                <h6 class="mb-0">
+                                                    <i class="bi bi-database me-2"></i> {% trans "مدیریت کامل دیتابیس" %}
+                                                </h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <p class="card-text">{% trans "دسترسی به تمام قابلیت‌های مدیریت دیتابیس شامل نمایش نمودار روابط، ریست داده‌ها و بک‌آپ پیشرفته" %}</p>
+                                                <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                                                    <a href="{% url 'accounts:new_databasebackup' %}" class="btn btn-success">
+                                                        <i class="bi bi-diagram-3 me-2"></i> {% trans "مدیریت کامل دیتابیس" %}
+                                                    </a>
+                                                    <a href="{% url 'admin:index' %}" class="btn btn-outline-success">
+                                                        <i class="bi bi-house me-2"></i> {% trans "بازگشت به ادمین" %}
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- آمار فایل‌های بک‌آپ -->
+                                <div class="row mt-4">
+                                    <div class="col-12">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h6 class="mb-0">
+                                                    <i class="bi bi-bar-chart me-2"></i> {% trans "آمار فایل‌های بک‌آپ" %}
+                                                </h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row text-center">
+                                                    <div class="col-md-3">
+                                                        <div class="border rounded p-3">
+                                                            <h4 class="text-primary mb-1">9</h4>
+                                                            <small class="text-muted">{% trans "تعداد کل فایل‌ها" %}</small>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="border rounded p-3">
+                                                            <h4 class="text-success mb-1">1.75 MB</h4>
+                                                            <small class="text-muted">{% trans "حجم کل" %}</small>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="border rounded p-3">
+                                                            <h4 class="text-info mb-1">3</h4>
+                                                            <small class="text-muted">{% trans "فایل‌های اصلی" %}</small>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="border rounded p-3">
+                                                            <h4 class="text-warning mb-1">6</h4>
+                                                            <small class="text-muted">{% trans "فایل‌های لاگ" %}</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- راهنمای استفاده -->
+                                <div class="row mt-4">
+                                    <div class="col-12">
+                                        <div class="card border-info">
+                                            <div class="card-header bg-info text-white">
+                                                <h6 class="mb-0">
+                                                    <i class="bi bi-question-circle me-2"></i> {% trans "راهنمای استفاده" %}
+                                                </h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <h6 class="text-primary">{% trans "سیستم جدید" %}</h6>
+                                                        <ul class="list-unstyled">
+                                                            <li><i class="bi bi-check-circle text-success me-2"></i> {% trans "طراحی مدرن" %}</li>
+                                                            <li><i class="bi bi-check-circle text-success me-2"></i> {% trans "عملکرد سریع" %}</li>
+                                                            <li><i class="bi bi-check-circle text-success me-2"></i> {% trans "مدیریت آسان" %}</li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <h6 class="text-secondary">{% trans "سیستم قدیمی" %}</h6>
+                                                        <ul class="list-unstyled">
+                                                            <li><i class="bi bi-check-circle text-success me-2"></i> {% trans "سازگاری کامل" %}</li>
+                                                            <li><i class="bi bi-check-circle text-success me-2"></i> {% trans "عملکرد ثابت" %}</li>
+                                                            <li><i class="bi bi-check-circle text-success me-2"></i> {% trans "پشتیبانی کامل" %}</li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <h6 class="text-success">{% trans "مدیریت کامل" %}</h6>
+                                                        <ul class="list-unstyled">
+                                                            <li><i class="bi bi-check-circle text-success me-2"></i> {% trans "نمودار روابط" %}</li>
+                                                            <li><i class="bi bi-check-circle text-success me-2"></i> {% trans "ریست داده‌ها" %}</li>
+                                                            <li><i class="bi bi-check-circle text-success me-2"></i> {% trans "بک‌آپ پیشرفته" %}</li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- مودال تایید ریست -->
+<div class="modal fade" id="reset-confirm-modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i> {% trans "تایید عملیات ریست" %}
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>{% trans "آیا مطمئن هستید که می‌خواهید داده‌های انتخاب شده را حذف کنید؟" %}</p>
+                <p class="fw-bold text-danger">{% trans "این عمل غیرقابل بازگشت است!" %}</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "انصراف" %}</button>
+                <button type="button" class="btn btn-danger" id="confirm-reset-btn">
+                    <i class="bi bi-trash3 me-2"></i> {% trans "تایید و ریست" %}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- مودال تایید بک‌آپ -->
+<div class="modal fade" id="backup-confirm-modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">
+                    <i class="bi bi-cloud-arrow-down-fill me-2"></i> {% trans "تایید عملیات بک‌آپ" %}
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>{% trans "آیا می‌خواهید از مدل‌های انتخاب شده بک‌آپ تهیه کنید؟" %}</p>
+                <p class="text-muted">{% trans "رمز عبور را به خاطر بسپارید، زیرا برای بازگردانی ضروری است." %}</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "انصراف" %}</button>
+                <button type="button" class="btn btn-primary" id="confirm-backup-btn">
+                    <i class="bi bi-save me-2"></i> {% trans "تایید و بک‌آپ" %}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %} 
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // متغیرهای جهانی
+    let network = null;
+    let graphInitialized = false;
+
+    // تابع مقداردهی اولیه نمودار
+    function initGraph() {
+        // داده‌های نودها
+        const nodes = new vis.DataSet([
+            {% for model in models %}
+            {
+                id: '{{ model.key }}',
+                label: '{{ model.verbose_name }}\n({{ model.app_label }})',
+                group: '{{ model.app_label }}',
+                shape: 'box',
+                margin: 10,
+                font: {
+                    size: 12,
+                    face: 'Vazirmatn',
+                    color: '#4e73df',
+                    bold: { color: '#4e73df' }
+                },
+                borderWidth: 1,
+                borderWidthSelected: 2,
+                color: {
+                    border: '#d1d3e2',
+                    background: '#f8f9fc',
+                    highlight: {
+                        border: '#4e73df',
+                        background: '#e6e9f5'
+                    }
+                },
+                shadow: {
+                    enabled: true,
+                    color: 'rgba(0,0,0,0.1)',
+                    size: 10,
+                    x: 5,
+                    y: 5
+                }
+            },
+            {% endfor %}
+        ]);
+
+        // داده‌های یال‌ها
+        const edges = new vis.DataSet([
+            {% for model in models %}
+                {% for relation in model.relations %}
+                {
+                    from: '{{ model.key }}',
+                    to: '{{ relation.related_model_key }}',
+                    label: '{{ relation.field_name }}',
+                    arrows: 'to',
+                    color: {
+                        color: {% if relation.type == 'ForeignKey' %}'#4e73df'
+                              {% elif relation.type == 'ManyToManyField' %}'#1cc88a'
+                              {% elif relation.type == 'OneToOneField' %}'#e74a3b'
+                              {% else %}'#858796'{% endif %},
+                        highlight: '#ffc107',
+                        hover: {% if relation.type == 'ForeignKey' %}'#3a5bcc'
+                              {% elif relation.type == 'ManyToManyField' %}'#17a673'
+                              {% elif relation.type == 'OneToOneField' %}'#be2617'
+                              {% else %}'#6c757d'{% endif %}
+                    },
+                    width: 1.5,
+                    smooth: {
+                        type: 'cubicBezier',
+                        roundness: 0.2
+                    },
+                    font: {
+                        size: 10,
+                        face: 'Vazirmatn',
+                        color: '#5a5c69',
+                        strokeWidth: 3,
+                        strokeColor: '#ffffff'
+                    }
+                },
+                {% endfor %}
+            {% endfor %}
+        ]);
+
+        // گزینه‌های نمودار
+        const options = {
+            nodes: {
+                shapeProperties: {
+                    borderRadius: 5
+                }
+            },
+            edges: {
+                length: 150,
+                selectionWidth: 2
+            },
+            physics: {
+                enabled: true,
+                solver: 'forceAtlas2Based',
+                forceAtlas2Based: {
+                    gravitationalConstant: -50,
+                    centralGravity: 0.01,
+                    springLength: 150,
+                    springConstant: 0.08,
+                    avoidOverlap: 0.9
+                },
+                stabilization: {
+                    iterations: 250,
+                    updateInterval: 25,
+                    fit: true
+                }
+            },
+            interaction: {
+                hover: true,
+                tooltipDelay: 300,
+                hideEdgesOnDrag: true,
+                multiselect: true,
+                navigationButtons: true,
+                keyboard: {
+                    enabled: true,
+                    speed: { x: 10, y: 10, zoom: 0.02 }
+                }
+            },
+            layout: {
+                improvedLayout: true,
+                hierarchical: {
+                    enabled: false,
+                    direction: 'UD',
+                    sortMethod: 'directed'
+                }
+            },
+            groups: {
+                {% for app in apps %}
+                '{{ app }}': {
+                    color: {
+                        border: '#d1d3e2',
+                        background: '#f8f9fc',
+                        highlight: {
+                            border: '#4e73df',
+                            background: '#e6e9f5'
+                        }
+                    }
+                },
+                {% endfor %}
+            }
+        };
+
+        // ایجاد نمودار
+        const container = document.getElementById('model-relations-graph');
+        const data = { nodes, edges };
+        network = new vis.Network(container, data, options);
+
+        // رویدادها
+        network.on('stabilizationIterationsDone', function() {
+            network.setOptions({ physics: false });
+            graphInitialized = true;
+        });
+
+        // دکمه تنظیم نمای نمودار
+        document.getElementById('fit-graph').addEventListener('click', function() {
+            network.fit({
+                animation: {
+                    duration: 1000,
+                    easingFunction: 'easeInOutQuad'
+                }
+            });
+        });
+
+        // دکمه اسکرین‌شات
+        document.getElementById('screenshot-graph').addEventListener('click', function() {
+            if (typeof html2canvas !== 'undefined') {
+                network.fit();
+                setTimeout(() => {
+                    html2canvas(container, {
+                        backgroundColor: '#ffffff',
+                        scale: 2,
+                        logging: false
+                    }).then(canvas => {
+                        const link = document.createElement('a');
+                        link.download = 'db-graph-' + new Date().toISOString().slice(0,10) + '.png';
+                        link.href = canvas.toDataURL('image/png');
+                        link.click();
+                    });
+                }, 500);
+            } else {
+                alert('{% trans "برای ذخیره نمودار، لطفا کتابخانه html2canvas را بارگذاری کنید." %}');
+            }
+        });
+    }
+
+    // مقداردهی اولیه نمودار هنگام نمایش تب
+    document.getElementById('graph-tab').addEventListener('shown.bs.tab', function() {
+        if (!graphInitialized) {
+            initGraph();
+        }
+    });
+
+    // اگر تب نمودار از ابتدا فعال است
+    if (document.querySelector('#graph-tab.active')) {
+        initGraph();
+    }
+
+    // توابع عمومی
+    window.toggleCheckboxes = function(formId, state) {
+        const form = document.getElementById(formId);
+        if (form) {
+            const checkboxes = form.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = state;
+            });
+        }
+    };
+
+    window.confirmReset = function() {
+        const form = document.getElementById('reset-form');
+        const checkboxes = form.querySelectorAll('input[type="checkbox"]:checked');
+
+        if (checkboxes.length === 0) {
+            alert('{% trans "لطفا حداقل یک مدل را انتخاب کنید" %}');
+            return;
+        }
+
+        const modal = new bootstrap.Modal(document.getElementById('reset-confirm-modal'));
+        modal.show();
+
+        document.getElementById('confirm-reset-btn').onclick = function() {
+            form.submit();
+        };
+    };
+
+    window.confirmBackup = function() {
+        const form = document.getElementById('backup-form');
+        const password = form.querySelector('#backup-password').value;
+
+        if (password.length < 8) {
+            alert('{% trans "رمز عبور باید حداقل 8 کاراکتر باشد" %}');
+            return;
+        }
+
+        const modal = new bootstrap.Modal(document.getElementById('backup-confirm-modal'));
+        modal.show();
+
+        document.getElementById('confirm-backup-btn').onclick = function() {
+            form.submit();
+        };
+    };
+});
+</script>
+{% endblock %}

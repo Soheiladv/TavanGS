@@ -1,0 +1,312 @@
+{% load i18n static %}
+{% get_current_language as LANGUAGE_CODE %}
+{% get_current_language_bidi as LANGUAGE_BIDI %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}" dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <!-- TailwindCSS CDN for utility classes (quick enable styles) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- SEO Meta Tags -->
+    <title>{% block title %}{{ site_title }}{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}{{ meta_description }}{% endblock %}">
+    <meta name="keywords" content="{% block meta_keywords %}فناوری,نرم‌افزار,هوش مصنوعی,امنیت سایبری{% endblock %}">
+    <meta name="author" content="{{ company_name }}">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{% block og_title %}{{ site_title }}{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}{{ meta_description }}{% endblock %}">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta property="og:site_name" content="{{ company_name }}">
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{% block twitter_title %}{{ site_title }}{% endblock %}">
+    <meta name="twitter:description" content="{% block twitter_description %}{{ meta_description }}{% endblock %}">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="{% static 'images/logo.svg' %}">
+    
+    <!-- CSS (Local vendor) -->
+    <link href="{% static 'css/fonts.css' %}" rel="stylesheet">
+    {% load system_fonts %}
+    {% include 'settings_app/font_css_include.html' %}
+    <link href="{% static 'css/fa-path.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/bootstrap/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/fontawesome/css/all.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/dynamic-theme.css' %}" rel="stylesheet">
+    <link href="{% url 'settings_app:dynamic_css' %}" rel="stylesheet">
+    <link href="{% static 'css/main.css' %}" rel="stylesheet">
+        <!-- Font Awesome CSS - اولویت بالا -->
+    <link href="{% static 'css/all.min.css' %}" rel="stylesheet" crossorigin="anonymous">
+
+    <!-- RTL Support -->
+    <style>
+         @font-face {
+            font-family: 'Vazir';
+            src: url('{% static "fonts/vazir/Vazir-Regular.woff2" %}') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        :root {
+            --primary-color: {{ theme_colors.primary }};
+            --secondary-color: {{ theme_colors.secondary }};
+            --accent-color: {{ theme_colors.accent }};
+        }
+        
+        body {
+            font-family: 'Vazir', 'Tahoma', sans-serif;
+        }
+        
+        .text-primary { color: var(--primary-color); }
+        .bg-primary { background-color: var(--primary-color); }
+        .border-primary { border-color: var(--primary-color); }
+        
+        .text-secondary { color: var(--secondary-color); }
+        .bg-secondary { background-color: var(--secondary-color); }
+        
+        .text-accent { color: var(--accent-color); }
+        .bg-accent { background-color: var(--accent-color); }
+    </style>
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="bg-gray-50 text-gray-900">
+    
+    <!-- Maintenance Mode Banner -->
+    {% if maintenance_mode %}
+    <div class="bg-yellow-500 text-white text-center py-2 px-4">
+        <i class="fas fa-exclamation-triangle mr-2"></i>
+        {{ maintenance_message }}
+    </div>
+    {% endif %}
+    
+    <!-- Header -->
+    <header class="site-header bg-white shadow-lg {% if site_settings.header_style == 'fixed' %}header-fixed{% elif site_settings.header_style == 'sticky' %}header-sticky{% else %}header-static{% endif %}">
+        <nav class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <a href="{% url 'products:home' %}" class="flex items-center">
+                        <img src="{% static 'images/logo.svg' %}" alt="{{ company_name }}" class="h-10 w-auto ml-3">
+                        <div>
+                            <h1 class="text-xl font-bold text-primary">{{ company_name }}</h1>
+                            <p class="text-sm text-gray-600">{{ company_tagline }}</p>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Main Navigation -->
+                <div class="hidden md:flex items-center space-x-6 space-x-reverse">
+                    <a href="{% url 'products:home' %}" class="text-gray-700 hover:text-primary font-medium">خانه</a>
+                    <a href="{% url 'products:list' %}" class="text-gray-700 hover:text-primary font-medium">محصولات</a>
+                    <a href="{% url 'services:list' %}" class="text-gray-700 hover:text-primary font-medium">خدمات</a>
+                    {% if feature_flags.sandbox %}
+                    <a href="{% url 'products:sandbox' %}" class="text-gray-700 hover:text-primary font-medium">آزمایشگاه</a>
+                    {% endif %}
+                    <a href="{% url 'sales:version_list' %}" class="text-gray-700 hover:text-primary font-medium">نسخه‌ها</a>
+                    <a href="{% url 'sales:demo_request' %}" class="text-gray-700 hover:text-primary font-medium">درخواست دمو</a>
+                    <a href="{% url 'tickets:create' %}" class="text-gray-700 hover:text-primary font-medium">پشتیبانی</a>
+                    <a href="{% url 'products:hero_quiz' %}" class="text-gray-700 hover:text-primary font-medium">کوئیز قهرمان</a>
+                    {% comment %} {% if user.is_staff %} {% endcomment %}
+                    <a href="{% url 'settings_app:control_dashboard' %}" class="text-secondary hover:text-secondary font-semibold">داشبورد مدیریت</a>
+                    {% comment %} {% endif %} {% endcomment %}
+                </div>
+                
+                <!-- User Menu -->
+                <div class="flex items-center space-x-4 space-x-reverse">
+                    <!-- Language Switcher -->
+                    {% include 'components/language_switcher.html' %}
+                    {% if user.is_authenticated %}
+                    <div class="relative group">
+                        <button class="flex items-center text-gray-700 hover:text-primary">
+                            <i class="fas fa-user-circle text-2xl ml-2"></i>
+                            <span>{{ user.get_full_name|default:user.email }}</span>
+                            <i class="fas fa-chevron-down mr-2"></i>
+                        </button>
+                        <div class="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+                            <a href="{% url 'users:profile' %}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">{% trans "Profile" %}</a>
+                            <a href="{% url 'tickets:list' %}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">{% trans "My Tickets" %}</a>
+                            <hr>
+                            <a href="{% url 'account_logout' %}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">{% trans "Logout" %}</a>
+                        </div>
+                    </div>
+                    {% else %}
+                    <a href="{% url 'account_login' %}" class="text-gray-700 hover:text-primary">{% trans "Login" %}</a>
+                    <a href="{% url 'account_signup' %}" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-opacity-90 transition-colors">{% trans "Register" %}</a>
+                    {% endif %}
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden text-gray-700" id="mobile-menu-btn">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+            
+            <!-- Mobile Menu -->
+            <div class="md:hidden mt-4 hidden" id="mobile-menu">
+                <div class="flex flex-col space-y-2">
+                    <a href="{% url 'products:home' %}" class="text-gray-700 hover:text-primary py-2">خانه</a>
+                    <a href="{% url 'products:list' %}" class="text-gray-700 hover:text-primary py-2">محصولات</a>
+                    <a href="{% url 'services:list' %}" class="text-gray-700 hover:text-primary py-2">خدمات</a>
+                    {% if feature_flags.sandbox %}
+                    <a href="{% url 'products:sandbox' %}" class="text-gray-700 hover:text-primary py-2">آزمایشگاه</a>
+                    {% endif %}
+                    <a href="{% url 'sales:version_list' %}" class="text-gray-700 hover:text-primary py-2">نسخه‌ها</a>
+                    <a href="{% url 'sales:demo_request' %}" class="text-gray-700 hover:text-primary py-2">درخواست دمو</a>
+                    <a href="{% url 'tickets:create' %}" class="text-gray-700 hover:text-primary py-2">پشتیبانی</a>
+                    <a href="{% url 'computation_engine:template_list' %}" class="text-gray-700 hover:text-primary py-2">محاسبات</a>
+                    <a href="{% url 'products:hero_quiz' %}" class="text-gray-700 hover:text-primary py-2">کوئیز قهرمان</a>
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'users:dashboard' %}" class="text-gray-700 hover:text-primary py-2">داشبورد</a>
+                    {% else %}
+                    <a href="{% url 'account_login' %}" class="text-gray-700 hover:text-primary py-2">ورود</a>
+                    <a href="{% url 'account_signup' %}" class="text-gray-700 hover:text-primary py-2">ثبت‌نام</a>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+    </header>
+    
+    <!-- Main Content -->
+    <main class="main-content min-h-screen">
+        {% if user.is_authenticated %}
+         <div class="bg-gradient-to-r from-primary/10 to-secondary/10 border-b border-gray-200">
+             <div class="container mx-auto px-4 py-2 text-sm flex flex-wrap items-center gap-3">
+                <span class="text-gray-700">میانبر:</span>
+                <a href="{% url 'users:dashboard' %}" class="text-primary hover:underline">داشبورد</a>
+                <a href="{% url 'tickets:list' %}" class="text-primary hover:underline">تیکت‌ها</a>
+                {% if user.is_staff %}
+                <a href="{% url 'settings_app:control_dashboard' %}" class="text-secondary hover:underline">کنترل‌پنل</a>
+                {% endif %}
+                <div class="relative group">
+                    <button class="text-gray-700 hover:text-primary">بیشتر ▾</button>
+                    <div class="absolute right-0 mt-2 w-56 bg-white rounded-md shadow-lg border border-gray-200 hidden group-hover:block z-50">
+                        <div class="p-2 flex flex-col text-sm">
+                            <a href="{% url 'sales:version_list' %}" class="px-3 py-2 hover:bg-gray-50 rounded">نسخه‌ها</a>
+                            <a href="{% url 'sales:demo_request' %}" class="px-3 py-2 hover:bg-gray-50 rounded">درخواست دمو</a>
+                            <a href="{% url 'sales:pricing_request' %}" class="px-3 py-2 hover:bg-gray-50 rounded">درخواست قیمت</a>
+                            <a href="{% url 'computation_engine:template_list' %}" class="px-3 py-2 hover:bg-gray-50 rounded">محاسبات</a>
+                            <a href="{% url 'users:profile' %}" class="px-3 py-2 hover:bg-gray-50 rounded">پروفایل</a>
+                            <a href="{% url 'users:preferences' %}" class="px-3 py-2 hover:bg-gray-50 rounded">تنظیمات</a>
+                            <a href="{% url 'account_logout' %}" class="px-3 py-2 hover:bg-gray-50 rounded">خروج</a>
+                            {% if user.is_staff %}
+                            <hr class="my-1"/>
+                            <a href="{% url 'sales:dashboard' %}" class="px-3 py-2 hover:bg-gray-50 rounded">داشبورد فروش</a>
+                            <a href="{% url 'tickets:dashboard' %}" class="px-3 py-2 hover:bg-gray-50 rounded">داشبورد تیکت‌ها</a>
+                            <a href="{% url 'settings_app:control_dashboard' %}" class="px-3 py-2 hover:bg-gray-50 rounded">داشبورد مدیریت</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% block content %}{% endblock %}
+    </main>
+    
+    <!-- Footer -->
+    <footer class="site-footer {% if site_settings.footer_style == 'full' %}footer-full{% elif site_settings.footer_style == 'minimal' %}footer-minimal{% else %}footer-compact{% endif %}">
+        <div class="container mx-auto px-4 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Company Info -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">{{ company_name }}</h3>
+                    <p class="text-gray-300 mb-4">{{ company_tagline }}</p>
+                    <div class="flex space-x-4 space-x-reverse">
+                        {% if social_links.linkedin %}
+                        <a href="{{ social_links.linkedin }}" class="text-gray-300 hover:text-white">
+                            <i class="fab fa-linkedin text-xl"></i>
+                        </a>
+                        {% endif %}
+                        {% if social_links.twitter %}
+                        <a href="{{ social_links.twitter }}" class="text-gray-300 hover:text-white">
+                            <i class="fab fa-twitter text-xl"></i>
+                        </a>
+                        {% endif %}
+                        {% if social_links.github %}
+                        <a href="{{ social_links.github }}" class="text-gray-300 hover:text-white">
+                            <i class="fab fa-github text-xl"></i>
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">لینک‌های سریع</h4>
+                    <ul class="space-y-2">
+                        <li><a href="{% url 'products:list' %}" class="text-gray-300 hover:text-white">محصولات</a></li>
+                        <li><a href="{% url 'services:list' %}" class="text-gray-300 hover:text-white">خدمات</a></li>
+                        {% if feature_flags.sandbox %}
+                        <li><a href="{% url 'products:sandbox' %}" class="text-gray-300 hover:text-white">آزمایشگاه</a></li>
+                        {% endif %}
+                        <li><a href="{% url 'sales:version_list' %}" class="text-gray-300 hover:text-white">نسخه‌ها</a></li>
+                        <li><a href="{% url 'sales:demo_request' %}" class="text-gray-300 hover:text-white">درخواست دمو</a></li>
+                        <li><a href="{% url 'sales:pricing_request' %}" class="text-gray-300 hover:text-white">درخواست قیمت</a></li>
+                        <li><a href="{% url 'tickets:create' %}" class="text-gray-300 hover:text-white">پشتیبانی</a></li>
+                        <li><a href="{% url 'computation_engine:template_list' %}" class="text-gray-300 hover:text-white">محاسبات</a></li>
+                        {% if user.is_authenticated %}
+                        <li><a href="{% url 'users:dashboard' %}" class="text-gray-300 hover:text-white">داشبورد کاربر</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+                
+                <!-- Products -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">محصولات پرطرفدار</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-300 hover:text-white">TakoTech BudgetPro</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white">TakoTech SecureAI</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white">TakoTech DataFlow</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Contact Info -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">تماس با ما</h4>
+                    <div class="space-y-2 text-gray-300">
+                        <p><i class="fas fa-envelope ml-2"></i>{{ contact_info.email }}</p>
+                        <p><i class="fas fa-phone ml-2"></i>{{ contact_info.phone }}</p>
+                        <p><i class="fas fa-map-marker-alt ml-2"></i>{{ contact_info.address }}</p>
+                    </div>
+                </div>
+            </div>
+            
+            <hr class="border-gray-700 my-8">
+            
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-300">
+                    © {% now "Y" %} {{ company_name }}. تمامی حقوق محفوظ است.
+                </p>
+                <div class="flex space-x-4 space-x-reverse mt-4 md:mt-0">
+                    <a href="#" class="text-gray-300 hover:text-white text-sm">حریم خصوصی</a>
+                    <a href="#" class="text-gray-300 hover:text-white text-sm">شرایط استفاده</a>
+                    <a href="#" class="text-gray-300 hover:text-white text-sm">درباره ما</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- JavaScript (Local vendor) -->
+    <script src="{% static 'vendor/jquery/jquery-3.7.1.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    
+    <!-- Mobile Menu Toggle -->
+    <script>
+        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,22 @@
+{% extends 'base/base.html' %}
+{% load i18n %}
+
+{% block title %}مدیریت فونت{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-10">
+    <h1 class="text-3xl font-bold text-gray-900 mb-8">مدیریت فونت</h1>
+
+    <div class="bg-white rounded-lg shadow p-6">
+        <h2 class="text-xl font-semibold mb-4">فونت فعلی</h2>
+        <p class="text-gray-700 mb-6">{{ font_family }}</p>
+
+        <h3 class="text-lg font-semibold mb-3">CSS سفارشی فونت</h3>
+        <pre class="bg-gray-50 p-4 rounded text-sm overflow-auto">{{ custom_css|default:"/* فونت سفارشی در تنظیمات سایت قرار می‌گیرد */" }}</pre>
+
+        <div class="mt-6 text-sm text-gray-600">
+            برای تعویض فونت، فایل‌ را در مسیر <code class="px-1 bg-gray-100 rounded">static/fonts</code> قرار دهید و CSS مربوط به <code>@font-face</code> را در تنظیمات اضافه کنید.
+        </div>
+    </div>
+</div>
+{% endblock %}

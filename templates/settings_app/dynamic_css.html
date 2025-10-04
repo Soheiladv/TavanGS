@@ -1,0 +1,397 @@
+/* TakoTech Dynamic CSS - Generated from Django Settings */
+/* این فایل به صورت خودکار از تنظیمات Django تولید می‌شود */
+
+:root {
+    /* رنگ‌های اصلی از تنظیمات سایت */
+    --primary-color: {{ primary_color }};
+    --secondary-color: {{ secondary_color }};
+    --accent-color: {{ accent_color }};
+    
+    /* رنگ‌های مشتق شده */
+    --primary-light: {{ theme_variables.primary_light }};
+    --primary-dark: {{ theme_variables.primary_dark }};
+    --secondary-light: {{ theme_variables.secondary_light }};
+    --secondary-dark: {{ theme_variables.secondary_dark }};
+    --accent-light: {{ theme_variables.accent_light }};
+    --accent-dark: {{ theme_variables.accent_dark }};
+    
+    /* فونت از تنظیمات */
+    --font-family: {{ font_family }};
+    
+    /* متغیرهای قالب */
+    --border-radius: {{ theme_variables.border_radius }};
+    --button-padding: {{ theme_variables.button_padding }};
+    --card-padding: {{ theme_variables.card_padding }};
+    
+    /* گرادیان‌های پویا */
+    --gradient-primary: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    --gradient-accent: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+    --gradient-hero: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 50%, var(--accent-color) 100%);
+}
+
+/* تنظیمات جهت چیدمان */
+{% if layout_direction == 'rtl' %}
+html, body {
+    direction: rtl;
+    text-align: right;
+}
+
+.space-x-reverse > :not([hidden]) ~ :not([hidden]) {
+    --tw-space-x-reverse: 1;
+    margin-right: calc(var(--tw-space-x) * var(--tw-space-x-reverse));
+    margin-left: calc(var(--tw-space-x) * calc(1 - var(--tw-space-x-reverse)));
+}
+
+/* تنظیمات خاص RTL */
+.rtl-flip {
+    transform: scaleX(-1);
+}
+
+.rtl-margin-left {
+    margin-right: var(--spacing-4);
+    margin-left: 0;
+}
+
+.rtl-margin-right {
+    margin-left: var(--spacing-4);
+    margin-right: 0;
+}
+
+.rtl-text-right {
+    text-align: right;
+}
+
+.rtl-float-right {
+    float: right;
+}
+
+.rtl-float-left {
+    float: left;
+}
+
+/* آیکون‌های خاص RTL */
+.icon-arrow-right::before {
+    content: "\f060"; /* arrow-left در RTL */
+}
+
+.icon-arrow-left::before {
+    content: "\f061"; /* arrow-right در RTL */
+}
+
+{% else %}
+html, body {
+    direction: ltr;
+    text-align: left;
+}
+{% endif %}
+
+/* استایل‌های قالب بر اساس نوع انتخابی */
+{% if template_theme == 'modern' %}
+/* قالب مدرن */
+.card {
+    border-radius: var(--border-radius);
+    background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.btn {
+    border-radius: var(--border-radius);
+    padding: var(--button-padding);
+    background: var(--gradient-primary);
+    box-shadow: 0 4px 15px 0 rgba(37, 99, 235, 0.3);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    transition: left 0.5s;
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+{% elif template_theme == 'classic' %}
+/* قالب کلاسیک */
+.card {
+    border-radius: var(--border-radius);
+    border: 1px solid #e5e7eb;
+    background: #ffffff;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.card:hover {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.btn {
+    border-radius: var(--border-radius);
+    padding: var(--button-padding);
+    background-color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+}
+
+.btn:hover {
+    background-color: var(--primary-dark);
+    border-color: var(--primary-dark);
+}
+
+{% elif template_theme == 'minimal' %}
+/* قالب مینیمال */
+.card {
+    border-radius: var(--border-radius);
+    background: #ffffff;
+    border: 1px solid #f3f4f6;
+}
+
+.card:hover {
+    border-color: var(--primary-color);
+}
+
+.btn {
+    border-radius: var(--border-radius);
+    padding: var(--button-padding);
+    background: none;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+}
+
+.btn:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+{% elif template_theme == 'corporate' %}
+/* قالب شرکتی */
+.card {
+    border-radius: var(--border-radius);
+    background: #ffffff;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    border-top: 4px solid var(--primary-color);
+}
+
+.btn {
+    border-radius: var(--border-radius);
+    padding: var(--button-padding);
+    background-color: var(--primary-color);
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+}
+
+{% elif template_theme == 'creative' %}
+/* قالب خلاقانه */
+.card {
+    border-radius: var(--border-radius);
+    background: var(--gradient-primary);
+    padding: 2px;
+    position: relative;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    inset: 2px;
+    background: white;
+    border-radius: calc(var(--border-radius) - 2px);
+}
+
+.card > * {
+    position: relative;
+    z-index: 1;
+}
+
+.btn {
+    border-radius: var(--border-radius);
+    padding: var(--button-padding);
+    background: var(--gradient-accent);
+    transform: perspective(1000px) rotateX(0deg);
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: perspective(1000px) rotateX(-10deg);
+}
+{% endif %}
+
+/* استایل‌های هدر بر اساس نوع انتخابی */
+{% if header_style == 'fixed' %}
+.site-header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 0.9);
+    border-bottom: 1px solid rgba(229, 231, 235, 0.5);
+}
+
+.main-content {
+    margin-top: 80px; /* فاصله برای هدر ثابت */
+}
+
+{% elif header_style == 'sticky' %}
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 0.95);
+}
+
+{% else %}
+.site-header {
+    position: static;
+    background-color: white;
+}
+{% endif %}
+
+/* استایل‌های فوتر بر اساس نوع انتخابی */
+{% if footer_style == 'full' %}
+.site-footer {
+    background: linear-gradient(135deg, var(--gray-900) 0%, var(--gray-800) 100%);
+    color: white;
+    padding: 4rem 0 2rem;
+}
+
+.footer-section {
+    margin-bottom: 2rem;
+}
+
+.footer-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: white;
+}
+
+.footer-link {
+    color: #d1d5db;
+    transition: color 0.3s ease;
+}
+
+.footer-link:hover {
+    color: var(--primary-color);
+}
+
+{% elif footer_style == 'minimal' %}
+.site-footer {
+    background-color: var(--gray-800);
+    color: white;
+    padding: 2rem 0;
+    text-align: center;
+}
+
+{% elif footer_style == 'compact' %}
+.site-footer {
+    background-color: var(--gray-700);
+    color: white;
+    padding: 1rem 0;
+    font-size: 0.875rem;
+}
+{% endif %}
+
+/* انیمیشن‌های خاص قالب */
+{% if template_theme == 'modern' %}
+@keyframes modernFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.modern-animate {
+    animation: modernFadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+{% elif template_theme == 'creative' %}
+@keyframes creativeSlide {
+    from {
+        opacity: 0;
+        transform: translateX(-50px) rotate(-5deg);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0) rotate(0deg);
+    }
+}
+
+.creative-animate {
+    animation: creativeSlide 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+{% endif %}
+
+/* رنگ‌های حالت‌های مختلف */
+.text-primary { color: var(--primary-color); }
+.text-secondary { color: var(--secondary-color); }
+.text-accent { color: var(--accent-color); }
+
+.bg-primary { background-color: var(--primary-color); }
+.bg-secondary { background-color: var(--secondary-color); }
+.bg-accent { background-color: var(--accent-color); }
+
+.border-primary { border-color: var(--primary-color); }
+.border-secondary { border-color: var(--secondary-color); }
+.border-accent { border-color: var(--accent-color); }
+
+/* گرادیان‌ها */
+.bg-gradient-primary { background: var(--gradient-primary); }
+.bg-gradient-accent { background: var(--gradient-accent); }
+.bg-gradient-hero { background: var(--gradient-hero); }
+
+/* استایل‌های ریسپانسیو */
+@media (max-width: 768px) {
+    {% if template_theme == 'modern' %}
+    .card {
+        border-radius: calc(var(--border-radius) * 0.75);
+    }
+    {% endif %}
+    
+    .btn {
+        padding: calc(var(--button-padding) * 0.8);
+        font-size: 0.875rem;
+    }
+    
+    {% if header_style == 'fixed' %}
+    .main-content {
+        margin-top: 60px;
+    }
+    {% endif %}
+}
+
+@media (max-width: 480px) {
+    .card {
+        margin: 0.5rem;
+    }
+    
+    {% if footer_style == 'full' %}
+    .site-footer {
+        padding: 2rem 0 1rem;
+    }
+    
+    .footer-section {
+        margin-bottom: 1rem;
+    }
+    {% endif %}
+}
+
+/* CSS سفارشی از تنظیمات ادمین */
+{{ custom_css|safe }}

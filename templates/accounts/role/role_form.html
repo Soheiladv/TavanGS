@@ -1,0 +1,287 @@
+{% extends "base/base.html" %}
+
+{% load static i18n rcms_custom_filters jformat  %}
+{% block extra_css %}
+<style>
+    body {
+        background-color: #f4f7f6;
+    }
+    .main-card {
+        border: none;
+        border-radius: 0.75rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    }
+    .card-header-custom {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 0.75rem 0.75rem 0 0 !important;
+        padding: 1.5rem;
+    }
+    .permissions-container {
+        display: flex;
+        min-height: 500px;
+    }
+    .apps-nav {
+        width: 30%;
+        border-right: 1px solid #e9ecef;
+        padding: 1rem;
+        background-color: #f8f9fa;
+        overflow-y: auto;
+    }
+    .permissions-content {
+        width: 70%;
+        padding: 1.5rem;
+        overflow-y: auto;
+    }
+    .apps-nav .list-group-item {
+        border-radius: 0.5rem !important;
+        margin-bottom: 0.5rem;
+        border: none;
+        transition: all 0.2s ease-in-out;
+        cursor: pointer;
+    }
+    .apps-nav .list-group-item:hover {
+        background-color: #e9ecef;
+        transform: translateX(3px);
+    }
+    .apps-nav .list-group-item.active {
+        background-color: #0d6efd;
+        color: white;
+        box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
+    }
+    .progress { height: 6px; }
+    .form-check-label {
+        width: 100%;
+        cursor: pointer;
+        padding: 0.5rem 0.75rem;
+        border-radius: 0.375rem;
+        transition: background-color 0.2s ease;
+    }
+    .form-check-input:checked + .form-check-label {
+        background-color: #e7f1ff;
+    }
+    .permission-panel { display: none; }
+    .permission-panel.active { display: block; animation: fadeIn 0.4s; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    .search-input {
+        border-radius: 2rem;
+        padding-left: 2.5rem;
+    }
+    .search-icon {
+        position: absolute;
+        top: 50%;
+        left: 0.75rem;
+        transform: translateY(-50%);
+        color: #aaa;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <form method="post" id="roleForm" novalidate>
+        {% csrf_token %}
+        <div class="card main-card">
+            <div class="card-header-custom text-white">
+                <h2 class="card-title mb-0">
+                    <i class="fas {% if object %}fa-edit{% else %}fa-plus-circle{% endif %} me-2"></i>
+                    {{ title }}
+                </h2>
+            </div>
+            <div class="card-body p-4">
+                <div class="row mb-4">
+                    <div class="col-md-6 mb-3">
+                        <label for="{{ form.name.id_for_label }}" class="form-label fw-bold">عنوان نقش</label>
+                        <input type="text" class="form-control form-control-lg" id="{{ form.name.id_for_label }}" name="{{ form.name.name }}" value="{{ form.name.value|default:'' }}" required placeholder="مثال: مدیر فروشگاه">
+                        <div class="invalid-feedback">لطفاً عنوان نقش را وارد کنید.</div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="{{ form.description.id_for_label }}" class="form-label fw-bold">توضیحات (اختیاری)</label>
+                        <textarea class="form-control" id="{{ form.description.id_for_label }}" name="{{ form.description.name }}" rows="3">{{ form.description.value|default:'' }}</textarea>
+                    </div>
+                </div>
+
+                <hr class="my-4">
+
+                <h4 class="mb-3 fw-bold">
+                    <i class="fas fa-tasks me-2 text-primary"></i>انتخاب مجوزها
+                </h4>
+
+                <div class="permissions-container border rounded">
+                    <div class="apps-nav">
+                        <div class="position-relative mb-3">
+                            <i class="fas fa-search search-icon"></i>
+                            <input type="text" id="permission_search" class="form-control search-input" placeholder="جستجو در مجوزها...">
+                        </div>
+                        <div class="list-group" id="appsList">
+                            {% for app_name, permissions in permissions_tree.items %}
+                            <a class="list-group-item list-group-item-action flex-column align-items-start {% if forloop.first %}active{% endif %}"
+                               data-bs-toggle="list" href="#app-{{ forloop.counter }}" role="tab">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h6 class="mb-1 fw-bold app-name">{{ app_name }}</h6>
+                                    <small><span class="badge bg-secondary rounded-pill">{{ permissions|length }}</span></small>
+                                </div>
+                                <div class="progress mt-2">
+                                    <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="permissions-content tab-content">
+                        {% for app_name, permissions in permissions_tree.items %}
+                        <div class="permission-panel tab-pane {% if forloop.first %}active{% endif %}" id="app-{{ forloop.counter }}">
+                            <div class="d-flex justify-content-between align-items-center mb-3 border-bottom pb-2">
+                                <h5 class="fw-bold text-primary">{{ app_name }}</h5>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input select-all-in-panel" type="checkbox" role="switch" id="selectAll-{{ forloop.counter }}">
+                                    <label class="form-check-label" for="selectAll-{{ forloop.counter }}">انتخاب همه</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                {% for perm in permissions %}
+                                <div class="col-md-6 permission-item">
+                                    <div class="form-check">
+                                        <input class="form-check-input permission-checkbox" type="checkbox" name="permissions" value="{{ perm.id }}" id="perm_{{ perm.id }}"
+                                               {% if perm.id in form.permissions.value %}checked{% endif %}>
+                                        <label class="form-check-label" for="perm_{{ perm.id }}">
+                                            <span class="fw-bold d-block permission-name">{{ perm.name }}</span>
+                                            <small class="text-muted permission-codename">{{ perm.codename }}</small>
+                                        </label>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-footer bg-light text-end p-3">
+                <a href="{% url 'accounts:role_list' %}" class="btn btn-secondary me-2">
+                    <i class="fas fa-times me-2"></i>انصراف
+                </a>
+                <button type="submit" class="btn btn-success px-4" id="submitBtn">
+                    <i class="fas fa-save me-2"></i>ذخیره تغییرات
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // --- انتخاب عناصر DOM ---
+    const searchInput = document.getElementById('permission_search');
+    const appsList = document.getElementById('appsList');
+    const appItems = appsList.querySelectorAll('.list-group-item');
+    const permissionPanels = document.querySelectorAll('.permission-panel');
+    const allCheckboxes = document.querySelectorAll('.permission-checkbox');
+
+    // --- توابع اصلی ---
+
+    /**
+     * تعداد مجوزهای انتخاب شده در هر اپلیکیشن را به‌روز می‌کند و نوار پیشرفت را تنظیم می‌کند.
+     */
+    const updateAppCounts = () => {
+        appItems.forEach((appItem, index) => {
+            const panel = permissionPanels[index];
+            if (!panel) return;
+            
+            const checkboxesInPanel = panel.querySelectorAll('.permission-checkbox');
+            const checkedCheckboxes = panel.querySelectorAll('.permission-checkbox:checked');
+            const total = checkboxesInPanel.length;
+            const selected = checkedCheckboxes.length;
+            const percentage = total > 0 ? (selected / total) * 100 : 0;
+
+            const progressBar = appItem.querySelector('.progress-bar');
+            progressBar.style.width = `${percentage}%`;
+            progressBar.setAttribute('aria-valuenow', percentage);
+
+            // به‌روزرسانی چک‌باکس "انتخاب همه" در پنل
+            const selectAllSwitch = panel.querySelector('.select-all-in-panel');
+            if (selectAllSwitch) {
+                selectAllSwitch.checked = total > 0 && selected === total;
+            }
+        });
+    };
+
+    /**
+     * رویداد جستجو را مدیریت می‌کند.
+     */
+    const handleSearch = () => {
+        const query = searchInput.value.toLowerCase().trim();
+
+        // فیلتر کردن مجوزها در پنل فعال
+        const activePanel = document.querySelector('.permission-panel.active');
+        if (activePanel) {
+            activePanel.querySelectorAll('.permission-item').forEach(item => {
+                const name = item.querySelector('.permission-name')?.textContent.toLowerCase() || '';
+                const codename = item.querySelector('.permission-codename')?.textContent.toLowerCase() || '';
+                item.style.display = (name.includes(query) || codename.includes(query)) ? '' : 'none';
+            });
+        }
+
+        // فیلتر کردن لیست اپلیکیشن‌ها
+        appItems.forEach(item => {
+            const appName = item.querySelector('.app-name').textContent.toLowerCase();
+            item.style.display = appName.includes(query) ? '' : 'none';
+        });
+    };
+
+    // --- ثبت رویدادها ---
+
+    // رویداد برای جستجو
+    searchInput.addEventListener('input', handleSearch);
+
+    // رویداد برای تغییر وضعیت چک‌باکس‌ها
+    document.querySelector('.permissions-container').addEventListener('change', (e) => {
+        if (e.target.classList.contains('permission-checkbox')) {
+            updateAppCounts();
+        }
+    });
+
+    // رویداد برای کلیک روی "انتخاب همه" در هر پنل
+    permissionPanels.forEach(panel => {
+        const selectAllSwitch = panel.querySelector('.select-all-in-panel');
+        if (selectAllSwitch) {
+            selectAllSwitch.addEventListener('change', () => {
+                const isChecked = selectAllSwitch.checked;
+                panel.querySelectorAll('.permission-checkbox').forEach(cb => {
+                    cb.checked = isChecked;
+                });
+                updateAppCounts();
+            });
+        }
+    });
+
+    // فعال کردن تب‌ها با Bootstrap 5
+    appItems.forEach(tabEl => {
+        tabEl.addEventListener('click', event => {
+            event.preventDefault();
+            const tab = new bootstrap.Tab(tabEl);
+            tab.show();
+            // بعد از تغییر تب، جستجو را مجدداً اعمال کن
+            handleSearch();
+        });
+    });
+
+    // --- اجرای اولیه ---
+    updateAppCounts();
+
+    // اعتبارسنجی فرم Bootstrap
+    const form = document.getElementById('roleForm');
+    form.addEventListener('submit', event => {
+        if (!form.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        form.classList.add('was-validated');
+    }, false);
+});
+</script>
+{% endblock %}

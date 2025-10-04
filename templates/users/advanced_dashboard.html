@@ -1,0 +1,244 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block title %}داشبورد پیشرفته کاربری{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <!-- Header -->
+    <div class="mb-8">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <div class="h-16 w-16 rounded-full bg-primary flex items-center justify-center ml-4">
+                    <span class="text-white text-2xl font-bold">{{ user.first_name|first|default:user.email|first|upper }}</span>
+                </div>
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-900">داشبورد پیشرفته</h1>
+                    <p class="text-gray-600 mt-1">خوش آمدید، {{ user.get_full_name|default:user.email }}</p>
+                </div>
+            </div>
+            <div class="flex space-x-3 space-x-reverse">
+                <a href="{% url 'users:profile' %}" class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition">
+                    <i class="fas fa-user ml-2"></i>
+                    پروفایل
+                </a>
+                <a href="{% url 'users:preferences' %}" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark transition">
+                    <i class="fas fa-cog ml-2"></i>
+                    تنظیمات
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center">
+                <div class="p-3 rounded-full bg-blue-100 text-blue-600 ml-4">
+                    <i class="fas fa-ticket-alt text-xl"></i>
+                </div>
+                <div>
+                    <p class="text-sm font-medium text-gray-500">تیکت‌های فعال</p>
+                    <p class="text-2xl font-bold text-gray-900">{{ active_tickets }}</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center">
+                <div class="p-3 rounded-full bg-green-100 text-green-600 ml-4">
+                    <i class="fas fa-download text-xl"></i>
+                </div>
+                <div>
+                    <p class="text-sm font-medium text-gray-500">دانلودها</p>
+                    <p class="text-2xl font-bold text-gray-900">{{ total_downloads }}</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center">
+                <div class="p-3 rounded-full bg-purple-100 text-purple-600 ml-4">
+                    <i class="fas fa-calculator text-xl"></i>
+                </div>
+                <div>
+                    <p class="text-sm font-medium text-gray-500">محاسبات انجام شده</p>
+                    <p class="text-2xl font-bold text-gray-900">{{ computation_sessions }}</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center">
+                <div class="p-3 rounded-full bg-yellow-100 text-yellow-600 ml-4">
+                    <i class="fas fa-star text-xl"></i>
+                </div>
+                <div>
+                    <p class="text-sm font-medium text-gray-500">امتیاز کاربری</p>
+                    <p class="text-2xl font-bold text-gray-900">{{ user_score }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Main Content -->
+        <div class="lg:col-span-2 space-y-8">
+            <!-- Recent Activity -->
+            <div class="bg-white rounded-lg shadow">
+                <div class="p-6 border-b border-gray-200">
+                    <h2 class="text-xl font-semibold text-gray-900">فعالیت‌های اخیر</h2>
+                </div>
+                <div class="p-6">
+                    <div class="space-y-4">
+                        {% for activity in recent_activities %}
+                        <div class="flex items-start space-x-3 space-x-reverse">
+                            <div class="flex-shrink-0">
+                                <div class="h-8 w-8 rounded-full bg-gray-100 flex items-center justify-center">
+                                    <i class="fas fa-{{ activity.icon }} text-gray-600"></i>
+                                </div>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-sm text-gray-900">{{ activity.description }}</p>
+                                <p class="text-sm text-gray-500">{{ activity.timestamp|timesince }} پیش</p>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <div class="text-center py-8">
+                            <i class="fas fa-history text-gray-400 text-3xl mb-4"></i>
+                            <p class="text-gray-500">هیچ فعالیتی ثبت نشده است</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="bg-white rounded-lg shadow">
+                <div class="p-6 border-b border-gray-200">
+                    <h2 class="text-xl font-semibold text-gray-900">عملیات سریع</h2>
+                </div>
+                <div class="p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <a href="{% url 'tickets:create' %}" class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition">
+                            <i class="fas fa-plus-circle text-primary text-xl ml-3"></i>
+                            <div>
+                                <h3 class="font-medium text-gray-900">تیکت جدید</h3>
+                                <p class="text-sm text-gray-500">درخواست پشتیبانی</p>
+                            </div>
+                        </a>
+                        
+                        <a href="{% url 'products:sandbox' %}" class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition">
+                            <i class="fas fa-flask text-primary text-xl ml-3"></i>
+                            <div>
+                                <h3 class="font-medium text-gray-900">آزمایشگاه</h3>
+                                <p class="text-sm text-gray-500">تست محصولات</p>
+                            </div>
+                        </a>
+                        
+                        <a href="{% url 'sales:demo_request' %}" class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition">
+                            <i class="fas fa-video text-primary text-xl ml-3"></i>
+                            <div>
+                                <h3 class="font-medium text-gray-900">درخواست دمو</h3>
+                                <p class="text-sm text-gray-500">نمایش محصول</p>
+                            </div>
+                        </a>
+                        
+                        <a href="{% url 'sales:pricing_request' %}" class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition">
+                            <i class="fas fa-dollar-sign text-primary text-xl ml-3"></i>
+                            <div>
+                                <h3 class="font-medium text-gray-900">درخواست قیمت</h3>
+                                <p class="text-sm text-gray-500">قیمت‌گذاری سفارشی</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="space-y-8">
+            <!-- User Profile Card -->
+            <div class="bg-white rounded-lg shadow">
+                <div class="p-6">
+                    <div class="text-center">
+                        <div class="h-20 w-20 rounded-full bg-primary flex items-center justify-center mx-auto mb-4">
+                            <span class="text-white text-3xl font-bold">{{ user.first_name|first|default:user.email|first|upper }}</span>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900">{{ user.get_full_name|default:user.email }}</h3>
+                        <p class="text-sm text-gray-500">{{ user.email }}</p>
+                        <div class="mt-4">
+                            <span class="px-3 py-1 text-xs font-semibold rounded-full
+                                {% if user.user_type == 'free' %}bg-gray-100 text-gray-800
+                                {% elif user.user_type == 'premium' %}bg-blue-100 text-blue-800
+                                {% elif user.user_type == 'enterprise' %}bg-purple-100 text-purple-800
+                                {% endif %}">
+                                {{ user.get_user_type_display }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notifications -->
+            <div class="bg-white rounded-lg shadow">
+                <div class="p-6 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-900">اطلاعیه‌ها</h3>
+                </div>
+                <div class="p-6">
+                    <div class="space-y-3">
+                        {% for notification in notifications %}
+                        <div class="flex items-start space-x-3 space-x-reverse">
+                            <div class="flex-shrink-0">
+                                <div class="h-6 w-6 rounded-full bg-{{ notification.color }}-100 flex items-center justify-center">
+                                    <i class="fas fa-{{ notification.icon }} text-{{ notification.color }}-600 text-xs"></i>
+                                </div>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-sm text-gray-900">{{ notification.message }}</p>
+                                <p class="text-xs text-gray-500">{{ notification.timestamp|timesince }} پیش</p>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <div class="text-center py-4">
+                            <i class="fas fa-bell-slash text-gray-400 text-2xl mb-2"></i>
+                            <p class="text-sm text-gray-500">هیچ اطلاعیه‌ای وجود ندارد</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- System Status -->
+            <div class="bg-white rounded-lg shadow">
+                <div class="p-6 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-900">وضعیت سیستم</h3>
+                </div>
+                <div class="p-6">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">API Rate Limit</span>
+                            <div class="flex items-center">
+                                <div class="w-20 bg-gray-200 rounded-full h-2 ml-2">
+                                    <div class="bg-green-600 h-2 rounded-full" style="width: {{ api_usage_percentage }}%"></div>
+                                </div>
+                                <span class="text-sm text-gray-600">{{ user.api_calls_count }}/{{ user.api_rate_limit }}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">Storage Used</span>
+                            <span class="text-sm text-gray-600">{{ storage_used }} MB</span>
+                        </div>
+                        
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">Last Login</span>
+                            <span class="text-sm text-gray-600">{{ user.last_login|date:"Y/m/d H:i"|default:"هرگز" }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

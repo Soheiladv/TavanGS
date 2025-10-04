@@ -1,0 +1,304 @@
+/* TakoTech Website - Main CSS */
+
+/* Custom Properties */
+:root {
+    --font-primary: 'Vazir', 'Tahoma', sans-serif;
+    --transition: all 0.3s ease;
+    --shadow-light: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --shadow-medium: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-heavy: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Base Styles */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-primary);
+    line-height: 1.6;
+    scroll-behavior: smooth;
+}
+
+/* RTL Support */
+[dir="rtl"] {
+    text-align: right;
+}
+
+[dir="rtl"] .space-x-reverse > :not([hidden]) ~ :not([hidden]) {
+    --tw-space-x-reverse: 1;
+}
+
+/* Custom Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.animate-fade-in-up {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.animate-slide-in-right {
+    animation: slideInRight 0.6s ease-out;
+}
+
+/* Custom Components */
+.btn {
+    @apply px-6 py-3 rounded-lg font-medium transition-all duration-300 inline-flex items-center justify-center;
+}
+
+.btn-primary {
+    @apply bg-primary text-white hover:bg-opacity-90 transform hover:scale-105;
+}
+
+.btn-secondary {
+    @apply bg-secondary text-white hover:bg-opacity-90 transform hover:scale-105;
+}
+
+.btn-outline {
+    @apply border-2 border-primary text-primary hover:bg-primary hover:text-white;
+}
+
+.card {
+    @apply bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300;
+}
+
+.card:hover {
+    @apply shadow-xl transform -translate-y-1;
+}
+
+/* Line Clamp Utility */
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Gradient Text */
+.gradient-text {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--secondary-color);
+}
+
+/* Loading Spinner */
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Form Styles */
+.form-input {
+    @apply w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all;
+}
+
+.form-textarea {
+    @apply w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all resize-vertical min-h-[120px];
+}
+
+.form-select {
+    @apply w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all bg-white;
+}
+
+/* Badge Styles */
+.badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium;
+}
+
+.badge-success {
+    @apply bg-green-100 text-green-800;
+}
+
+.badge-warning {
+    @apply bg-yellow-100 text-yellow-800;
+}
+
+.badge-error {
+    @apply bg-red-100 text-red-800;
+}
+
+.badge-info {
+    @apply bg-blue-100 text-blue-800;
+}
+
+/* Alert Styles */
+.alert {
+    @apply p-4 rounded-lg border-r-4 mb-4;
+}
+
+.alert-success {
+    @apply bg-green-50 border-green-400 text-green-800;
+}
+
+.alert-warning {
+    @apply bg-yellow-50 border-yellow-400 text-yellow-800;
+}
+
+.alert-error {
+    @apply bg-red-50 border-red-400 text-red-800;
+}
+
+.alert-info {
+    @apply bg-blue-50 border-blue-400 text-blue-800;
+}
+
+/* Product Card Styles */
+.product-card {
+    @apply bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1;
+}
+
+.product-card-image {
+    @apply h-48 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center;
+}
+
+.product-card-content {
+    @apply p-6;
+}
+
+/* Service Card Styles */
+.service-card {
+    @apply bg-white rounded-xl shadow-lg p-8 text-center transition-all duration-300 hover:shadow-xl hover:-translate-y-2;
+}
+
+/* Feature Card Styles */
+.feature-card {
+    @apply text-center p-8 rounded-xl bg-gray-50 hover:bg-white hover:shadow-lg transition-all transform hover:-translate-y-2;
+}
+
+/* Navigation Styles */
+.nav-link {
+    @apply text-gray-700 hover:text-primary transition-colors duration-300 font-medium;
+}
+
+.nav-link.active {
+    @apply text-primary;
+}
+
+/* Footer Styles */
+.footer-link {
+    @apply text-gray-300 hover:text-white transition-colors duration-300;
+}
+
+/* Responsive Design Helpers */
+@media (max-width: 768px) {
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    
+    .text-5xl {
+        font-size: 2.5rem;
+    }
+    
+    .text-6xl {
+        font-size: 3rem;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+    
+    body {
+        background: white !important;
+        color: black !important;
+    }
+}
+
+/* Dark Mode Support (Future Enhancement) */
+@media (prefers-color-scheme: dark) {
+    .dark-mode-auto {
+        background-color: #1a1a1a;
+        color: #ffffff;
+    }
+}
+
+/* Accessibility */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Focus Styles */
+button:focus,
+a:focus,
+input:focus,
+textarea:focus,
+select:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+    .card {
+        border: 2px solid #000;
+    }
+    
+    .btn {
+        border: 2px solid currentColor;
+    }
+}

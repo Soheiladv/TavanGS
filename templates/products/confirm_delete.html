@@ -1,0 +1,141 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block title %}حذف محصول{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <!-- Header -->
+    <div class="mb-8">
+        <div class="flex items-center">
+            <i class="fas fa-exclamation-triangle text-red-600 text-3xl ml-3"></i>
+            <h1 class="text-3xl font-bold text-gray-900">
+                حذف محصول "{{ product.name }}"
+            </h1>
+        </div>
+        <p class="text-gray-600 mt-2">آیا مطمئن هستید که می‌خواهید این محصول را حذف کنید؟</p>
+    </div>
+
+    <!-- Back Navigation -->
+    <div class="mb-6">
+        <a href="{% url 'products:list' %}" class="inline-flex items-center text-primary hover:text-primary-dark transition">
+            <i class="fas fa-arrow-right ml-2"></i>
+            بازگشت به فهرست محصولات
+        </a>
+    </div>
+
+    <!-- Warning Box -->
+    <div class="bg-red-50 border border-red-200 rounded-lg p-6 mb-6">
+        <div class="flex items-start">
+            <i class="fas fa-exclamation-circle text-red-600 text-xl ml-3 mt-1"></i>
+            <div>
+                <h3 class="text-lg font-semibold text-red-800 mb-2">توجه!</h3>
+                <p class="text-red-700 mb-2">این عمل غیرقابل بازگشت است. تمام اطلاعات مربوط به این محصول پاک خواهد شد از جمله:</p>
+                <ul class="text-red-700 list-disc list-inside space-y-1">
+                    <li>اطلاعات اصلی محصول</li>
+                    <li>ویژگی‌ها و مشخصات فنی</li>
+                    <li>تصاویر و لوگوها</li>
+                    <li>آمار بازدید و دانلود</li>
+                    <li>نسخه‌های محصول مرتبط</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Details -->
+    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+        <div class="p-6">
+            <div class="mb-6">
+                <h2 class="text-xl font-semibold text-gray-900 mb-4">اطلاعات محصول:</h2>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    <div>
+                        <span class="font-medium text-gray-700">نام کامل:</span>
+                        <span class="text-gray-900">{{ product.full_name }}</span>
+                    </div>
+                    
+                    <div>
+                        <span class="font-medium text-gray-700">دسته‌بندی:</span>
+                        <span class="text-gray-900">{{ product.category.name }}</span>
+                    </div>
+                    
+                    <div>
+                        <span class="font-medium text-gray-700">وضعیت:</span>
+                        <span class="text-gray-900">{{ product.get_status_display }}</span>
+                    </div>
+                    
+                    <div>
+                        <span class="font-medium text-gray-700">بازدیدها:</span>
+                        <span class="text-gray-900">{{ product.view_count }}</span>
+                    </div>
+                    
+                    <div>
+                        <span class="font-medium text-gray-700">دانلودها:</span>
+                        <span class="text-gray-900">{{ product.download_count }}</span>
+                    </div>
+                    
+                    <div>
+                        <span class="font-medium text-gray-700">ویژه:</span>
+                        <span class="text-gray-900">{{ product.is_featured|yesno:"بله,خیر" }}</span>
+                    </div>
+                </div>
+                
+                {% if product.tagline %}
+                <div class="mt-4">
+                    <span class="font-medium text-gray-700">شعار:</span>
+                    <p class="text-gray-900 mt-1">{{ product.tagline }}</p>
+                </div>
+                {% endif %}
+                
+                {% if product.short_description %}
+                <div class="mt-4">
+                    <span class="font-medium text-gray-700">توضیح کوتاه:</span>
+                    <p class="text-gray-900 mt-1">{{ product.short_description }}</p>
+                </div>
+                {% endif %}
+                
+                {% if product.logo %}
+                <div class="mt-4">
+                    <span class="font-medium text-gray-700">لوگو فعلی:</span>
+                    <div class="mt-1">
+                        <img src="{{ product.logo.url }}" alt="{{ product.name }}" class="h-16 w-16 object-cover rounded">
+                    </div>
+                </ {% endif %}
+                
+                <!-- Trial Version Warning -->
+                {% if product.has_trial %}
+                <div class="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded">
+                    <i class="fas fa-info-circle text-yellow-600 ml-2"></i>
+                    <span class="text-sm text-yellow-800">این محصول دارای نسخه آزمایشی است</span>
+                </div>
+                {% endif %}
+                
+                <!-- Free Version Warning -->
+                {% if product.has_free_version %}
+                <div class="mt-4 p-3 bg-blue-50 border border-blue-200 rounded">
+                    <i class="fas fa-info-circle text-blue-600 ml-2"></i>
+                    <span class="text-sm text-blue-800">این محصول دارای نسخه رایگان است</span>
+                </div>
+                {% endif %}
+            </div>
+            
+            <!-- Delete Form -->
+            <form method="post" class="border-t pt-6">
+                {% csrf_token %}
+                
+                <div class="flex justify-between items-center">
+                    <a href="{% url 'products:list' %}" class="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition">
+                        انصراف
+                    </a>
+                    
+                    <div class="space-x-4 space-x-reverse">
+                        <button type="submit" class="px-6 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition">
+                            بله، حذف کن
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

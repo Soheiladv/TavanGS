@@ -1,0 +1,647 @@
+# TakoTech Website - English Translation
+# Copyright (C) 2025 TakoTech
+# This file is distributed under the same license as the TakoTech package.
+# TakoTech Team <info@takotech.com>, 2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: TakoTech Website\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-02 21:50+0330\n"
+"PO-Revision-Date: 2025-10-02 21:50+0330\n"
+"Last-Translator: TakoTech Team <info@takotech.com>\n"
+"Language-Team: English <info@takotech.com>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+# Common UI Elements
+msgid "Home"
+msgstr "Home"
+
+msgid "Products"
+msgstr "Products"
+
+msgid "Services"
+msgstr "Services"
+
+msgid "Support"
+msgstr "Support"
+
+msgid "Contact"
+msgstr "Contact"
+
+msgid "About"
+msgstr "About"
+
+msgid "Login"
+msgstr "Login"
+
+msgid "Logout"
+msgstr "Logout"
+
+msgid "Register"
+msgstr "Register"
+
+msgid "Profile"
+msgstr "Profile"
+
+msgid "Dashboard"
+msgstr "Dashboard"
+
+msgid "Settings"
+msgstr "Settings"
+
+# Navigation
+msgid "Main Menu"
+msgstr "Main Menu"
+
+msgid "User Menu"
+msgstr "User Menu"
+
+msgid "Footer"
+msgstr "Footer"
+
+msgid "Search"
+msgstr "Search"
+
+msgid "Search Products"
+msgstr "Search Products"
+
+msgid "Search placeholder"
+msgstr "Search for products or services..."
+
+# Buttons and Actions
+msgid "Save"
+msgstr "Save"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "Delete"
+msgstr "Delete"
+
+msgid "Edit"
+msgstr "Edit"
+
+msgid "Update"
+msgstr "Update"
+
+msgid "Create"
+msgstr "Create"
+
+msgid "Add"
+msgstr "Add"
+
+msgid "Remove"
+msgstr "Remove"
+
+msgid "View"
+msgstr "View"
+
+msgid "Download"
+msgstr "Download"
+
+msgid "Upload"
+msgstr "Upload"
+
+msgid "Submit"
+msgstr "Submit"
+
+msgid "Send"
+msgstr "Send"
+
+msgid "Back"
+msgstr "Back"
+
+msgid "Next"
+msgstr "Next"
+
+msgid "Previous"
+msgstr "Previous"
+
+msgid "Continue"
+msgstr "Continue"
+
+msgid "Finish"
+msgstr "Finish"
+
+msgid "Close"
+msgstr "Close"
+
+msgid "Open"
+msgstr "Open"
+
+# Form Fields
+msgid "Name"
+msgstr "Name"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Password"
+msgstr "Password"
+
+msgid "Confirm Password"
+msgstr "Confirm Password"
+
+msgid "Phone"
+msgstr "Phone"
+
+msgid "Address"
+msgstr "Address"
+
+msgid "City"
+msgstr "City"
+
+msgid "Country"
+msgstr "Country"
+
+msgid "Company"
+msgstr "Company"
+
+msgid "Job Title"
+msgstr "Job Title"
+
+msgid "Website"
+msgstr "Website"
+
+msgid "Description"
+msgstr "Description"
+
+msgid "Message"
+msgstr "Message"
+
+msgid "Subject"
+msgstr "Subject"
+
+msgid "Title"
+msgstr "Title"
+
+msgid "Content"
+msgstr "Content"
+
+msgid "Category"
+msgstr "Category"
+
+msgid "Tags"
+msgstr "Tags"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Priority"
+msgstr "Priority"
+
+msgid "Date"
+msgstr "Date"
+
+msgid "Time"
+msgstr "Time"
+
+msgid "Price"
+msgstr "Price"
+
+msgid "Amount"
+msgstr "Amount"
+
+msgid "Quantity"
+msgstr "Quantity"
+
+msgid "Total"
+msgstr "Total"
+
+# Form Placeholders
+msgid "Enter your name"
+msgstr "Enter your name"
+
+msgid "Enter your email"
+msgstr "Enter your email"
+
+msgid "Enter your password"
+msgstr "Enter your password"
+
+msgid "Enter your phone number"
+msgstr "Enter your phone number"
+
+msgid "Enter your message"
+msgstr "Enter your message"
+
+msgid "Enter title"
+msgstr "Enter title"
+
+msgid "Enter description"
+msgstr "Enter description"
+
+msgid "Select category"
+msgstr "Select category"
+
+msgid "Select status"
+msgstr "Select status"
+
+msgid "Select priority"
+msgstr "Select priority"
+
+msgid "Choose file"
+msgstr "Choose file"
+
+# Product Related
+msgid "Product Details"
+msgstr "Product Details"
+
+msgid "Product Features"
+msgstr "Product Features"
+
+msgid "Product Specifications"
+msgstr "Product Specifications"
+
+msgid "Product Gallery"
+msgstr "Product Gallery"
+
+msgid "Product Reviews"
+msgstr "Product Reviews"
+
+msgid "Related Products"
+msgstr "Related Products"
+
+msgid "Featured Products"
+msgstr "Featured Products"
+
+msgid "Popular Products"
+msgstr "Popular Products"
+
+msgid "New Products"
+msgstr "New Products"
+
+msgid "Free Trial"
+msgstr "Free Trial"
+
+msgid "Free Version"
+msgstr "Free Version"
+
+msgid "Premium Version"
+msgstr "Premium Version"
+
+msgid "Enterprise Version"
+msgstr "Enterprise Version"
+
+msgid "Download Trial"
+msgstr "Download Trial"
+
+msgid "Start Free Trial"
+msgstr "Start Free Trial"
+
+msgid "View Demo"
+msgstr "View Demo"
+
+msgid "Live Demo"
+msgstr "Live Demo"
+
+msgid "Product Demo"
+msgstr "Product Demo"
+
+# Service Related
+msgid "Our Services"
+msgstr "Our Services"
+
+msgid "Service Details"
+msgstr "Service Details"
+
+msgid "Request Service"
+msgstr "Request Service"
+
+msgid "Consultation"
+msgstr "Consultation"
+
+msgid "Free Consultation"
+msgstr "Free Consultation"
+
+msgid "Request Quote"
+msgstr "Request Quote"
+
+msgid "Get Quote"
+msgstr "Get Quote"
+
+msgid "Contact Us"
+msgstr "Contact Us"
+
+# Support & Tickets
+msgid "Support Center"
+msgstr "Support Center"
+
+msgid "Create Ticket"
+msgstr "Create Ticket"
+
+msgid "My Tickets"
+msgstr "My Tickets"
+
+msgid "Ticket Details"
+msgstr "Ticket Details"
+
+msgid "Ticket ID"
+msgstr "Ticket ID"
+
+msgid "Ticket Status"
+msgstr "Ticket Status"
+
+msgid "Open"
+msgstr "Open"
+
+msgid "In Progress"
+msgstr "In Progress"
+
+msgid "Resolved"
+msgstr "Resolved"
+
+msgid "Closed"
+msgstr "Closed"
+
+msgid "Reply"
+msgstr "Reply"
+
+msgid "Add Reply"
+msgstr "Add Reply"
+
+msgid "Attachments"
+msgstr "Attachments"
+
+msgid "Attach File"
+msgstr "Attach File"
+
+# Status Messages
+msgid "Success"
+msgstr "Success"
+
+msgid "Error"
+msgstr "Error"
+
+msgid "Warning"
+msgstr "Warning"
+
+msgid "Info"
+msgstr "Info"
+
+msgid "Loading"
+msgstr "Loading"
+
+msgid "Saving"
+msgstr "Saving"
+
+msgid "Processing"
+msgstr "Processing"
+
+msgid "Please wait"
+msgstr "Please wait"
+
+msgid "Operation completed successfully"
+msgstr "Operation completed successfully"
+
+msgid "An error occurred"
+msgstr "An error occurred"
+
+msgid "Please try again"
+msgstr "Please try again"
+
+msgid "Invalid input"
+msgstr "Invalid input"
+
+msgid "Required field"
+msgstr "Required field"
+
+msgid "Field is required"
+msgstr "This field is required"
+
+# Pagination
+msgid "Page"
+msgstr "Page"
+
+msgid "of"
+msgstr "of"
+
+msgid "First"
+msgstr "First"
+
+msgid "Last"
+msgstr "Last"
+
+msgid "Show"
+msgstr "Show"
+
+msgid "entries"
+msgstr "entries"
+
+msgid "Showing"
+msgstr "Showing"
+
+msgid "to"
+msgstr "to"
+
+msgid "results"
+msgstr "results"
+
+# Time and Date
+msgid "Today"
+msgstr "Today"
+
+msgid "Yesterday"
+msgstr "Yesterday"
+
+msgid "Tomorrow"
+msgstr "Tomorrow"
+
+msgid "This Week"
+msgstr "This Week"
+
+msgid "This Month"
+msgstr "This Month"
+
+msgid "This Year"
+msgstr "This Year"
+
+msgid "Created"
+msgstr "Created"
+
+msgid "Updated"
+msgstr "Updated"
+
+msgid "Published"
+msgstr "Published"
+
+msgid "Modified"
+msgstr "Modified"
+
+# Company Information
+msgid "About TakoTech"
+msgstr "About TakoTech"
+
+msgid "Our Mission"
+msgstr "Our Mission"
+
+msgid "Our Vision"
+msgstr "Our Vision"
+
+msgid "Our Team"
+msgstr "Our Team"
+
+msgid "Contact Information"
+msgstr "Contact Information"
+
+msgid "Office Address"
+msgstr "Office Address"
+
+msgid "Phone Number"
+msgstr "Phone Number"
+
+msgid "Email Address"
+msgstr "Email Address"
+
+msgid "Working Hours"
+msgstr "Working Hours"
+
+msgid "Follow Us"
+msgstr "Follow Us"
+
+msgid "Social Media"
+msgstr "Social Media"
+
+# Footer
+msgid "All rights reserved"
+msgstr "All rights reserved"
+
+msgid "Privacy Policy"
+msgstr "Privacy Policy"
+
+msgid "Terms of Service"
+msgstr "Terms of Service"
+
+msgid "Cookie Policy"
+msgstr "Cookie Policy"
+
+msgid "Quick Links"
+msgstr "Quick Links"
+
+msgid "Popular Products"
+msgstr "Popular Products"
+
+msgid "Latest News"
+msgstr "Latest News"
+
+msgid "Newsletter"
+msgstr "Newsletter"
+
+msgid "Subscribe"
+msgstr "Subscribe"
+
+msgid "Subscribe to Newsletter"
+msgstr "Subscribe to Newsletter"
+
+msgid "Enter your email for updates"
+msgstr "Enter your email for updates"
+
+# User Account
+msgid "My Account"
+msgstr "My Account"
+
+msgid "Account Settings"
+msgstr "Account Settings"
+
+msgid "Change Password"
+msgstr "Change Password"
+
+msgid "Update Profile"
+msgstr "Update Profile"
+
+msgid "Personal Information"
+msgstr "Personal Information"
+
+msgid "Preferences"
+msgstr "Preferences"
+
+msgid "Notifications"
+msgstr "Notifications"
+
+msgid "Language"
+msgstr "Language"
+
+msgid "Theme"
+msgstr "Theme"
+
+msgid "Timezone"
+msgstr "Timezone"
+
+# Validation Messages
+msgid "This field cannot be blank"
+msgstr "This field cannot be blank"
+
+msgid "Enter a valid email address"
+msgstr "Enter a valid email address"
+
+msgid "Password is too short"
+msgstr "Password is too short"
+
+msgid "Passwords do not match"
+msgstr "Passwords do not match"
+
+msgid "Invalid file format"
+msgstr "Invalid file format"
+
+msgid "File size too large"
+msgstr "File size too large"
+
+msgid "Maximum file size is"
+msgstr "Maximum file size is"
+
+msgid "Allowed formats are"
+msgstr "Allowed formats are"
+
+# Search and Filter
+msgid "Search Results"
+msgstr "Search Results"
+
+msgid "No results found"
+msgstr "No results found"
+
+msgid "Filter by"
+msgstr "Filter by"
+
+msgid "Sort by"
+msgstr "Sort by"
+
+msgid "All Categories"
+msgstr "All Categories"
+
+msgid "All Status"
+msgstr "All Status"
+
+msgid "Clear Filters"
+msgstr "Clear Filters"
+
+msgid "Apply Filters"
+msgstr "Apply Filters"
+
+# Analytics and Statistics
+msgid "Views"
+msgstr "Views"
+
+msgid "Downloads"
+msgstr "Downloads"
+
+msgid "Users"
+msgstr "Users"
+
+msgid "Active Users"
+msgstr "Active Users"
+
+msgid "Total"
+msgstr "Total"
+
+msgid "Statistics"
+msgstr "Statistics"
+
+msgid "Analytics"
+msgstr "Analytics"
+
+msgid "Reports"
+msgstr "Reports"

@@ -1,0 +1,46 @@
+{% extends 'base/base.html' %}
+{% load i18n %}
+
+{% block title %}مدیریت کاربران{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-10">
+    <h1 class="text-3xl font-bold text-gray-900 mb-8">مدیریت کاربران</h1>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div class="bg-white rounded-lg shadow p-6">
+            <h2 class="text-xl font-semibold mb-4">کاربران اخیر</h2>
+            <div class="divide-y">
+                {% for u in users %}
+                <div class="py-3 flex items-center justify-between">
+                    <div>
+                        <div class="font-medium">{{ u.get_full_name|default:u.email }}</div>
+                        <div class="text-sm text-gray-600">{{ u.email }}</div>
+                    </div>
+                    <div class="text-sm text-gray-500">{{ u.date_joined|date:"Y/m/d" }}</div>
+                </div>
+                {% empty %}
+                <div class="py-6 text-gray-500">کاربری یافت نشد.</div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow p-6">
+            <h2 class="text-xl font-semibold mb-4">کارکنان</h2>
+            <div class="divide-y">
+                {% for u in staff %}
+                <div class="py-3 flex items-center justify-between">
+                    <div>
+                        <div class="font-medium">{{ u.get_full_name|default:u.email }}</div>
+                        <div class="text-sm text-gray-600">{{ u.email }}</div>
+                    </div>
+                    <div class="text-sm text-gray-500">{{ u.date_joined|date:"Y/m/d" }}</div>
+                </div>
+                {% empty %}
+                <div class="py-6 text-gray-500">کارمندی یافت نشد.</div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

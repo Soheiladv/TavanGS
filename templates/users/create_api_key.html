@@ -1,0 +1,111 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block title %}ایجاد کلید API{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <!-- Header -->
+    <div class="mb-8">
+        <div class="flex items-center">
+            <i class="fas fa-key text-primary text-3xl ml-3"></i>
+            <h1 class="text-3xl font-bold text-gray-900">ایجاد کلید API</h1>
+        </div>
+        <p class="text-gray-600 mt-2">ایجاد کلید API برای دسترسی برنامه‌نویسی</p>
+    </div>
+
+    <!-- Back Navigation -->
+    <div class="mb-6">
+        <a href="{% url 'users:advanced_profile' %}" class="inline-flex items-center text-primary hover:text-primary-dark transition">
+            <i class="fas fa-arrow-right ml-2"></i>
+            بازگشت به پروفایل
+        </a>
+    </div>
+
+    <!-- API Key Form -->
+    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+        <div class="p-6">
+            <div class="max-w-2xl mx-auto">
+                <form method="post" class="space-y-6">
+                    {% csrf_token %}
+                    
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
+                            نام کلید API <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" name="name" id="name" 
+                               class="form-control w-full" 
+                               placeholder="مثال: کلید دسترسی اپلیکیشن موبایل" required>
+                        <p class="text-sm text-gray-500 mt-1">نامی برای شناسایی این کلید انتخاب کنید</p>
+                    </div>
+                    
+                    <div>
+                        <label for="description" class="block text-sm font-medium text-gray-700 mb-2">
+                            توضیحات (اختیاری)
+                        </label>
+                        <textarea name="description" id="description" rows="3" 
+                                  class="form-control w-full" 
+                                  placeholder="توضیحات بیشتر درباره استفاده از این کلید..."></textarea>
+                    </div>
+                    
+                    <div>
+                        <label for="permissions" class="block text-sm font-medium text-gray-700 mb-2">
+                            دسترسی‌ها
+                        </label>
+                        <div class="space-y-2">
+                            <label class="flex items-center">
+                                <input type="checkbox" name="permissions" value="read" checked class="ml-2">
+                                <span class="text-sm text-gray-700">خواندن (Read)</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" name="permissions" value="write" class="ml-2">
+                                <span class="text-sm text-gray-700">نوشتن (Write)</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" name="permissions" value="delete" class="ml-2">
+                                <span class="text-sm text-gray-700">حذف (Delete)</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label for="expiry_date" class="block text-sm font-medium text-gray-700 mb-2">
+                            تاریخ انقضا (اختیاری)
+                        </label>
+                        <input type="date" name="expiry_date" id="expiry_date" 
+                               class="form-control w-full">
+                        <p class="text-sm text-gray-500 mt-1">در صورت عدم انتخاب، کلید منقضی نخواهد شد</p>
+                    </div>
+                    
+                    <!-- Security Notice -->
+                    <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+                        <div class="flex">
+                            <i class="fas fa-exclamation-triangle text-red-600 ml-3 mt-1"></i>
+                            <div>
+                                <h3 class="text-sm font-medium text-red-800 mb-2">هشدار امنیتی</h3>
+                                <ul class="text-sm text-red-700 list-disc list-inside space-y-1">
+                                    <li>کلید API را در جای امن نگهداری کنید</li>
+                                    <li>هرگز کلید را در کد عمومی یا repository های عمومی قرار ندهید</li>
+                                    <li>در صورت افشا شدن، فوراً کلید را حذف کنید</li>
+                                    <li>از HTTPS برای تمام درخواست‌های API استفاده کنید</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Submit Buttons -->
+                    <div class="flex justify-end space-x-4 space-x-reverse">
+                        <a href="{% url 'users:advanced_profile' %}" class="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition">
+                            انصراف
+                        </a>
+                        <button type="submit" class="px-6 py-2 bg-primary text-white rounded-md hover:bg-primary-dark transition">
+                            <i class="fas fa-key ml-2"></i>
+                            ایجاد کلید API
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'base/base.html' %}
+{% load i18n %}
+
+{% block title %}جزئیات تیکت{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-10">
+    <h1 class="text-3xl font-bold text-gray-900 mb-6">جزئیات تیکت</h1>
+
+    <div class="bg-white rounded-lg shadow p-6 mb-6">
+        <div class="flex items-center justify-between">
+            <div>
+                <div class="text-sm text-gray-500">شناسه: #{{ ticket.ticket_id|slice:":8" }}</div>
+                <h2 class="text-xl font-semibold mt-1">{{ ticket.title }}</h2>
+            </div>
+            <div class="text-left">
+                <span class="px-2 py-1 text-xs rounded {{ ticket.get_status_display_class }}">{{ ticket.get_status_display }}</span>
+            </div>
+        </div>
+        <p class="mt-4 text-gray-700">{{ ticket.description }}</p>
+        <div class="mt-4 text-sm text-gray-500">ایجاد: {{ ticket.created_at|date:"Y/m/d H:i" }}</div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow p-6">
+        <h3 class="text-lg font-semibold mb-4">پاسخ‌ها</h3>
+        <div class="space-y-4">
+            {% for r in replies %}
+            <div class="border rounded p-3">
+                <div class="text-sm text-gray-500 mb-1">{{ r.user.get_full_name|default:r.user.email }} - {{ r.created_at|date:"Y/m/d H:i" }}</div>
+                <div class="text-gray-800">{{ r.content }}</div>
+            </div>
+            {% empty %}
+            <div class="text-gray-500">هنوز پاسخی ثبت نشده است.</div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

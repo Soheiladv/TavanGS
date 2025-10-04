@@ -1,0 +1,41 @@
+{% extends 'base/base.html' %}
+{% load i18n %}
+
+{% block title %}مدیریت فیچرها{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-10">
+    <h1 class="text-3xl font-bold text-gray-900 mb-8">مدیریت فیچرها</h1>
+
+    <div class="bg-white rounded-lg shadow overflow-hidden">
+        <table class="w-full">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500">نام</th>
+                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500">وضعیت</th>
+                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500">درصد</th>
+                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500">توضیحات</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y">
+                {% for f in flags %}
+                <tr class="hover:bg-gray-50">
+                    <td class="px-6 py-4">{{ f.name }}</td>
+                    <td class="px-6 py-4">
+                        {% if f.is_active %}
+                        <span class="px-2 py-1 text-xs bg-green-100 text-green-800 rounded">فعال</span>
+                        {% else %}
+                        <span class="px-2 py-1 text-xs bg-gray-100 text-gray-800 rounded">غیرفعال</span>
+                        {% endif %}
+                    </td>
+                    <td class="px-6 py-4">{{ f.percentage }}%</td>
+                    <td class="px-6 py-4 text-gray-600">{{ f.description|default:"-" }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="4" class="px-6 py-8 text-center text-gray-500">فیچری ثبت نشده است.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

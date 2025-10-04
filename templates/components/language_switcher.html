@@ -1,0 +1,120 @@
+{% load i18n %}
+{% load i18n static %}
+
+<!-- Language Switcher Component -->
+<div class="language-switcher relative" x-data="{ open: false }">
+    <button 
+        @click="open = !open" 
+        class="flex items-center space-x-2 space-x-reverse text-gray-700 hover:text-primary transition-colors"
+        aria-label="{% trans 'Change Language' %}"
+    >
+        <!-- Current Language Flag -->
+        <div class="w-5 h-5 rounded-full overflow-hidden">
+            {% get_current_language as LANGUAGE_CODE %}
+            {% if LANGUAGE_CODE == 'fa' %}
+                <img src="{% static 'images/flags/ir.svg' %}" alt="فارسی" class="w-full h-full object-cover">
+            {% elif LANGUAGE_CODE == 'en' %}
+                <img src="{% static 'images/flags/us.svg' %}" alt="English" class="w-full h-full object-cover">
+            {% elif LANGUAGE_CODE == 'ar' %}
+                <img src="{% static 'images/flags/sa.svg' %}" alt="العربية" class="w-full h-full object-cover">
+            {% elif LANGUAGE_CODE == 'tr' %}
+                <img src="{% static 'images/flags/tr.svg' %}" alt="Türkçe" class="w-full h-full object-cover">
+            {% endif %}
+        </div>
+        
+        <!-- Current Language Name -->
+        <span class="text-sm font-medium">
+            {% get_language_info for LANGUAGE_CODE as lang %}
+            {{ lang.name_local }}
+        </span>
+        
+        <!-- Dropdown Arrow -->
+        <svg class="w-4 h-4 transition-transform duration-200" 
+             :class="{ 'rotate-180': open }" 
+             fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+        </svg>
+    </button>
+    
+    <!-- Dropdown Menu -->
+    <div 
+        x-show="open" 
+        @click.outside="open = false"
+        x-transition:enter="transition ease-out duration-200"
+        x-transition:enter-start="opacity-0 transform scale-95"
+        x-transition:enter-end="opacity-100 transform scale-100"
+        x-transition:leave="transition ease-in duration-150"
+        x-transition:leave-start="opacity-100 transform scale-100"
+        x-transition:leave-end="opacity-0 transform scale-95"
+        class="absolute {% if LANGUAGE_CODE == 'fa' or LANGUAGE_CODE == 'ar' %}left-0{% else %}right-0{% endif %} mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-50"
+        style="display: none;"
+    >
+        <div class="py-2">
+            {% get_available_languages as LANGUAGES %}
+            {% for lang_code, lang_name in LANGUAGES %}
+                <form method="post" action="{% url 'set_language' %}" class="inline-block w-full">
+                    {% csrf_token %}
+                    <input type="hidden" name="language" value="{{ lang_code }}">
+                    <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                    
+                    <button 
+                        type="submit"
+                        class="flex items-center space-x-3 space-x-reverse w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors {% if lang_code == LANGUAGE_CODE %}bg-primary bg-opacity-10 text-primary{% endif %}"
+                    >
+                        <!-- Language Flag -->
+                        <div class="w-5 h-5 rounded-full overflow-hidden flex-shrink-0">
+                            {% if lang_code == 'fa' %}
+                                <img src="{% static 'images/flags/ir.svg' %}" alt="فارسی" class="w-full h-full object-cover">
+                            {% elif lang_code == 'en' %}
+                                <img src="{% static 'images/flags/us.svg' %}" alt="English" class="w-full h-full object-cover">
+                            {% elif lang_code == 'ar' %}
+                                <img src="{% static 'images/flags/sa.svg' %}" alt="العربية" class="w-full h-full object-cover">
+                            {% elif lang_code == 'tr' %}
+                                <img src="{% static 'images/flags/tr.svg' %}" alt="Türkçe" class="w-full h-full object-cover">
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Language Info -->
+                        <div class="flex-1 text-right">
+                            {% get_language_info for lang_code as lang %}
+                            <div class="font-medium">{{ lang.name_local }}</div>
+                            <div class="text-xs text-gray-500">{{ lang.name }}</div>
+                        </div>
+                        
+                        <!-- Current Indicator -->
+                        {% if lang_code == LANGUAGE_CODE %}
+                            <svg class="w-4 h-4 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                        {% endif %}
+                    </button>
+                </form>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- Language Switcher Styles -->
+<style>
+    .language-switcher .dropdown-enter {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    
+    .language-switcher .dropdown-enter-active {
+        opacity: 1;
+        transform: scale(1);
+        transition: opacity 200ms ease-out, transform 200ms ease-out;
+    }
+    
+    .language-switcher .dropdown-leave {
+        opacity: 1;
+        transform: scale(1);
+    }
+    
+    .language-switcher .dropdown-leave-active {
+        opacity: 0;
+        transform: scale(0.95);
+        transition: opacity 150ms ease-in, transform 150ms ease-in;
+    }
+</style>

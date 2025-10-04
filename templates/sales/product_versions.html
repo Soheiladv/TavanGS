@@ -1,0 +1,200 @@
+{% extends 'base/base.html' %}
+{% load static i18n %}
+
+{% block title %}نسخه‌های {{ product.full_name }}{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <!-- Product Header -->
+    <div class="bg-white rounded-lg shadow-md p-8 mb-8">
+        <div class="flex items-center mb-6">
+            {% if product.logo %}
+            <img class="h-16 w-16 rounded-lg object-cover ml-4" src="{{ product.logo.url }}" alt="{{ product.name }}">
+            {% endif %}
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900">{{ product.full_name }}</h1>
+                <p class="text-lg text-gray-600 mt-2">{{ product.tagline }}</p>
+                <div class="flex items-center mt-2 text-sm text-gray-500">
+                    <span class="ml-4">{{ product.category.name }}</span>
+                    <span class="ml-4">{{ product.status }}</span>
+                </div>
+            </div>
+        </div>
+        
+        <p class="text-gray-700 leading-relaxed">{{ product.description }}</p>
+        
+        <!-- Quick Actions -->
+        <div class="flex space-x-4 space-x-reverse mt-6">
+            {% if latest_version %}
+            <a href="{% url 'sales:product_download' product.slug %}" 
+               class="bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-opacity-90 transition-colors">
+                دانلود آخرین نسخه (v{{ latest_version.version_number }})
+            </a>
+            {% endif %}
+            {% if latest_version.has_trial %}
+            <a href="{% url 'sales:trial_download' product.slug %}" 
+               class="border-2 border-primary text-primary px-6 py-3 rounded-lg font-semibold hover:bg-primary hover:text-white transition-colors">
+                دانلود نسخه آزمایشی
+            </a>
+            {% endif %}
+            <a href="{% url 'sales:demo_request' %}" 
+               class="border-2 border-secondary text-secondary px-6 py-3 rounded-lg font-semibold hover:bg-secondary hover:text-white transition-colors">
+                درخواست دمو
+            </a>
+        </div>
+    </div>
+
+    <!-- Latest Version Highlight -->
+    {% if latest_version %}
+    <div class="bg-gradient-to-r from-primary to-secondary rounded-lg shadow-lg p-8 mb-8 text-white">
+        <div class="flex items-center justify-between">
+            <div>
+                <h2 class="text-2xl font-bold mb-2">آخرین نسخه: v{{ latest_version.version_number }}</h2>
+                <p class="text-lg opacity-90 mb-4">{{ latest_version.get_version_type_display }}</p>
+                <p class="opacity-80">{{ latest_version.release_date|date:"Y/m/d" }} منتشر شده</p>
+            </div>
+            <div class="text-right">
+                <div class="text-3xl font-bold">{{ latest_version.download_count }}</div>
+                <div class="text-lg opacity-80">دانلود</div>
+            </div>
+        </div>
+        
+        {% if latest_version.changelog %}
+        <div class="mt-6">
+            <h3 class="text-lg font-semibold mb-3">تغییرات این نسخه:</h3>
+            <div class="bg-white bg-opacity-10 rounded-lg p-4">
+                <p class="text-sm leading-relaxed">{{ latest_version.changelog|truncatewords:50 }}</p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <!-- All Versions -->
+    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-200">
+            <h2 class="text-2xl font-semibold text-gray-800">همه نسخه‌ها</h2>
+        </div>
+        
+        <div class="divide-y divide-gray-200">
+            {% for version in versions %}
+            <div class="p-6 hover:bg-gray-50 transition-colors">
+                <div class="flex items-center justify-between">
+                    <div class="flex-1">
+                        <div class="flex items-center mb-3">
+                            <span class="px-3 py-1 bg-blue-100 text-blue-800 text-sm font-medium rounded-full ml-3">
+                                v{{ version.version_number }}
+                            </span>
+                            <span class="px-3 py-1 bg-gray-100 text-gray-800 text-sm rounded-full ml-3">
+                                {{ version.get_version_type_display }}
+                            </span>
+                            {% if version.is_free %}
+                            <span class="px-3 py-1 bg-green-100 text-green-800 text-sm rounded-full">
+                                رایگان
+                            </span>
+                            {% endif %}
+                            {% if version.has_trial %}
+                            <span class="px-3 py-1 bg-yellow-100 text-yellow-800 text-sm rounded-full">
+                                نسخه آزمایشی
+                            </span>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="text-sm text-gray-600 mb-3">
+                            <span class="ml-4">تاریخ انتشار: {{ version.release_date|date:"Y/m/d" }}</span>
+                            <span class="ml-4">دانلودها: {{ version.download_count }}</span>
+                            {% if version.trial_count > 0 %}
+                            <span class="ml-4">آزمایش: {{ version.trial_count }}</span>
+                            {% endif %}
+                        </div>
+                        
+                        {% if version.changelog %}
+                        <div class="text-gray-700 leading-relaxed">
+                            <h4 class="font-semibold mb-2">تغییرات:</h4>
+                            <p>{{ version.changelog|truncatewords:30 }}</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="flex flex-col space-y-2 space-y-reverse ml-6">
+                        <a href="{% url 'sales:version_detail' version.product.slug version.version_number %}" 
+                           class="bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-opacity-90 transition-colors text-center">
+                            جزئیات
+                        </a>
+                        <a href="{% url 'sales:product_download' version.product.slug %}" 
+                           class="border border-primary text-primary px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary hover:text-white transition-colors text-center">
+                            دانلود
+                        </a>
+                        {% if version.has_trial %}
+                        <a href="{% url 'sales:trial_download' version.product.slug %}" 
+                           class="border border-green-500 text-green-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-500 hover:text-white transition-colors text-center">
+                            آزمایشی
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="p-8 text-center text-gray-500">
+                <i class="fas fa-box-open text-4xl mb-4"></i>
+                <p class="text-lg">هیچ نسخه‌ای برای این محصول یافت نشد.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Pagination -->
+    {% if is_paginated %}
+    <div class="mt-8 flex justify-center">
+        <nav class="flex space-x-2 space-x-reverse">
+            {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}" 
+               class="px-3 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50">
+                قبلی
+            </a>
+            {% endif %}
+            
+            <span class="px-3 py-2 bg-primary text-white rounded-lg">
+                {{ page_obj.number }} از {{ page_obj.paginator.num_pages }}
+            </span>
+            
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" 
+               class="px-3 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50">
+                بعدی
+            </a>
+            {% endif %}
+        </nav>
+    </div>
+    {% endif %}
+
+    <!-- Related Products -->
+    <div class="mt-12">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-6">محصولات مرتبط</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for related_product in product.category.products.all|slice:":3" %}
+            {% if related_product.slug != product.slug %}
+            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                <div class="p-6">
+                    <div class="flex items-center mb-4">
+                        {% if related_product.logo %}
+                        <img class="h-12 w-12 rounded-lg object-cover ml-3" src="{{ related_product.logo.url }}" alt="{{ related_product.name }}">
+                        {% endif %}
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-800">{{ related_product.full_name }}</h3>
+                            <p class="text-sm text-gray-600">{{ related_product.category.name }}</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-4">{{ related_product.short_description }}</p>
+                    <a href="{% url 'sales:product_versions' related_product.slug %}" 
+                       class="block w-full bg-primary text-white text-center py-2 px-4 rounded-lg hover:bg-opacity-90 transition-colors">
+                        مشاهده نسخه‌ها
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'base/base.html' %}
+{% block title %}داشبورد تیکت‌ها{% endblock %}
+{% block content %}
+<div class="container mx-auto px-4 py-10">
+    <h1 class="text-3xl font-bold text-gray-900 mb-6">داشبورد تیکت‌ها</h1>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="text-sm text-gray-500">کل تیکت‌ها</div>
+            <div class="text-3xl font-bold">{{ total_tickets }}</div>
+        </div>
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="text-sm text-gray-500">باز</div>
+            <div class="text-3xl font-bold">{{ open_tickets }}</div>
+        </div>
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="text-sm text-gray-500">در حال بررسی</div>
+            <div class="text-3xl font-bold">{{ in_progress_tickets }}</div>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow p-6">
+        <h2 class="text-xl font-semibold mb-4">میانبر CRUD</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
+            <a class="text-primary hover:underline" href="{% url 'tickets:list' %}">تیکت‌ها</a>
+            <a class="text-gray-500 hover:underline" href="#">دسته‌بندی‌ها (غیرفعال)</a>
+            <a class="text-gray-500 hover:underline" href="#">پاسخ‌ها (غیرفعال)</a>
+            <a class="text-gray-500 hover:underline" href="#">فایل‌ها (غیرفعال)</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

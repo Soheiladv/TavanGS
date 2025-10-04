@@ -1,0 +1,108 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block title %}فهرست درخواست‌های قیمت{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <!-- Header -->
+    <div class="mb-8">
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900">درخواست‌های قیمت</h1>
+                <p class="text-gray-600 mt-2">مدیریت درخواست‌های قیمت‌گذاری سفارشی</p>
+            </div>
+            <a href="{% url 'sales:pricing_request' %}" class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary-dark transition">
+                <i class="fas fa-plus ml-2"></i>
+                درخواست جدید
+            </a>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="bg-white rounded-lg shadow p-6 mb-6">
+        <form method="get" class="flex flex-wrap gap-4">
+            <select name="status" class="form-control w-48">
+                <option value="">همه وضعیت‌ها</option>
+                <option value="pending" {% if request.GET.status == 'pending' %}selected{% endif %}>در انتظار</option>
+                <option value="quoted" {% if request.GET.status == 'quoted' %}selected{% endif %}>قیمت‌گذاری شده</option>
+                <option value="accepted" {% if request.GET.status == 'accepted' %}selected{% endif %}>پذیرفته شده</option>
+                <option value="rejected" {% if request.GET.status == 'rejected' %}selected{% endif %}>رد شده</option>
+            </select>
+            <button type="submit" class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition">
+                فیلتر
+            </button>
+        </form>
+    </div>
+
+    <!-- Requests List -->
+    <div class="bg-white rounded-lg shadow overflow-hidden">
+        {% if pricing_requests %}
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">شرکت</th>
+                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">محصول</th>
+                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">وضعیت</th>
+                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">تاریخ</th>
+                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">عملیات</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        {% for request in pricing_requests %}
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm font-medium text-gray-900">{{ request.company }}</div>
+                                <div class="text-sm text-gray-500">{{ request.full_name }}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">{{ request.product.name }}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
+                                    {% if request.status == 'pending' %}bg-yellow-100 text-yellow-800
+                                    {% elif request.status == 'quoted' %}bg-blue-100 text-blue-800
+                                    {% elif request.status == 'accepted' %}bg-green-100 text-green-800
+                                    {% elif request.status == 'rejected' %}bg-red-100 text-red-800
+                                    {% endif %}">
+                                    {{ request.get_status_display }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                {{ request.created_at|date:"Y/m/d H:i" }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <a href="{% url 'sales:pricing_request_edit' request.pk %}" class="text-primary hover:text-primary-dark ml-3">
+                                    ویرایش
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Pagination -->
+            {% if is_paginated %}
+            <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
+                <div class="flex-1 flex justify-between sm:hidden">
+                    {% if page_obj.has_previous %}
+                        <a href="?page={{ page_obj.previous_page_number }}" class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">قبلی</a>
+                    {% endif %}
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}" class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">بعدی</a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+        {% else %}
+            <div class="text-center py-12">
+                <i class="fas fa-file-invoice text-gray-400 text-4xl mb-4"></i>
+                <h3 class="text-lg font-medium text-gray-900 mb-2">هیچ درخواست قیمتی وجود ندارد</h3>
+                <p class="text-gray-500">هنوز درخواست قیمت‌گذاری ثبت نشده است.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

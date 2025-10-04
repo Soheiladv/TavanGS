@@ -1,0 +1,242 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}{{ hero_config.title }} - {{ company_name }}{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="bg-gradient-to-l from-primary to-secondary text-white py-20">
+    <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div class="text-center lg:text-right">
+                <h1 class="text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+                    {{ hero_config.title }}
+                </h1>
+                <p class="text-xl mb-8 opacity-90">
+                    {{ hero_config.subtitle }}
+                </p>
+                
+                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                    <a href="{% url 'products:list' %}" 
+                       class="bg-white text-primary px-8 py-4 rounded-lg font-semibold hover:bg-opacity-90 transition-all transform hover:scale-105">
+                        <i class="fas fa-rocket ml-2"></i>
+                        {{ hero_config.cta_primary|default:"مشاهده محصولات" }}
+                    </a>
+                    <a href="{% url 'services:list' %}" 
+                       class="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-primary transition-all">
+                        <i class="fas fa-phone ml-2"></i>
+                        {{ hero_config.cta_secondary|default:"درخواست مشاوره" }}
+                    </a>
+                </div>
+                
+                <!-- Stats -->
+                {% if hero_config.show_stats %}
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-12">
+                    <div class="text-center">
+                        <div class="text-3xl font-bold">{{ stats.total_products }}+</div>
+                        <div class="text-sm opacity-80">محصول</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold">{{ stats.active_users }}+</div>
+                        <div class="text-sm opacity-80">کاربر فعال</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold">{{ stats.satisfied_customers }}%</div>
+                        <div class="text-sm opacity-80">رضایت</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold">{{ stats.support_response_time }}h</div>
+                        <div class="text-sm opacity-80">پاسخ‌گویی</div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            
+            <div class="text-center">
+                <div class="relative">
+                    <img src="{% static 'images/hero-illustration.svg' %}" 
+                         alt="TakoTech Solutions" 
+                         class="max-w-full h-auto animate-pulse">
+                    
+                    <!-- Floating Elements -->
+                    <div class="absolute top-10 right-10 bg-white bg-opacity-20 backdrop-blur-sm rounded-lg p-4 animate-bounce">
+                        <i class="fas fa-brain text-2xl"></i>
+                    </div>
+                    <div class="absolute bottom-10 left-10 bg-white bg-opacity-20 backdrop-blur-sm rounded-lg p-4 animate-bounce" style="animation-delay: 0.5s;">
+                        <i class="fas fa-shield-alt text-2xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-20 bg-white">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-bold text-gray-900 mb-4">
+                چرا TakoTech را انتخاب کنید؟
+            </h2>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                ما با استفاده از جدیدترین فناوری‌ها، راهکارهایی هوشمند و کارآمد برای کسب‌وکار شما ارائه می‌دهیم
+            </p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for feature in features_list %}
+            <div class="text-center p-8 rounded-xl bg-gray-50 hover:bg-white hover:shadow-lg transition-all transform hover:-translate-y-2">
+                <div class="w-16 h-16 mx-auto mb-6 bg-{{ feature.color }}-100 rounded-full flex items-center justify-center">
+                    <i class="fas fa-{{ feature.icon }} text-2xl text-{{ feature.color }}-600"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-4">{{ feature.title }}</h3>
+                <p class="text-gray-600">{{ feature.description }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Featured Products -->
+{% if featured_products %}
+<section class="py-20 bg-gray-50">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-bold text-gray-900 mb-4">
+                محصولات ویژه
+            </h2>
+            <p class="text-xl text-gray-600">
+                پرطرفدارترین و پیشرفته‌ترین محصولات ما
+            </p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for product in featured_products %}
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                {% if product.logo %}
+                <div class="h-48 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+                    <img src="{{ product.logo.url }}" alt="{{ product.name }}" class="max-h-32 max-w-32 object-contain">
+                </div>
+                {% else %}
+                <div class="h-48 bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
+                    <i class="fas fa-cube text-4xl text-white"></i>
+                </div>
+                {% endif %}
+                
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm text-primary font-medium">{{ product.category.name }}</span>
+                        {% if product.has_trial %}
+                        <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">آزمایش رایگان</span>
+                        {% endif %}
+                    </div>
+                    
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">{{ product.full_name }}</h3>
+                    <p class="text-gray-600 mb-4 line-clamp-3">{{ product.short_description }}</p>
+                    
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center text-sm text-gray-500">
+                            <i class="fas fa-eye ml-1"></i>
+                            <span>{{ product.view_count }}</span>
+                        </div>
+                        
+                        <a href="{% url 'products:detail' slug=product.slug %}" 
+                           class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-opacity-90 transition-colors">
+                            مشاهده جزئیات
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="text-center mt-12">
+            <a href="{% url 'products:list' %}" 
+               class="bg-primary text-white px-8 py-3 rounded-lg hover:bg-opacity-90 transition-colors inline-flex items-center">
+                <span>مشاهده همه محصولات</span>
+                <i class="fas fa-arrow-left mr-2"></i>
+            </a>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Product Categories -->
+{% if categories %}
+<section class="py-20 bg-white">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-bold text-gray-900 mb-4">
+                دسته‌بندی محصولات
+            </h2>
+            <p class="text-xl text-gray-600">
+                راهکارهای متنوع برای نیازهای مختلف
+            </p>
+        </div>
+        
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {% for category in categories %}
+            <a href="{% url 'products:category' slug=category.slug %}" 
+               class="group text-center p-6 rounded-xl bg-gray-50 hover:bg-primary hover:text-white transition-all transform hover:scale-105">
+                
+                <div class="w-16 h-16 mx-auto mb-4 bg-{{ category.color }}-100 group-hover:bg-white group-hover:bg-opacity-20 rounded-full flex items-center justify-center transition-colors">
+                    <i class="fas fa-{{ category.icon }} text-2xl text-{{ category.color }}-600 group-hover:text-white"></i>
+                </div>
+                
+                <h3 class="font-bold text-lg mb-2 group-hover:text-white">{{ category.name }}</h3>
+                <p class="text-sm text-gray-600 group-hover:text-white group-hover:text-opacity-90">{{ category.description|truncatewords:8 }}</p>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- CTA Section -->
+<section class="py-20 bg-gradient-to-l from-primary to-secondary text-white">
+    <div class="container mx-auto px-4 text-center">
+        <h2 class="text-4xl font-bold mb-6">
+            آماده برای شروع هستید؟
+        </h2>
+        <p class="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
+            همین امروز با محصولات TakoTech کسب‌وکار خود را به سطح بعدی ببرید
+        </p>
+        
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            {% if feature_flags.sandbox %}
+            <a href="{% url 'products:sandbox' %}" 
+               class="bg-white text-primary px-8 py-4 rounded-lg font-semibold hover:bg-opacity-90 transition-all inline-flex items-center justify-center">
+                <i class="fas fa-flask ml-2"></i>
+                آزمایش رایگان
+            </a>
+            {% endif %}
+            
+            <a href="{% url 'services:consultation_request' %}" 
+               class="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-primary transition-all inline-flex items-center justify-center">
+                <i class="fas fa-comments ml-2"></i>
+                مشاوره رایگان
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Add some interactive animations
+    document.addEventListener('DOMContentLoaded', function() {
+        // Animate stats on scroll
+        const stats = document.querySelectorAll('.text-3xl.font-bold');
+        const animateStats = () => {
+            stats.forEach(stat => {
+                const rect = stat.getBoundingClientRect();
+                if (rect.top < window.innerHeight && rect.bottom > 0) {
+                    // Add animation logic here
+                }
+            });
+        };
+        
+        window.addEventListener('scroll', animateStats);
+    });
+</script>
+{% endblock %}

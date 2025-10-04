@@ -1,0 +1,269 @@
+{% extends "base/base.html" %}
+
+{% load static jformat rcms_custom_filters %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <!-- هدر صفحه -->
+    <div class="page-header mb-4 text-center">
+        <h1 class="display-5 fw-bold">
+            <i class="fas fa-user-shield me-2 text-primary"></i>مدیریت نقش‌های سیستم
+        </h1>
+        <p class="lead text-muted">ایجاد، ویرایش و مدیریت دسترسی‌ها و مجوزهای کاربران</p>
+            <p class="small text-muted"> 📅زمان چاپ: {{  print_date_now |jformat:"%Y/%m/%d" |to_persian_number }} ⌚{{  print_time_now  |to_persian_number }} </p>
+    </div>
+
+    <!-- کارت اصلی -->
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-gradient-primary text-white p-3">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
+                <!-- فرم جستجو -->
+                <form method="get" action="" class="d-flex align-items-center flex-grow-1 me-md-3 mb-3 mb-md-0">
+                    <div class="input-group search-container shadow-sm">
+                        <span class="input-group-text border-end-0 bg-white">
+                            <i class="fas fa-search text-primary"></i>
+                        </span>
+                        <input type="text"
+                               name="q"
+                               id="roleSearch"
+                               class="form-control border-start-0"
+                               placeholder="جستجوی نقش، توضیحات یا مجوز..."
+                               value="{{ query }}"
+                               autocomplete="off"
+                               aria-label="جستجوی نقش">
+                        <button type="button" class="btn btn-clear" id="clearSearch" aria-label="پاک کردن جستجو">
+                            <i class="fas fa-times"></i>
+                        </button>
+                        {% if show_inactive %}
+                            <input type="hidden" name="show_inactive" value="true">
+                        {% endif %}
+                        <button class="btn btn-outline-primary" type="submit" aria-label="جستجو">جستجو</button>
+                    </div>
+                </form>
+
+                <!-- فیلتر و دکمه ایجاد -->
+                <div class="d-flex align-items-center">
+                    <div class="btn-group me-3" role="group" aria-label="فیلتر نقش‌ها">
+                        <a href="?q={{ query }}" class="btn btn-outline-success {% if not show_inactive %}active{% endif %}" aria-current="{% if not show_inactive %}true{% else %}false{% endif %}">
+                            <i class="fas fa-check-circle me-1"></i>فعال
+                        </a>
+                        <a href="?show_inactive=true&q={{ query }}" class="btn btn-outline-warning {% if show_inactive %}active{% endif %}" aria-current="{% if show_inactive %}true{% else %}false{% endif %}">
+                            <i class="fas fa-ban me-1"></i>غیرفعال
+                        </a>
+                    </div>
+                    <a href="{% url 'accounts:role_create' %}" class="btn btn-primary" aria-label="ایجاد نقش جدید">
+                        <i class="fas fa-plus-circle me-2"></i>ایجاد نقش جدید
+                    </a>
+                  <a href="{% url 'accounts:admin_dashboard' %}" class="btn btn-link" aria-label="برگشت به داشبورد">
+                        <i class="fas fa-plus-square-o me-2"></i>برگشت به داشبورد
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- بدنه جدول -->
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0" id="roles-table" aria-label="جدول نقش‌های سیستم">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="py-3 px-4" scope="col">نام نقش</th>
+                            <th class="py-3 px-4" scope="col">مجوزها</th>
+                            <th class="py-3 px-4 text-center" scope="col">وضعیت</th>
+                            <th class="py-3 px-4 text-center" scope="col">عملیات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for role in roles %}
+                        <tr class="role-item">
+                            <td class="align-middle px-4">
+                                <strong class="d-block">{{ role.name }}</strong>
+                                {% if role.description %}
+                                    <small class="text-muted">{{ role.description|truncatechars:70 }}</small>
+                                {% endif %}
+                            </td>
+                            <td class="align-middle px-4">
+                                {% with permissions=role.permissions.all %}
+                                    {% for perm in permissions|slice:":4" %}
+                                        <span class="badge bg-secondary fw-normal">{{ perm.name }}</span>
+                                    {% endfor %}
+                                    {% if permissions.count > 4 %}
+                                        <span class="badge bg-info fw-normal"
+                                              data-bs-toggle="tooltip"
+                                              data-bs-placement="top"
+                                              title="{% for perm in permissions %}{{ perm.name }}{% if not forloop.last %}, {% endif %}{% endfor %}">
+                                            +{{ permissions.count|add:"-4" }} بیشتر
+                                        </span>
+                                    {% endif %}
+                                {% endwith %}
+                            </td>
+                            <td class="align-middle text-center px-4">
+                                {% if role.is_active %}
+                                    <span class="badge rounded-pill bg-success-subtle text-success-emphasis border border-success-subtle">فعال</span>
+                                {% else %}
+                                    <span class="badge rounded-pill bg-danger-subtle text-danger-emphasis border border-danger-subtle">غیرفعال</span>
+                                {% endif %}
+                            </td>
+                            <td class="align-middle text-center px-4">
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="گزینه‌های عملیات">
+                                        <i class="fas fa-cog"></i>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li>
+                                            <a class="dropdown-item" href="{% url 'accounts:role_update' role.id %}">
+                                                <i class="fas fa-edit me-2 text-primary"></i>ویرایش
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="{% url 'accounts:role_print' role.id %}" target="_blank">
+                                                <i class="fas fa-print me-2 text-secondary"></i>چاپ مجوزها
+                                            </a>
+                                        </li>
+                                        {% if role.is_active %}
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li>
+                                                <form method="post" action="{% url 'accounts:deactivate_role' role.id %}" class="form-deactivate-role">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="dropdown-item text-danger" aria-label="غیرفعال کردن نقش">
+                                                        <i class="fas fa-ban me-2"></i>غیرفعال کردن
+                                                    </button>
+                                                </form>
+                                            </li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr class="role-item">
+                            <td colspan="4" class="text-center py-5">
+                                <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                                <h4 class="mb-2">هیچ نقشی یافت نشد.</h4>
+                                <p class="text-muted">
+                                    {% if query %}
+                                        هیچ نقشی مطابق با جستجوی شما پیدا نشد.
+                                    {% else %}
+                                        شما هنوز هیچ نقشی ایجاد نکرده‌اید.
+                                    {% endif %}
+                                </p>
+                                <a href="{% url 'accounts:role_create' %}" class="btn btn-primary mt-2" aria-label="ایجاد نقش جدید">
+                                    <i class="fas fa-plus-circle me-2"></i> اولین نقش را ایجاد کنید
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- صفحه‌بندی -->
+        {% if is_paginated and roles %}
+        <div class="card-footer bg-light border-top d-flex justify-content-center py-3">
+            <nav aria-label="ناوبری صفحه">
+                <ul class="pagination mb-0">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}&q={{ query }}{% if show_inactive %}&show_inactive=true{% endif %}" aria-label="صفحه قبلی">&laquo;</a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled"><span class="page-link" aria-hidden="true">&laquo;</span></li>
+                    {% endif %}
+
+                    {% for num in page_obj.paginator.page_range %}
+                        {% if page_obj.number == num %}
+                            <li class="page-item active" aria-current="page"><span class="page-link">{{ num }}</span></li>
+                        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                            <li class="page-item"><a class="page-link" href="?page={{ num }}&q={{ query }}{% if show_inactive %}&show_inactive=true{% endif %}">{{ num }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}&q={{ query }}{% if show_inactive %}&show_inactive=true{% endif %}" aria-label="صفحه بعدی">&raquo;</a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled"><span class="page-link" aria-hidden="true">&raquo;</span></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function() {
+    // چک کن jQuery کار می‌کنه
+    console.log('عشقم jQuery لود شد!');
+
+    // وقتی تو جستجو چیزی تایپ می‌کنی
+    $('#roleSearch').on('input', function() {
+        let keyword = $(this).val().toLowerCase().trim();
+
+        // دکمه × رو نشون بده یا مخفیش کن
+        $('#clearSearch').css('visibility', keyword.length > 0 ? 'visible' : 'hidden');
+
+        // بگرد بین نقش‌ها و هایلایت کن
+        $('.role-item').each(function() {
+            let $row = $(this);
+            let roleText = $row.text().toLowerCase();
+
+            // اول هایلایت‌های قبلی رو پاک کن
+            $row.find('.highlight').contents().unwrap();
+
+            if (keyword && roleText.includes(keyword)) {
+                // اگه پیدا شد، نشون بده و هایلایت کن
+                $row.slideDown(300);
+
+                // متن داخل هر سلول رو چک کن و هایلایت کن
+                $row.find('td').each(function() {
+                    let $cell = $(this);
+                    let cellText = $cell.text();
+                    let lowerCellText = cellText.toLowerCase();
+
+                    if (lowerCellText.includes(keyword)) {
+                        let regex = new RegExp(`(${keyword})`, 'gi');
+                        let newHtml = cellText.replace(regex, '<span class="highlight">$1</span>');
+                        $cell.html(newHtml);
+                    }
+                });
+            } else {
+                // اگه پیدا نشد، غیبش بزن
+                $row.slideUp(300);
+            }
+        });
+    });
+
+    // وقتی دکمه × رو می‌زنی
+    $('#clearSearch').on('click', function() {
+        $('#roleSearch').val('').trigger('input');
+        $('.role-item').each(function() {
+            $(this).slideDown(300);
+            // هایلایت‌ها رو پاک کن
+            $(this).find('.highlight').contents().unwrap();
+        });
+    });
+
+    // انیمیشن برای دکمه "نقش جدید"
+    $('.btn-add-role').hover(
+        function() {
+            $(this).addClass('animate__animated animate__pulse');
+        },
+        function() {
+            $(this).removeClass('animate__animated animate__pulse');
+        }
+    );
+
+    // تأیید برای غیرفعال کردن
+    $('.deactivate').on('click', function(e) {
+        if (!confirm('مطمئنی می‌خوای این نقش رو غیرفعال کنی عشقم؟')) {
+            e.preventDefault();
+        }
+    });
+});
+</script>
+{% endblock %}

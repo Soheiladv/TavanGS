@@ -1,0 +1,54 @@
+/* Django Admin RTL + Vazir overrides */
+@font-face {
+    font-family: 'Vazir';
+    src: url('/static/fonts/vazir/Vazir-Regular.woff2') format('woff2'),
+         url('/static/fonts/vazir/Vazir-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Vazir';
+    src: url('/static/fonts/vazir/Vazir-Bold.woff2') format('woff2'),
+         url('/static/fonts/vazir/Vazir-Bold.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+:root {
+    --admin-primary: #2563eb;
+}
+
+html[dir="rtl"], body[dir="rtl"], html, body {
+    direction: rtl;
+}
+
+body, input, select, textarea, .module caption, .button {
+    font-family: 'Vazir','Tahoma',sans-serif !important;
+}
+
+#header, .module h2, .module caption {
+    font-family: 'Vazir','Tahoma',sans-serif !important;
+}
+
+#header {
+    background: var(--admin-primary);
+}
+
+.breadcrumbs {
+    direction: rtl;
+    text-align: right;
+}
+
+.related-widget-wrapper-link:link, .related-widget-wrapper-link:visited {
+    color: var(--admin-primary);
+}
+
+.inline-group .tabular tr.has_original td {
+    padding-right: 1rem;
+}
+
+/* Flip icons for RTL where needed */
+.change-list .paginator .next a:after { transform: scaleX(-1); }
+

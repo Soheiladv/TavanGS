@@ -1,0 +1,270 @@
+{% extends 'base/base.html' %}
+{% load static i18n %}
+
+{% block title %}درخواست قیمت{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="max-w-4xl mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-gray-900 mb-4">درخواست قیمت سفارشی</h1>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                برای دریافت قیمت مناسب با نیازهای پروژه شما، فرم زیر را تکمیل کنید. تیم فروش ما به زودی با شما تماس خواهد گرفت.
+            </p>
+        </div>
+
+        <!-- Benefits -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                <div class="w-16 h-16 bg-primary bg-opacity-10 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-calculator text-primary text-2xl"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">قیمت‌گذاری دقیق</h3>
+                <p class="text-gray-600">بر اساس نیازهای خاص پروژه شما قیمت دقیق ارائه می‌دهیم</p>
+            </div>
+            <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                <div class="w-16 h-16 bg-secondary bg-opacity-10 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-handshake text-secondary text-2xl"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">مشاوره رایگان</h3>
+                <p class="text-gray-600">مشاوره کامل برای انتخاب بهترین راهکار</p>
+            </div>
+            <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                <div class="w-16 h-16 bg-green-500 bg-opacity-10 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-clock text-green-500 text-2xl"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">پاسخ سریع</h3>
+                <p class="text-gray-600">ظرف 24 ساعت قیمت و پیشنهاد دریافت کنید</p>
+            </div>
+        </div>
+
+        <!-- Pricing Request Form -->
+        <div class="bg-white rounded-lg shadow-lg p-8">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6">فرم درخواست قیمت</h2>
+            
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+                
+                <!-- Product Selection -->
+                <div>
+                    <label for="{{ form.product.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                        محصول مورد نظر *
+                    </label>
+                    {{ form.product }}
+                    {% if form.product.errors %}
+                    <div class="mt-1 text-sm text-red-600">
+                        {% for error in form.product.errors %}{{ error }}{% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Personal Information -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="{{ form.full_name.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            نام کامل *
+                        </label>
+                        {{ form.full_name }}
+                        {% if form.full_name.errors %}
+                        <div class="mt-1 text-sm text-red-600">
+                            {% for error in form.full_name.errors %}{{ error }}{% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div>
+                        <label for="{{ form.email.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            ایمیل *
+                        </label>
+                        {{ form.email }}
+                        {% if form.email.errors %}
+                        <div class="mt-1 text-sm text-red-600">
+                            {% for error in form.email.errors %}{{ error }}{% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="{{ form.phone.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            شماره تلفن
+                        </label>
+                        {{ form.phone }}
+                        {% if form.phone.errors %}
+                        <div class="mt-1 text-sm text-red-600">
+                            {% for error in form.phone.errors %}{{ error }}{% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div>
+                        <label for="{{ form.job_title.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            سمت
+                        </label>
+                        {{ form.job_title }}
+                        {% if form.job_title.errors %}
+                        <div class="mt-1 text-sm text-red-600">
+                            {% for error in form.job_title.errors %}{{ error }}{% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div>
+                    <label for="{{ form.company.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                        نام شرکت *
+                    </label>
+                    {{ form.company }}
+                    {% if form.company.errors %}
+                    <div class="mt-1 text-sm text-red-600">
+                        {% for error in form.company.errors %}{{ error }}{% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Project Requirements -->
+                <div class="border-t pt-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">نیازهای پروژه</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="{{ form.user_count.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                تعداد کاربران
+                            </label>
+                            {{ form.user_count }}
+                            {% if form.user_count.errors %}
+                            <div class="mt-1 text-sm text-red-600">
+                                {% for error in form.user_count.errors %}{{ error }}{% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div>
+                            <label for="{{ form.deployment_type.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                نوع استقرار
+                            </label>
+                            {{ form.deployment_type }}
+                            {% if form.deployment_type.errors %}
+                            <div class="mt-1 text-sm text-red-600">
+                                {% for error in form.deployment_type.errors %}{{ error }}{% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="mt-6">
+                        <label for="{{ form.budget_range.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            محدوده بودجه
+                        </label>
+                        {{ form.budget_range }}
+                        {% if form.budget_range.errors %}
+                        <div class="mt-1 text-sm text-red-600">
+                            {% for error in form.budget_range.errors %}{{ error }}{% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mt-6">
+                        <label for="{{ form.timeline.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            زمان‌بندی پروژه
+                        </label>
+                        {{ form.timeline }}
+                        {% if form.timeline.errors %}
+                        <div class="mt-1 text-sm text-red-600">
+                            {% for error in form.timeline.errors %}{{ error }}{% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mt-6">
+                        <label for="{{ form.custom_requirements.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            نیازهای سفارشی و جزئیات پروژه *
+                        </label>
+                        {{ form.custom_requirements }}
+                        {% if form.custom_requirements.errors %}
+                        <div class="mt-1 text-sm text-red-600">
+                            {% for error in form.custom_requirements.errors %}{{ error }}{% endfor %}
+                        </div>
+                        {% endif %}
+                        <p class="mt-2 text-sm text-gray-500">
+                            لطفاً نیازهای خاص، ویژگی‌های مورد نظر، و هر جزئیات مهم دیگر را شرح دهید.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="flex justify-center pt-6">
+                    <button type="submit" 
+                            class="bg-primary text-white px-8 py-3 rounded-lg font-semibold hover:bg-opacity-90 transition-colors text-lg">
+                        ارسال درخواست قیمت
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Pricing Information -->
+        <div class="mt-8 bg-gray-50 rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">اطلاعات قیمت‌گذاری</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h4 class="font-medium text-gray-700 mb-2">عوامل موثر بر قیمت</h4>
+                    <ul class="text-gray-600 space-y-1">
+                        <li>• تعداد کاربران</li>
+                        <li>• نوع استقرار (cloud/on-premise)</li>
+                        <li>• نیازهای سفارشی</li>
+                        <li>• پشتیبانی و آموزش</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-medium text-gray-700 mb-2">تماس با ما</h4>
+                    <div class="space-y-2">
+                        <p class="text-gray-600">
+                            <i class="fas fa-phone text-primary ml-2"></i>
+                            021-12345678
+                        </p>
+                        <p class="text-gray-600">
+                            <i class="fas fa-envelope text-primary ml-2"></i>
+                            sales@takotech.com
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Form styling */
+input, select, textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+/* Error styling */
+input.error, select.error, textarea.error {
+    border-color: #ef4444;
+}
+
+input.error:focus, select.error:focus, textarea.error:focus {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+</style>
+{% endblock %}

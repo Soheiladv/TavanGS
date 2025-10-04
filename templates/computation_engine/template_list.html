@@ -1,0 +1,142 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block title %}فهرست قالب‌های محاسباتی{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <!-- Header -->
+    <div class="mb-8">
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900">قالب‌های محاسباتی</h1>
+                <p class="text-gray-600 mt-2">مدیریت قالب‌های محاسبات و شبیه‌سازی</p>
+            </div>
+            <a href="{% url 'computation_engine:template_create' %}" class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary-dark transition">
+                <i class="fas fa-plus ml-2"></i>
+                قالب جدید
+            </a>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="bg-white rounded-lg shadow p-6 mb-6">
+        <form method="get" class="flex flex-wrap gap-4">
+            <select name="session_type" class="form-control w-48">
+                <option value="">همه انواع</option>
+                <option value="budget" {% if request.GET.session_type == 'budget' %}selected{% endif %}>بودجه‌نویسی</option>
+                <option value="security" {% if request.GET.session_type == 'security' %}selected{% endif %}>امنیت</option>
+                <option value="ai" {% if request.GET.session_type == 'ai' %}selected{% endif %}>هوش مصنوعی</option>
+                <option value="general" {% if request.GET.session_type == 'general' %}selected{% endif %}>عمومی</option>
+            </select>
+            <select name="is_active" class="form-control w-48">
+                <option value="">همه وضعیت‌ها</option>
+                <option value="true" {% if request.GET.is_active == 'true' %}selected{% endif %}>فعال</option>
+                <option value="false" {% if request.GET.is_active == 'false' %}selected{% endif %}>غیرفعال</option>
+            </select>
+            <button type="submit" class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition">
+                فیلتر
+            </button>
+        </form>
+    </div>
+
+    <!-- Templates List -->
+    <div class="bg-white rounded-lg shadow overflow-hidden">
+        {% if templates %}
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">نام قالب</th>
+                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">نوع</th>
+                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">وضعیت</th>
+                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">زمان تخمینی</th>
+                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">حافظه مورد نیاز</th>
+                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">عملیات</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        {% for template in templates %}
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm font-medium text-gray-900">{{ template.name }}</div>
+                                <div class="text-sm text-gray-500">{{ template.description|truncatechars:50 }}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
+                                    {% if template.session_type == 'budget' %}bg-green-100 text-green-800
+                                    {% elif template.session_type == 'security' %}bg-red-100 text-red-800
+                                    {% elif template.session_type == 'ai' %}bg-purple-100 text-purple-800
+                                    {% else %}bg-gray-100 text-gray-800
+                                    {% endif %}">
+                                    {{ template.get_session_type_display }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
+                                        {% if template.is_active %}bg-green-100 text-green-800
+                                        {% else %}bg-red-100 text-red-800
+                                        {% endif %}">
+                                        {% if template.is_active %}فعال{% else %}غیرفعال{% endif %}
+                                    </span>
+                                    {% if template.cpu_intensive %}
+                                        <span class="mr-2 px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                            CPU Intensive
+                                        </span>
+                                    {% endif %}
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                {% if template.estimated_time_seconds %}
+                                    {{ template.estimated_time_seconds }} ثانیه
+                                {% else %}
+                                    نامشخص
+                                {% endif %}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                {% if template.memory_requirement_mb %}
+                                    {{ template.memory_requirement_mb }} MB
+                                {% else %}
+                                    نامشخص
+                                {% endif %}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <div class="flex space-x-2 space-x-reverse">
+                                    <a href="{% url 'computation_engine:template_edit' template.pk %}" class="text-primary hover:text-primary-dark">
+                                        ویرایش
+                                    </a>
+                                    <a href="{% url 'computation_engine:template_delete' template.pk %}" class="text-red-600 hover:text-red-900">
+                                        حذف
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Pagination -->
+            {% if is_paginated %}
+            <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
+                <div class="flex-1 flex justify-between sm:hidden">
+                    {% if page_obj.has_previous %}
+                        <a href="?page={{ page_obj.previous_page_number }}" class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">قبلی</a>
+                    {% endif %}
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}" class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">بعدی</a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+        {% else %}
+            <div class="text-center py-12">
+                <i class="fas fa-calculator text-gray-400 text-4xl mb-4"></i>
+                <h3 class="text-lg font-medium text-gray-900 mb-2">هیچ قالب محاسباتی وجود ندارد</h3>
+                <p class="text-gray-500">هنوز قالب محاسباتی تعریف نشده است.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

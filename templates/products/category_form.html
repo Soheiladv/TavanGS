@@ -1,0 +1,147 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block title %}
+{% if form.instance.pk %}
+ویرایش دسته‌بندی محصول
+{% else %}
+ایجاد دسته‌بندی محصول جدید
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <!-- Header -->
+    <div class="mb-8">
+        <div class="flex items-center">
+            <i class="fas fa-th-large text-primary text-3xl ml-3"></i>
+            <h1 class="text-3xl font-bold text-gray-900">
+                {% if form.instance.pk %}
+                ویرایش دسته‌بندی "{{ form.instance.name }}"
+                {% else %}
+                ایجاد دسته‌بندی محصول جدید
+                {% endif %}
+            </h1>
+        </div>
+        <p class="text-gray-600 mt-2">{% if form.instance.pk %}ویرایش اطلاعات دسته‌بندی{% else %}لطفاً اطلاعات دسته‌بندی محصول جدید را وارد کنید{% endif %}</p>
+内陆ی <!-- Back Navigation -->
+    <div class="mb-6">
+        <a href="{% url 'products:category_list' %}" class="inline-flex items-center text-primary hover:text-primary-dark transition">
+            <i class="fas fa-arrow-right ml-2"></i>
+            بازگشت به فهرست دسته‌بندی‌ها
+        </a>
+    </div>
+
+    <!-- Form -->
+    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+        <form method="post" novalidate>
+            {% csrf_token %}
+            
+            <div class="p-6">
+                <!-- Basic Info -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label for="{{ form.name.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            {{ form.name.label }}
+                        </label>
+                        {{ form.name }}
+                        {% if form.name.errors %}
+                            <div class="mt-1 text-red-600 text-sm">{{ form.name.errors }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div>
+                        <label for="{{ form.icon.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            {{ form.icon.label }}
+                        </label>
+                        {{ form.icon }}
+                        {% if form.icon.errors %}
+                            <div class="mt-1 text-red-600 text-sm">{{ form.icon.errors }}</div>
+                        {% endif %}
+                        <p class="mt-1 text-sm text-gray-500">نام آیکون Font Awesome (مثال: brain, shield)</p>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <label for="{{ form.slug.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                        {{ form.slug.label }}
+                     </label>
+                    {{ form.slug }}
+                    {% if form.slug.errors %}
+                        <div class="mt-1 text-red-600 text-sm">{{ form.slug.errors }}</div>
+                    {% endif %}
+                    <p class="mt-1 text-sm text-gray-500">فقط حروف کوچک، اعداد، خط تیره و زیرخط</p>
+                </div>
+
+                <!-- Description -->
+                <div class="mb-6">
+                    <label for="{{ form.description.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                        {{ form.description.label }}
+                    </label>
+                    {{ form.description }}
+                    {% if form.description.errors %}
+                        <div class="mt-1 text-red-600 text-sm">{{ form.description.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <!-- Color -->
+                <div class="mb-6">
+                    <label for="{{ form.color.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                        {{ form.color.label }}
+                    </label>
+                    {{ form.color }}
+                    {% if form.color.errors %}
+                        <div class="mt-1 text-red-600 text-sm">{{ form.color.errors }}</div>
+                    {% endif %}
+                    <p class="mt-1 text-sm text-gray-500">رنگ‌های موجود: blue, green, red, yellow, purple, pink</p>
+                </div>
+
+                <!-- Options -->
+                <div class="mb-6">
+                    <div class="flex items-center">
+                        {{ form.is_active }}
+                        <label for="{{ form.is_active.id_for_label }}" class="mr-2 text-sm font-medium text-gray-700">
+                            {{ form.is_active.label }}
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Preview -->
+                {% if form.instance.pk %}
+                <div class="mb-6 p-4 bg-gray-50 rounded-lg">
+                    <h3 class="text-sm font-medium text-gray-700 mb-2">پیش‌نمایش:</h3>
+                    <div class="flex items-center space-x-4 space-x-reverse">
+                        {% if form.instance.icon %}
+                        <div class="h-8 w-8 bg-{{ form.instance.color }}-100 rounded flex items-center justify-center">
+                            <i class="fas fa-{{ form.instance.icon }} text-{{ form.instance.color }}-600 text-sm"></i>
+                        </div>
+                        {% endif %}
+                        <span class="text-gray-900">{{ form.instance.name }}</span>
+                        {% if not form.instance.is_active %}
+                        <span class="text-xs text-red-600">(غیرفعال)</span>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Form Actions -->
+                <div class="flex justify-between items-center pt-6 border-t">
+                    <a href="{% url 'products:category_list' %}" class="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition">
+                        انصراف
+                    </a>
+                    
+                    <div class="space-x-4 space-x-reverse">
+                        <button type="submit" class="px-6 py-2 bg-primary text-white rounded-md hover:bg-primary-dark transition">
+                            {% if form.instance.pk %}
+                            به‌روزرسانی دسته‌بندی
+                            {% else %}
+                            ایجاد دسته‌بندی
+                            {% endif %}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

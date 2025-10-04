@@ -1,0 +1,15 @@
+{% extends "admin/base.html" %}
+{% load static i18n %}
+
+{% block title %}{{ site_title|default:_('Django site admin') }} | {{ site_header|default:_('Administration') }}{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+{#<link rel="stylesheet" href="{% static 'css/admin-override.css' %}">#}
+{% endblock %}
+
+{% block branding %}
+<h1 id="site-name">
+  <a href="{% url 'admin:index' %}">{{ company_name|default:"توان گستر" }}</a>
+  <span style="font-size:0.8em; opacity:.8">{% trans "Admin" %}</span>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'base/base.html' %}
+{% load i18n %}
+
+{% block title %}کوئیز قهرمان{% endblock %}
+
+{% block content %}
+<section class="container mx-auto px-4 py-10">
+  <h1 class="text-3xl font-bold mb-6">کوئیز قهرمان</h1>
+  <p class="text-gray-600 mb-6">با پاسخ به چند سوال کوتاه، بهترین محصول برای شما پیشنهاد می‌شود.</p>
+  <form method="post" class="grid grid-cols-1 gap-4 max-w-2xl">{% csrf_token %}
+    <label class="block">
+      <span class="block mb-2">حوزه کاری شما</span>
+      <select name="industry" class="form-select">
+        <option value="it">فناوری اطلاعات</option>
+        <option value="finance">مالی</option>
+        <option value="health">سلامت</option>
+      </select>
+    </label>
+    <label class="block">
+      <span class="block mb-2">اولویت اصلی</span>
+      <select name="priority" class="form-select">
+        <option value="security">امنیت</option>
+        <option value="budgeting">بودجه‌نویسی</option>
+        <option value="automation">اتوماسیون</option>
+      </select>
+    </label>
+    <label class="block">
+      <span class="block mb-2">اندازه تیم</span>
+      <select name="team_size" class="form-select">
+        <option value="1-10">۱ تا ۱۰</option>
+        <option value="11-50">۱۱ تا ۵۰</option>
+        <option value="50+">۵۰ به بالا</option>
+      </select>
+    </label>
+    <button type="submit" class="btn btn-primary mt-4">مشاهده پیشنهاد</button>
+  </form>
+{% endblock %}
+
+

@@ -1,0 +1,136 @@
+{% extends 'base/base.html' %}
+{% load i18n %}
+
+{% block title %}داشبورد مدیریت سایت{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-10 relative z-10">
+    <h1 class="text-3xl font-bold text-gray-900 mb-8">داشبورد مدیریت سایت</h1>
+
+    <!-- Cards Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+        <a href="{% url 'settings_app:fonts_list' %}" class="bg-white rounded-lg shadow p-6 hover:shadow-lg transition">
+            <div class="flex items-center mb-4">
+                <i class="fas fa-font text-2xl text-primary ml-3"></i>
+                <h2 class="text-lg font-semibold">مدیریت فونت</h2>
+            </div>
+            <p class="text-gray-600 text-sm">فونت‌ها: {{ fonts_count }}</p>
+        </a>
+        <a href="{% url 'settings_app:control_templates' %}" class="bg-white rounded-lg shadow p-6 hover:shadow-lg transition">
+            <div class="flex items-center mb-4">
+                <i class="fas fa-layer-group text-2xl text-secondary ml-3"></i>
+                <h2 class="text-lg font-semibold">مدیریت تمپلیت</h2>
+            </div>
+            <p class="text-gray-600 text-sm">قالب فعال: {{ settings.get_template_theme_display }}</p>
+        </a>
+        <a href="{% url 'settings_app:control_features' %}" class="bg-white rounded-lg shadow p-6 hover:shadow-lg transition">
+            <div class="flex items-center mb-4">
+                <i class="fas fa-toggle-on text-2xl text-accent ml-3"></i>
+                <h2 class="text-lg font-semibold">مدیریت فیچرها</h2>
+            </div>
+            <p class="text-gray-600 text-sm">آخرین تغییرات فیچر</p>
+        </a>
+        <a href="{% url 'settings_app:control_users' %}" class="bg-white rounded-lg shadow p-6 hover:shadow-lg transition">
+            <div class="flex items-center mb-4">
+                <i class="fas fa-users-cog text-2xl text-primary ml-3"></i>
+                <h2 class="text-lg font-semibold">مدیریت کاربران</h2>
+            </div>
+            <p class="text-gray-600 text-sm">کاربران: {{ users_count }} | کارکنان: {{ staff_count }}</p>
+        </a>
+        <a href="{% url 'settings_app:control_seo' %}" class="bg-white rounded-lg shadow p-6 hover:shadow-lg transition">
+            <div class="flex items_center mb-4">
+                <i class="fas fa-search text-2xl text-emerald-600 ml-3"></i>
+                <h2 class="text-lg font-semibold">مدیریت SEO</h2>
+            </div>
+            <p class="text-gray-600 text-sm">Meta / Robots / Sitemap</p>
+        </a>
+        <a href="{% url 'sales:dashboard' %}" class="bg-white rounded-lg shadow p-6 hover:shadow-lg transition">
+            <div class="flex items-center mb-4">
+                <i class="fas fa-chart-line text-2xl text-purple-600 ml-3"></i>
+                <h2 class="text-lg font-semibold">داشبورد فروش</h2>
+            </div>
+            <p class="text-gray-600 text-sm">نسخه‌ها، لیدها، دانلودها</p>
+        </a>
+        <a href="{% url 'tickets:dashboard' %}" class="bg-white rounded-lg shadow p-6 hover:shadow-lg transition">
+            <div class="flex items-center mb-4">
+                <i class="fas fa-life-ring text-2xl text-rose-600 ml-3"></i>
+                <h2 class="text-lg font-semibold">داشبورد تیکت‌ها</h2>
+            </div>
+            <p class="text-gray-600 text-sm">پشتیبانی، SLA، وضعیت‌ها</p>
+        </a>
+        <a href="#" class="bg-gray-100 rounded-lg shadow p-6 cursor-not-allowed opacity-60">
+            <div class="flex items-center mb-4">
+                <i class="fas fa-ban text-2xl text-gray-400 ml-3"></i>
+                <h2 class="text-lg font-semibold">پنل ادمین قدیمی</h2>
+            </div>
+            <p class="text-gray-500 text-sm">غیرفعال - استفاده از CRUD مستقل</p>
+        </a>
+    </div>
+
+    <!-- Full CRUD Links -->
+    <div class="bg-white rounded-lg shadow p-6">
+        <h3 class="text-lg font-semibold mb-4">مدیریت کامل سیستمی - CRUD مستقل</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-3 text-sm">
+            <!-- Products Management -->
+            <a class="text-primary hover:underline" href="{% url 'products:list' %}">محصولات</a>
+            <a class="text-primary hover:underline" href="{% url 'products:category_list' %}">دسته محصولات</a>
+            <a class="text-primary hover:underline" href="{% url 'products:create' %}">ایجاد محصول</a>
+            <a class="text-primary hover:underline" href="{% url 'products:category_create' %}">ایجاد دسته محصول</a>
+            
+            <!-- Services Management -->
+            <a class="text-primary hover:underline" href="{% url 'services:list' %}">خدمات</a>
+            <a class="text-primary hover:underline" href="{% url 'services:category_list' %}">دسته خدمات</a>
+            <a class="text-primary hover:underline" href="{% url 'services:create' %}">ایجاد سرویس</a>
+            <a class="text-primary hover:underline" href="{% url 'services:category_create' %}">ایجاد دسته سرویس</a>
+            
+            <!-- Sales Management -->
+            <a class="text-primary hover:underline" href="{% url 'sales:version_list' %}">نسخه محصولات</a>
+            <a class="text-primary hover:underline" href="{% url 'sales:version_create' %}">ایجاد نسخه</a>
+            <a class="text-primary hover:underline" href="{% url 'sales:demo_request_list' %}">درخواست‌های دمو</a>
+            <a class="text-primary hover:underline" href="{% url 'sales:pricing_request_list' %}">درخواست‌های قیمت</a>
+            <a class="text-primary hover:underline" href="{% url 'sales:sales_lead_list' %}">سرنخ‌های فروش</a>
+            <a class="text-primary hover:underline" href="{% url 'sales:sales_lead_create' %}">ایجاد سرنخ فروش</a>
+            
+            <!-- Tickets Management -->
+            <a class="text-primary hover:underline" href="{% url 'tickets:dashboard' %}">تیکت‌ها</a>
+            <a class="text-primary hover:underline" href="{% url 'tickets:category_list' %}">دسته تیکت‌ها</a>
+            <a class="text-primary hover:underline" href="{% url 'tickets:category_create' %}">ایجاد دسته تیکت</a>
+            <a class="text-primary hover:underline" href="{% url 'tickets:create' %}">ایجاد تیکت</a>
+            
+            <!-- Settings Management -->
+            <a class="text-primary hover:underline" href="{% url 'settings_app:fonts_list' %}">مدیریت فونت‌ها</a>
+            <a class="text-primary hover:underline" href="{% url 'settings_app:fonts_create' %}">ایجاد فونت</a>
+            <a class="text-primary hover:underline" href="{% url 'settings_app:template_list' %}">تمپلیت‌های سایت</a>
+            <a class="text-primary hover:underline" href="{% url 'settings_app:template_create' %}">ایجاد تمپلیت</a>
+            <a class="text-primary hover:underline" href="{% url 'settings_app:feature_flag_list' %}">فیچر فلگ‌ها</a>
+            <a class="text-primary hover:underline" href="{% url 'settings_app:feature_flag_create' %}">ایجاد فیچر فلگ</a>
+            
+            <!-- Computation Engine -->
+            <a class="text-primary hover:underline" href="{% url 'computation_engine:template_list' %}">قالب‌های محاسبه</a>
+            <a class="text-primary hover:underline" href="{% url 'computation_engine:template_create' %}">ایجاد قالب محاسبه</a>
+            <a class="text-primary hover:underline" href="{% url 'computation_engine:session_list' %}">جلسات محاسبه</a>
+            <a class="text-primary hover:underline" href="{% url 'computation_engine:result_list' %}">نتایج محاسبه</a>
+            <a class="text-primary hover:underline" href="{% url 'computation_engine:metrics_list' %}">متریک‌های محاسبه</a>
+            
+            <!-- Users Management -->
+            <a class="text-primary hover:underline" href="{% url 'users:user_list' %}">فهرست کاربران</a>
+            <a class="text-primary hover:underline" href="{% url 'users:user_create' %}">ایجاد کاربر</a>
+            <a class="text-primary hover:underline" href="{% url 'users:dashboard' %}">داشبورد کاربری</a>
+            <a class="text-primary hover:underline" href="{% url 'users:advanced_dashboard' %}">داشبورد پیشرفته</a>
+            <a class="text-primary hover:underline" href="{% url 'users:profile' %}">پروفایل کاربری</a>
+            <a class="text-primary hover:underline" href="{% url 'users:advanced_profile' %}">پروفایل پیشرفته</a>
+            <a class="text-primary hover:underline" href="{% url 'users:preferences' %}">تنظیمات کاربری</a>
+            
+            <!-- Advanced Accounts Management -->
+            <a class="text-primary hover:underline" href="{% url 'accounts:admin_dashboard' %}">داشبورد مدیریت</a>
+            <a class="text-primary hover:underline" href="{% url 'accounts:user_list' %}">مدیریت کاربران پیشرفته</a>
+            <a class="text-primary hover:underline" href="{% url 'accounts:role_list' %}">مدیریت نقش‌ها</a>
+            <a class="text-primary hover:underline" href="{% url 'accounts:group_list' %}">مدیریت گروه‌ها</a>
+            <a class="text-primary hover:underline" href="{% url 'accounts:active_user_list' %}">کاربران فعال</a>
+            <a class="text-primary hover:underline" href="{% url 'accounts:audit_log_list' %}">لاگ‌های سیستم</a>
+            <a class="text-primary hover:underline" href="{% url 'accounts:manage_timelock' %}">قفل زمانی</a>
+            <a class="text-primary hover:underline" href="{% url 'accounts:profile' %}">پروفایل پیشرفته</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

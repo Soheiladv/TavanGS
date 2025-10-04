@@ -1,0 +1,255 @@
+{% extends 'base/base.html' %}
+{% load static i18n %}
+
+{% block title %}داشبورد کاربری{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-8">
+        <div>
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">داشبورد کاربری</h1>
+            <p class="text-gray-600">خوش آمدید، {{ user.full_name }}!</p>
+        </div>
+        <div class="flex space-x-4 space-x-reverse">
+            <a href="{% url 'users:profile_edit' %}" 
+               class="bg-primary text-white px-4 py-2 rounded-lg font-semibold hover:bg-opacity-90 transition-colors">
+                <i class="fas fa-edit ml-2"></i>
+                ویرایش پروفایل
+            </a>
+            <a href="{% url 'users:preferences' %}" 
+               class="border border-primary text-primary px-4 py-2 rounded-lg font-semibold hover:bg-primary hover:text-white transition-colors">
+                <i class="fas fa-cog ml-2"></i>
+                تنظیمات
+            </a>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <!-- Tickets -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center">
+                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center ml-4">
+                    <i class="fas fa-ticket-alt text-blue-600 text-xl"></i>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-600">تیکت‌های پشتیبانی</p>
+                    <p class="text-2xl font-bold text-gray-900">{{ total_tickets }}</p>
+                </div>
+            </div>
+            <div class="mt-4">
+                <div class="flex justify-between text-sm">
+                    <span class="text-green-600">{{ resolved_tickets }} حل شده</span>
+                    <span class="text-blue-600">{{ open_tickets }} باز</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Demo Requests -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center">
+                <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center ml-4">
+                    <i class="fas fa-play text-green-600 text-xl"></i>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-600">درخواست‌های دمو</p>
+                    <p class="text-2xl font-bold text-gray-900">{{ demo_requests }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pricing Requests -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center">
+                <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center ml-4">
+                    <i class="fas fa-calculator text-purple-600 text-xl"></i>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-600">درخواست‌های قیمت</p>
+                    <p class="text-2xl font-bold text-gray-900">{{ pricing_requests }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Account Age -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center">
+                <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center ml-4">
+                    <i class="fas fa-calendar text-orange-600 text-xl"></i>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-600">عضو از</p>
+                    <p class="text-2xl font-bold text-gray-900">{{ account_age_days }} روز</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">عملیات سریع</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <a href="{% url 'tickets:create' %}" 
+               class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                <i class="fas fa-plus text-primary text-xl ml-3"></i>
+                <div>
+                    <h3 class="font-semibold text-gray-800">تیکت جدید</h3>
+                    <p class="text-sm text-gray-600">ایجاد تیکت پشتیبانی</p>
+                </div>
+            </a>
+            
+            <a href="{% url 'sales:demo_request' %}" 
+               class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                <i class="fas fa-play text-green-600 text-xl ml-3"></i>
+                <div>
+                    <h3 class="font-semibold text-gray-800">درخواست دمو</h3>
+                    <p class="text-sm text-gray-600">رزرو دمو رایگان</p>
+                </div>
+            </a>
+            
+            <a href="{% url 'sales:pricing_request' %}" 
+               class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                <i class="fas fa-calculator text-purple-600 text-xl ml-3"></i>
+                <div>
+                    <h3 class="font-semibold text-gray-800">درخواست قیمت</h3>
+                    <p class="text-sm text-gray-600">قیمت‌گذاری سفارشی</p>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Recent Tickets -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-xl font-semibold text-gray-800">تیکت‌های اخیر</h2>
+                <a href="{% url 'users:tickets' %}" class="text-primary hover:text-primary-dark text-sm">
+                    مشاهده همه
+                </a>
+            </div>
+            
+            {% if recent_tickets %}
+            <div class="space-y-4">
+                {% for ticket in recent_tickets %}
+                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <div>
+                        <h3 class="font-medium text-gray-800">#{{ ticket.ticket_id|slice:":8" }}</h3>
+                        <p class="text-sm text-gray-600">{{ ticket.title }}</p>
+                    </div>
+                    <div class="text-left">
+                        <span class="px-2 py-1 text-xs font-medium rounded-full {{ ticket.get_status_display_class }}">
+                            {{ ticket.get_status_display }}
+                        </span>
+                        <p class="text-xs text-gray-500 mt-1">{{ ticket.created_at|date:"Y/m/d" }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="text-center py-8">
+                <i class="fas fa-ticket-alt text-4xl text-gray-400 mb-4"></i>
+                <p class="text-gray-600">هنوز تیکتی ایجاد نکرده‌اید</p>
+                <a href="{% url 'tickets:create' %}" 
+                   class="inline-block mt-2 bg-primary text-white px-4 py-2 rounded-lg text-sm hover:bg-opacity-90 transition-colors">
+                    ایجاد تیکت جدید
+                </a>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Recent Requests -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-xl font-semibold text-gray-800">درخواست‌های اخیر</h2>
+                <a href="{% url 'users:requests' %}" class="text-primary hover:text-primary-dark text-sm">
+                    مشاهده همه
+                </a>
+            </div>
+            
+            <div class="space-y-4">
+                <!-- Demo Requests -->
+                {% for demo in recent_demos %}
+                <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+                    <div class="flex items-center">
+                        <i class="fas fa-play text-green-600 ml-3"></i>
+                        <div>
+                            <h3 class="font-medium text-gray-800">درخواست دمو</h3>
+                            <p class="text-sm text-gray-600">{{ demo.product.full_name }}</p>
+                        </div>
+                    </div>
+                    <div class="text-left">
+                        <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">
+                            {{ demo.get_status_display }}
+                        </span>
+                        <p class="text-xs text-gray-500 mt-1">{{ demo.created_at|date:"Y/m/d" }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+                
+                <!-- Pricing Requests -->
+                {% for pricing in recent_pricing %}
+                <div class="flex items-center justify-between p-3 bg-purple-50 rounded-lg">
+                    <div class="flex items-center">
+                        <i class="fas fa-calculator text-purple-600 ml-3"></i>
+                        <div>
+                            <h3 class="font-medium text-gray-800">درخواست قیمت</h3>
+                            <p class="text-sm text-gray-600">{{ pricing.product.full_name }}</p>
+                        </div>
+                    </div>
+                    <div class="text-left">
+                        <span class="px-2 py-1 text-xs font-medium rounded-full bg-purple-100 text-purple-800">
+                            {{ pricing.get_status_display }}
+                        </span>
+                        <p class="text-xs text-gray-500 mt-1">{{ pricing.created_at|date:"Y/m/d" }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+                
+                {% if not recent_demos and not recent_pricing %}
+                <div class="text-center py-8">
+                    <i class="fas fa-handshake text-4xl text-gray-400 mb-4"></i>
+                    <p class="text-gray-600">هنوز درخواستی ارسال نکرده‌اید</p>
+                    <div class="mt-4 space-x-2 space-x-reverse">
+                        <a href="{% url 'sales:demo_request' %}" 
+                           class="inline-block bg-green-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-opacity-90 transition-colors">
+                            درخواست دمو
+                        </a>
+                        <a href="{% url 'sales:pricing_request' %}" 
+                           class="inline-block bg-purple-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-opacity-90 transition-colors">
+                            درخواست قیمت
+                        </a>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Account Information -->
+    <div class="mt-8 bg-gray-50 rounded-lg p-6">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">اطلاعات حساب</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div>
+                <h3 class="font-medium text-gray-700 mb-2">ایمیل</h3>
+                <p class="text-gray-600">{{ user.email }}</p>
+            </div>
+            <div>
+                <h3 class="font-medium text-gray-700 mb-2">نوع حساب</h3>
+                <p class="text-gray-600">{{ user.get_user_type_display }}</p>
+            </div>
+            <div>
+                <h3 class="font-medium text-gray-700 mb-2">آخرین ورود</h3>
+                <p class="text-gray-600">
+                    {% if last_login %}
+                        {{ last_login|date:"Y/m/d H:i" }}
+                    {% else %}
+                        اولین ورود
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

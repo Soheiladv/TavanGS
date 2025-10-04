@@ -1,0 +1,647 @@
+# TakoTech Website - Persian Translation
+# Copyright (C) 2025 TakoTech
+# This file is distributed under the same license as the TakoTech package.
+# TakoTech Team <info@takotech.com>, 2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: TakoTech Website\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-02 21:50+0330\n"
+"PO-Revision-Date: 2025-10-02 21:50+0330\n"
+"Last-Translator: TakoTech Team <info@takotech.com>\n"
+"Language-Team: Persian <info@takotech.com>\n"
+"Language: fa\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+# Common UI Elements
+msgid "Home"
+msgstr "خانه"
+
+msgid "Products"
+msgstr "محصولات"
+
+msgid "Services"
+msgstr "خدمات"
+
+msgid "Support"
+msgstr "پشتیبانی"
+
+msgid "Contact"
+msgstr "تماس با ما"
+
+msgid "About"
+msgstr "درباره ما"
+
+msgid "Login"
+msgstr "ورود"
+
+msgid "Logout"
+msgstr "خروج"
+
+msgid "Register"
+msgstr "ثبت‌نام"
+
+msgid "Profile"
+msgstr "پروفایل"
+
+msgid "Dashboard"
+msgstr "داشبورد"
+
+msgid "Settings"
+msgstr "تنظیمات"
+
+# Navigation
+msgid "Main Menu"
+msgstr "منوی اصلی"
+
+msgid "User Menu"
+msgstr "منوی کاربری"
+
+msgid "Footer"
+msgstr "پاورقی"
+
+msgid "Search"
+msgstr "جستجو"
+
+msgid "Search Products"
+msgstr "جستجو در محصولات"
+
+msgid "Search placeholder"
+msgstr "نام محصول یا خدمات را جستجو کنید..."
+
+# Buttons and Actions
+msgid "Save"
+msgstr "ذخیره"
+
+msgid "Cancel"
+msgstr "لغو"
+
+msgid "Delete"
+msgstr "حذف"
+
+msgid "Edit"
+msgstr "ویرایش"
+
+msgid "Update"
+msgstr "بروزرسانی"
+
+msgid "Create"
+msgstr "ایجاد"
+
+msgid "Add"
+msgstr "افزودن"
+
+msgid "Remove"
+msgstr "حذف"
+
+msgid "View"
+msgstr "مشاهده"
+
+msgid "Download"
+msgstr "دانلود"
+
+msgid "Upload"
+msgstr "آپلود"
+
+msgid "Submit"
+msgstr "ارسال"
+
+msgid "Send"
+msgstr "ارسال"
+
+msgid "Back"
+msgstr "بازگشت"
+
+msgid "Next"
+msgstr "بعدی"
+
+msgid "Previous"
+msgstr "قبلی"
+
+msgid "Continue"
+msgstr "ادامه"
+
+msgid "Finish"
+msgstr "پایان"
+
+msgid "Close"
+msgstr "بستن"
+
+msgid "Open"
+msgstr "باز کردن"
+
+# Form Fields
+msgid "Name"
+msgstr "نام"
+
+msgid "Email"
+msgstr "ایمیل"
+
+msgid "Password"
+msgstr "رمز عبور"
+
+msgid "Confirm Password"
+msgstr "تکرار رمز عبور"
+
+msgid "Phone"
+msgstr "تلفن"
+
+msgid "Address"
+msgstr "آدرس"
+
+msgid "City"
+msgstr "شهر"
+
+msgid "Country"
+msgstr "کشور"
+
+msgid "Company"
+msgstr "شرکت"
+
+msgid "Job Title"
+msgstr "عنوان شغلی"
+
+msgid "Website"
+msgstr "وب‌سایت"
+
+msgid "Description"
+msgstr "توضیحات"
+
+msgid "Message"
+msgstr "پیام"
+
+msgid "Subject"
+msgstr "موضوع"
+
+msgid "Title"
+msgstr "عنوان"
+
+msgid "Content"
+msgstr "محتوا"
+
+msgid "Category"
+msgstr "دسته‌بندی"
+
+msgid "Tags"
+msgstr "برچسب‌ها"
+
+msgid "Status"
+msgstr "وضعیت"
+
+msgid "Priority"
+msgstr "اولویت"
+
+msgid "Date"
+msgstr "تاریخ"
+
+msgid "Time"
+msgstr "زمان"
+
+msgid "Price"
+msgstr "قیمت"
+
+msgid "Amount"
+msgstr "مقدار"
+
+msgid "Quantity"
+msgstr "تعداد"
+
+msgid "Total"
+msgstr "مجموع"
+
+# Form Placeholders
+msgid "Enter your name"
+msgstr "نام خود را وارد کنید"
+
+msgid "Enter your email"
+msgstr "ایمیل خود را وارد کنید"
+
+msgid "Enter your password"
+msgstr "رمز عبور خود را وارد کنید"
+
+msgid "Enter your phone number"
+msgstr "شماره تلفن خود را وارد کنید"
+
+msgid "Enter your message"
+msgstr "پیام خود را وارد کنید"
+
+msgid "Enter title"
+msgstr "عنوان را وارد کنید"
+
+msgid "Enter description"
+msgstr "توضیحات را وارد کنید"
+
+msgid "Select category"
+msgstr "دسته‌بندی را انتخاب کنید"
+
+msgid "Select status"
+msgstr "وضعیت را انتخاب کنید"
+
+msgid "Select priority"
+msgstr "اولویت را انتخاب کنید"
+
+msgid "Choose file"
+msgstr "فایل را انتخاب کنید"
+
+# Product Related
+msgid "Product Details"
+msgstr "جزئیات محصول"
+
+msgid "Product Features"
+msgstr "ویژگی‌های محصول"
+
+msgid "Product Specifications"
+msgstr "مشخصات محصول"
+
+msgid "Product Gallery"
+msgstr "گالری محصول"
+
+msgid "Product Reviews"
+msgstr "نظرات محصول"
+
+msgid "Related Products"
+msgstr "محصولات مرتبط"
+
+msgid "Featured Products"
+msgstr "محصولات ویژه"
+
+msgid "Popular Products"
+msgstr "محصولات محبوب"
+
+msgid "New Products"
+msgstr "محصولات جدید"
+
+msgid "Free Trial"
+msgstr "آزمایش رایگان"
+
+msgid "Free Version"
+msgstr "نسخه رایگان"
+
+msgid "Premium Version"
+msgstr "نسخه پریمیوم"
+
+msgid "Enterprise Version"
+msgstr "نسخه سازمانی"
+
+msgid "Download Trial"
+msgstr "دانلود نسخه آزمایشی"
+
+msgid "Start Free Trial"
+msgstr "شروع آزمایش رایگان"
+
+msgid "View Demo"
+msgstr "مشاهده دمو"
+
+msgid "Live Demo"
+msgstr "دمو زنده"
+
+msgid "Product Demo"
+msgstr "دمو محصول"
+
+# Service Related
+msgid "Our Services"
+msgstr "خدمات ما"
+
+msgid "Service Details"
+msgstr "جزئیات خدمات"
+
+msgid "Request Service"
+msgstr "درخواست خدمات"
+
+msgid "Consultation"
+msgstr "مشاوره"
+
+msgid "Free Consultation"
+msgstr "مشاوره رایگان"
+
+msgid "Request Quote"
+msgstr "درخواست قیمت"
+
+msgid "Get Quote"
+msgstr "دریافت قیمت"
+
+msgid "Contact Us"
+msgstr "تماس با ما"
+
+# Support & Tickets
+msgid "Support Center"
+msgstr "مرکز پشتیبانی"
+
+msgid "Create Ticket"
+msgstr "ایجاد تیکت"
+
+msgid "My Tickets"
+msgstr "تیکت‌های من"
+
+msgid "Ticket Details"
+msgstr "جزئیات تیکت"
+
+msgid "Ticket ID"
+msgstr "شناسه تیکت"
+
+msgid "Ticket Status"
+msgstr "وضعیت تیکت"
+
+msgid "Open"
+msgstr "باز"
+
+msgid "In Progress"
+msgstr "در حال بررسی"
+
+msgid "Resolved"
+msgstr "حل شده"
+
+msgid "Closed"
+msgstr "بسته"
+
+msgid "Reply"
+msgstr "پاسخ"
+
+msgid "Add Reply"
+msgstr "افزودن پاسخ"
+
+msgid "Attachments"
+msgstr "فایل‌های پیوست"
+
+msgid "Attach File"
+msgstr "پیوست فایل"
+
+# Status Messages
+msgid "Success"
+msgstr "موفقیت"
+
+msgid "Error"
+msgstr "خطا"
+
+msgid "Warning"
+msgstr "هشدار"
+
+msgid "Info"
+msgstr "اطلاعات"
+
+msgid "Loading"
+msgstr "در حال بارگذاری"
+
+msgid "Saving"
+msgstr "در حال ذخیره"
+
+msgid "Processing"
+msgstr "در حال پردازش"
+
+msgid "Please wait"
+msgstr "لطفاً منتظر بمانید"
+
+msgid "Operation completed successfully"
+msgstr "عملیات با موفقیت انجام شد"
+
+msgid "An error occurred"
+msgstr "خطایی رخ داد"
+
+msgid "Please try again"
+msgstr "لطفاً دوباره تلاش کنید"
+
+msgid "Invalid input"
+msgstr "ورودی نامعتبر"
+
+msgid "Required field"
+msgstr "فیلد الزامی"
+
+msgid "Field is required"
+msgstr "این فیلد الزامی است"
+
+# Pagination
+msgid "Page"
+msgstr "صفحه"
+
+msgid "of"
+msgstr "از"
+
+msgid "First"
+msgstr "اول"
+
+msgid "Last"
+msgstr "آخر"
+
+msgid "Show"
+msgstr "نمایش"
+
+msgid "entries"
+msgstr "ورودی"
+
+msgid "Showing"
+msgstr "نمایش"
+
+msgid "to"
+msgstr "تا"
+
+msgid "results"
+msgstr "نتیجه"
+
+# Time and Date
+msgid "Today"
+msgstr "امروز"
+
+msgid "Yesterday"
+msgstr "دیروز"
+
+msgid "Tomorrow"
+msgstr "فردا"
+
+msgid "This Week"
+msgstr "این هفته"
+
+msgid "This Month"
+msgstr "این ماه"
+
+msgid "This Year"
+msgstr "امسال"
+
+msgid "Created"
+msgstr "ایجاد شده"
+
+msgid "Updated"
+msgstr "بروزرسانی شده"
+
+msgid "Published"
+msgstr "منتشر شده"
+
+msgid "Modified"
+msgstr "تغییر یافته"
+
+# Company Information
+msgid "About TakoTech"
+msgstr "درباره تک یا فناوری"
+
+msgid "Our Mission"
+msgstr "ماموریت ما"
+
+msgid "Our Vision"
+msgstr "چشم‌انداز ما"
+
+msgid "Our Team"
+msgstr "تیم ما"
+
+msgid "Contact Information"
+msgstr "اطلاعات تماس"
+
+msgid "Office Address"
+msgstr "آدرس دفتر"
+
+msgid "Phone Number"
+msgstr "شماره تلفن"
+
+msgid "Email Address"
+msgstr "آدرس ایمیل"
+
+msgid "Working Hours"
+msgstr "ساعات کاری"
+
+msgid "Follow Us"
+msgstr "ما را دنبال کنید"
+
+msgid "Social Media"
+msgstr "شبکه‌های اجتماعی"
+
+# Footer
+msgid "All rights reserved"
+msgstr "تمامی حقوق محفوظ است"
+
+msgid "Privacy Policy"
+msgstr "حریم خصوصی"
+
+msgid "Terms of Service"
+msgstr "شرایط استفاده"
+
+msgid "Cookie Policy"
+msgstr "سیاست کوکی"
+
+msgid "Quick Links"
+msgstr "لینک‌های سریع"
+
+msgid "Popular Products"
+msgstr "محصولات پرطرفدار"
+
+msgid "Latest News"
+msgstr "آخرین اخبار"
+
+msgid "Newsletter"
+msgstr "خبرنامه"
+
+msgid "Subscribe"
+msgstr "عضویت"
+
+msgid "Subscribe to Newsletter"
+msgstr "عضویت در خبرنامه"
+
+msgid "Enter your email for updates"
+msgstr "ایمیل خود را برای دریافت بروزرسانی‌ها وارد کنید"
+
+# User Account
+msgid "My Account"
+msgstr "حساب کاربری من"
+
+msgid "Account Settings"
+msgstr "تنظیمات حساب"
+
+msgid "Change Password"
+msgstr "تغییر رمز عبور"
+
+msgid "Update Profile"
+msgstr "بروزرسانی پروفایل"
+
+msgid "Personal Information"
+msgstr "اطلاعات شخصی"
+
+msgid "Preferences"
+msgstr "تنظیمات"
+
+msgid "Notifications"
+msgstr "اعلان‌ها"
+
+msgid "Language"
+msgstr "زبان"
+
+msgid "Theme"
+msgstr "قالب"
+
+msgid "Timezone"
+msgstr "منطقه زمانی"
+
+# Validation Messages
+msgid "This field cannot be blank"
+msgstr "این فیلد نمی‌تواند خالی باشد"
+
+msgid "Enter a valid email address"
+msgstr "آدرس ایمیل معتبری وارد کنید"
+
+msgid "Password is too short"
+msgstr "رمز عبور خیلی کوتاه است"
+
+msgid "Passwords do not match"
+msgstr "رمزهای عبور مطابقت ندارند"
+
+msgid "Invalid file format"
+msgstr "فرمت فایل نامعتبر است"
+
+msgid "File size too large"
+msgstr "اندازه فایل خیلی بزرگ است"
+
+msgid "Maximum file size is"
+msgstr "حداکثر اندازه فایل"
+
+msgid "Allowed formats are"
+msgstr "فرمت‌های مجاز عبارتند از"
+
+# Search and Filter
+msgid "Search Results"
+msgstr "نتایج جستجو"
+
+msgid "No results found"
+msgstr "نتیجه‌ای یافت نشد"
+
+msgid "Filter by"
+msgstr "فیلتر بر اساس"
+
+msgid "Sort by"
+msgstr "مرتب‌سازی بر اساس"
+
+msgid "All Categories"
+msgstr "همه دسته‌بندی‌ها"
+
+msgid "All Status"
+msgstr "همه وضعیت‌ها"
+
+msgid "Clear Filters"
+msgstr "پاک کردن فیلترها"
+
+msgid "Apply Filters"
+msgstr "اعمال فیلترها"
+
+# Analytics and Statistics
+msgid "Views"
+msgstr "بازدید"
+
+msgid "Downloads"
+msgstr "دانلود"
+
+msgid "Users"
+msgstr "کاربران"
+
+msgid "Active Users"
+msgstr "کاربران فعال"
+
+msgid "Total"
+msgstr "مجموع"
+
+msgid "Statistics"
+msgstr "آمار"
+
+msgid "Analytics"
+msgstr "تحلیل‌ها"
+
+msgid "Reports"
+msgstr "گزارش‌ها"

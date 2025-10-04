@@ -1,0 +1,48 @@
+{% extends 'base/base.html' %}
+{% load i18n %}
+
+{% block title %}تیکت‌های من{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-10">
+    <div class="flex items-center justify-between mb-6">
+        <h1 class="text-3xl font-bold text-gray-900">تیکت‌های من</h1>
+        <a href="{% url 'tickets:create' %}" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-opacity-90">تیکت جدید</a>
+    </div>
+
+    <div class="bg-white rounded-lg shadow overflow-hidden">
+        {% if tickets %}
+        <table class="w-full">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500">شناسه</th>
+                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500">عنوان</th>
+                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500">وضعیت</th>
+                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500">اولویت</th>
+                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500">تاریخ</th>
+                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500">عملیات</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y">
+                {% for ticket in tickets %}
+                <tr class="hover:bg-gray-50">
+                    <td class="px-6 py-4 text-sm">#{{ ticket.ticket_id|slice:":8" }}</td>
+                    <td class="px-6 py-4">{{ ticket.title }}</td>
+                    <td class="px-6 py-4">
+                        <span class="px-2 py-1 text-xs rounded {{ ticket.get_status_display_class }}">{{ ticket.get_status_display }}</span>
+                    </td>
+                    <td class="px-6 py-4 text-sm">{{ ticket.get_priority_display }}</td>
+                    <td class="px-6 py-4 text-sm">{{ ticket.created_at|date:"Y/m/d H:i" }}</td>
+                    <td class="px-6 py-4 text-sm">
+                        <a href="{% url 'tickets:detail' ticket.ticket_id %}" class="text-primary hover:underline">مشاهده</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="p-8 text-center text-gray-600">تیکتی ثبت نشده است.</div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

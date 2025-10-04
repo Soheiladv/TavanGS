@@ -1,0 +1,76 @@
+{% extends 'base/base.html' %}
+{% load static i18n %}
+
+{% block title %}درخواست دمو با موفقیت ثبت شد{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="max-w-2xl mx-auto text-center">
+        <!-- Success Icon -->
+        <div class="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <i class="fas fa-check text-green-500 text-4xl"></i>
+        </div>
+
+        <!-- Success Message -->
+        <h1 class="text-3xl font-bold text-gray-900 mb-4">درخواست دمو با موفقیت ثبت شد!</h1>
+        <p class="text-xl text-gray-600 mb-8">
+            تیم فروش TakoTech به زودی با شما تماس خواهد گرفت تا زمان دمو را هماهنگ کند.
+        </p>
+
+        <!-- What Happens Next -->
+        <div class="bg-white rounded-lg shadow-md p-8 mb-8">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6">مراحل بعدی</h2>
+            <div class="space-y-4">
+                <div class="flex items-start">
+                    <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-bold ml-4 flex-shrink-0">1</div>
+                    <div>
+                        <h3 class="font-semibold text-gray-800">تماس تیم فروش</h3>
+                        <p class="text-gray-600">ظرف 24 ساعت با شما تماس خواهیم گرفت</p>
+                    </div>
+                </div>
+                <div class="flex items-start">
+                    <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-bold ml-4 flex-shrink-0">2</div>
+                    <div>
+                        <h3 class="font-semibold text-gray-800">هماهنگی زمان دمو</h3>
+                        <p class="text-gray-600">زمان مناسب برای دمو را با شما هماهنگ می‌کنیم</p>
+                    </div>
+                </div>
+                <div class="flex items-start">
+                    <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-bold ml-4 flex-shrink-0">3</div>
+                    <div>
+                        <h3 class="font-semibold text-gray-800">ارائه دمو</h3>
+                        <p class="text-gray-600">دمو کامل محصول را به شما ارائه می‌دهیم</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Information -->
+        <div class="bg-gray-50 rounded-lg p-6 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">اطلاعات تماس</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <i class="fas fa-phone text-primary ml-2"></i>
+                    <span class="text-gray-700">021-12345678</span>
+                </div>
+                <div>
+                    <i class="fas fa-envelope text-primary ml-2"></i>
+                    <span class="text-gray-700">support@takotech.com</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="{% url 'products:list' %}" 
+               class="bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-opacity-90 transition-colors">
+                مشاهده محصولات
+            </a>
+            <a href="{% url 'sales:pricing_request' %}" 
+               class="border-2 border-primary text-primary px-6 py-3 rounded-lg font-semibold hover:bg-primary hover:text-white transition-colors">
+                درخواست قیمت
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

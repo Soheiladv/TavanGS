@@ -1,0 +1,13 @@
+{% extends 'base/base.html' %}
+{% load i18n %}
+
+{% block title %}{{ product.full_name|default:product.name }} - {% trans "Sandbox" %}{% endblock %}
+
+{% block content %}
+<section class="container mx-auto px-4 py-10">
+    <h1 class="text-3xl font-bold mb-6">{{ product.full_name|default:product.name }} - {% trans "Sandbox" %}</h1>
+    <p class="text-gray-600">{% trans "Product-specific sandbox will be available here." %}</p>
+</section>
+{% endblock %}
+
+
