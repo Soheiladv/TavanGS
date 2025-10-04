@@ -26,4 +26,10 @@ urlpatterns = [
     path('categories/create/', views.NewsCategoryCreateView.as_view(), name='category_create'),
     path('categories/<int:pk>/edit/', views.NewsCategoryUpdateView.as_view(), name='category_edit'),
     path('categories/<int:pk>/delete/', views.NewsCategoryDeleteView.as_view(), name='category_delete'),
+    
+    # Staff URLs - Tag Management
+    path('tags/', views.NewsTagListView.as_view(), name='tag_list'),
+    path('tags/create/', views.NewsTagCreateView.as_view(), name='tag_create'),
+    path('tags/<int:pk>/edit/', views.NewsTagUpdateView.as_view(), name='tag_edit'),
+    path('tags/<int:pk>/delete/', views.NewsTagDeleteView.as_view(), name='tag_delete'),
 ]

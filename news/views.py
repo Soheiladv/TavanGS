@@ -266,3 +266,55 @@ def news_rss_feed(request):
     })
     
     return HttpResponse(rss_content, content_type='application/rss+xml')
+
+
+# =========================
+# Tag Management Views
+# =========================
+
+class NewsTagListView(StaffRequiredMixin, ListView):
+    """فهرست تگ‌های اخبار"""
+    model = NewsTag
+    template_name = 'news/tag_list.html'
+    context_object_name = 'tags'
+    paginate_by = 20
+    
+    def get_queryset(self):
+        return NewsTag.objects.annotate(
+            news_count=Count('newstagrelation')
+        ).order_by('-created_at')
+
+
+class NewsTagCreateView(StaffRequiredMixin, CreateView):
+    """ایجاد تگ جدید"""
+    model = NewsTag
+    template_name = 'news/tag_form.html'
+    fields = ['name', 'description', 'color']
+    success_url = reverse_lazy('news:tag_list')
+    
+    def form_valid(self, form):
+        messages.success(self.request, 'تگ جدید با موفقیت ایجاد شد.')
+        return super().form_valid(form)
+
+
+class NewsTagUpdateView(StaffRequiredMixin, UpdateView):
+    """ویرایش تگ"""
+    model = NewsTag
+    template_name = 'news/tag_form.html'
+    fields = ['name', 'description', 'color']
+    success_url = reverse_lazy('news:tag_list')
+    
+    def form_valid(self, form):
+        messages.success(self.request, 'تگ با موفقیت بروزرسانی شد.')
+        return super().form_valid(form)
+
+
+class NewsTagDeleteView(StaffRequiredMixin, DeleteView):
+    """حذف تگ"""
+    model = NewsTag
+    template_name = 'news/tag_confirm_delete.html'
+    success_url = reverse_lazy('news:tag_list')
+    
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, 'تگ با موفقیت حذف شد.')
+        return super().delete(request, *args, **kwargs)

@@ -81,6 +81,13 @@ class ControlPanelDashboardView(TemplateView):
         context['users_count'] = User.objects.count()
         context['staff_count'] = User.objects.filter(is_staff=True).count()
         context['fonts_count'] = FontSettings.objects.count()
+        
+        # News statistics
+        context['news_count'] = News.objects.count()
+        context['published_news_count'] = News.objects.filter(status='published').count()
+        context['news_categories_count'] = NewsCategory.objects.count()
+        context['news_tags_count'] = NewsTag.objects.count()
+        
         return context
 
 

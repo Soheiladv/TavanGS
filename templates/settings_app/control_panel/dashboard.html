@@ -37,6 +37,13 @@
             </div>
             <p class="text-gray-600 text-sm">کاربران: {{ users_count|default:"0" }} | کارکنان: {{ staff_count|default:"0" }}</p>
         </a>
+        <a href="{% url 'news:news_list' %}" class="bg-white rounded-lg shadow p-6 hover:shadow-lg transition">
+            <div class="flex items-center mb-4">
+                <i class="fas fa-newspaper text-2xl text-green-600 mr-3"></i>
+                <h2 class="text-lg font-semibold">مدیریت اخبار</h2>
+            </div>
+            <p class="text-gray-600 text-sm">اخبار: {{ news_count|default:"0" }} | منتشر شده: {{ published_news_count|default:"0" }}</p>
+        </a>
     </div>
 
     <!-- Accordion Management Panel -->
@@ -324,6 +331,93 @@
                             <a href="{% url 'users:preferences' %}" class="flex items-center p-3 bg-yellow-50 hover:bg-yellow-100 rounded-lg transition">
                                 <i class="fas fa-sliders-h text-yellow-600 mr-3"></i>
                                 <span>تنظیمات کاربری</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 📰 News Management -->
+            <div class="accordion-item border rounded-lg">
+                <h3 class="accordion-header" id="newsHeading">
+                    <button class="accordion-button flex items-center justify-between w-full p-4 text-right font-medium text-gray-900 bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500 role="button" type="button" data-target="#newsCollapse" aria-expanded="false" aria-controls="newsCollapse">
+                        <div class="flex items-center">
+                            <i class="fas fa-newspaper text-2xl text-green-600 mr-3"></i>
+                            <span>مدیریت اخبار</span>
+                        </div>
+                        <i class="fas fa-chevron-down transition-transform" id="newsChevron"></i>
+                    </button>
+                </h3>
+                <div id="newsCollapse" class="accordion-collapse max-h-0 overflow-hidden transition-all duration-300" aria-labelledby="newsHeading">
+                    <div class="accordion-body p-4 bg-white">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <a href="{% url 'news:news_list' %}" class="flex items-center p-3 bg-green-50 hover:bg-green-100 rounded-lg transition">
+                                <i class="fas fa-list text-green-600 mr-3"></i>
+                                <span>فهرست اخبار</span>
+                            </a>
+                            <a href="{% url 'news:news_create' %}" class="flex items-center p-3 bg-blue-50 hover:bg-blue-100 rounded-lg transition">
+                                <i class="fas fa-plus text-blue-600 mr-3"></i>
+                                <span>ایجاد خبر جدید</span>
+                            </a>
+                            <a href="{% url 'news:category_list' %}" class="flex items-center p-3 bg-purple-50 hover:bg-purple-100 rounded-lg transition">
+                                <i class="fas fa-tags text-purple-600 mr-3"></i>
+                                <span>دسته‌بندی اخبار</span>
+                            </a>
+                            <a href="{% url 'news:category_create' %}" class="flex items-center p-3 bg-orange-50 hover:bg-orange-100 rounded-lg transition">
+                                <i class="fas fa-folder-plus text-orange-600 mr-3"></i>
+                                <span>ایجاد دسته جدید</span>
+                            </a>
+                            
+                            <a href="{% url 'news:tag_list' %}" class="flex items-center p-3 bg-yellow-50 hover:bg-yellow-100 rounded-lg transition">
+                                <i class="fas fa-hashtag text-yellow-600 mr-3"></i>
+                                <span>تگ‌های اخبار</span>
+                            </a>
+                            <a href="{% url 'news:tag_create' %}" class="flex items-center p-3 bg-red-50 hover:bg-red-100 rounded-lg transition">
+                                <i class="fas fa-plus text-red-600 mr-3"></i>
+                                <span>ایجاد تگ جدید</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 🎨 Template Designer -->
+            <div class="accordion-item border rounded-lg">
+                <h3 class="accordion-header" id="templateDesignerHeading">
+                    <button class="accordion-button flex items-center justify-between w-full p-4 text-right font-medium text-gray-900 bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500 role="button" type="button" data-target="#templateDesignerCollapse" aria-expanded="false" aria-controls="templateDesignerCollapse">
+                        <div class="flex items-center">
+                            <i class="fas fa-palette text-2xl text-purple-600 mr-3"></i>
+                            <span>طراح تم و قالب‌ساز</span>
+                        </div>
+                        <i class="fas fa-chevron-down transition-transform" id="templateDesignerChevron"></i>
+                    </button>
+                </h3>
+                <div id="templateDesignerCollapse" class="accordion-collapse max-h-0 overflow-hidden transition-all duration-300" aria-labelledby="templateDesignerHeading">
+                    <div class="accordion-body p-4 bg-white">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <a href="{% url 'accounts:custom_theme_designer' %}" class="flex items-center p-3 bg-purple-50 hover:bg-purple-100 rounded-lg transition">
+                                <i class="fas fa-paint-brush text-purple-600 mr-3"></i>
+                                <span>طراح تم پیشرفته</span>
+                            </a>
+                            <a href="{% url 'settings_app:template_list' %}" class="flex items-center p-3 bg-blue-50 hover:bg-blue-100 rounded-lg transition">
+                                <i class="fas fa-layer-group text-blue-600 mr-3"></i>
+                                <span>قالب‌های سایت</span>
+                            </a>
+                            <a href="{% url 'settings_app:template_create' %}" class="flex items-center p-3 bg-green-50 hover:bg-green-100 rounded-lg transition">
+                                <i class="fas fa-plus text-green-600 mr-3"></i>
+                                <span>ایجاد قالب جدید</span>
+                            </a>
+                            <a href="{% url 'settings_app:control_templates' %}" class="flex items-center p-3 bg-orange-50 hover:bg-orange-100 rounded-lg transition">
+                                <i class="fas fa-cogs text-orange-600 mr-3"></i>
+                                <span>مدیریت قالب‌ها</span>
+                            </a>
+                            <a href="#" class="flex items-center p-3 bg-yellow-50 hover:bg-yellow-100 rounded-lg transition" onclick="alert('قابلیت ایمپورت قالب به زودی اضافه خواهد شد!')">
+                                <i class="fas fa-download text-yellow-600 mr-3"></i>
+                                <span>ایمپورت قالب</span>
+                            </a>
+                            <a href="#" class="flex items-center p-3 bg-red-50 hover:bg-red-100 rounded-lg transition" onclick="alert('قابلیت اکسپورت قالب به زودی اضافه خواهد شد!')">
+                                <i class="fas fa-upload text-red-600 mr-3"></i>
+                                <span>اکسپورت قالب</span>
                             </a>
                         </div>
                     </div>
