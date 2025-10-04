@@ -68,8 +68,8 @@ class ComputationSession(models.Model):
     priority = models.PositiveIntegerField(default=5)  # 1-10, higher = more priority
     
     class Meta:
-        verbose_name = 'Computation Session'
-        verbose_name_plural = 'Computation Sessions'
+        verbose_name = 'جلسه محاسباتی'
+        verbose_name_plural = 'جلسات محاسباتی'
         ordering = ['-created_at']
         indexes = [
             models.Index(fields=['status', 'created_at']),
@@ -164,8 +164,8 @@ class ComputationTemplate(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     
     class Meta:
-        verbose_name = 'Computation Template'
-        verbose_name_plural = 'Computation Templates'
+        verbose_name = 'قالب محاسباتی'
+        verbose_name_plural = 'قالب‌های محاسباتی'
         ordering = ['name']
         default_permissions = ()
         permissions = [
@@ -228,8 +228,8 @@ class ComputationResult(models.Model):
     is_valid = models.BooleanField(default=True)
     
     class Meta:
-        verbose_name = 'Computation Result'
-        verbose_name_plural = 'Computation Results'
+        verbose_name = 'نتیجه محاسباتی'
+        verbose_name_plural = 'نتایج محاسباتی'
         ordering = ['-created_at']
         indexes = [
             models.Index(fields=['input_hash', 'session_type']),
@@ -298,8 +298,8 @@ class ComputationMetrics(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     
     class Meta:
-        verbose_name = 'Computation Metrics'
-        verbose_name_plural = 'Computation Metrics'
+        verbose_name = 'متریک محاسباتی'
+        verbose_name_plural = 'متریک‌های محاسباتی'
         ordering = ['-date']
         default_permissions = ()
         permissions = [

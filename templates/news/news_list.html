@@ -1,0 +1,423 @@
+{% extends "base/base.html" %}
+{% load static rcms_custom_filters i18n jformat %}
+
+{% block title %}اخبار{% endblock %}
+
+{% block extra_css %}
+<style>
+    .news-hero {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 4rem 0;
+        margin-bottom: 3rem;
+    }
+    
+    .news-hero h1 {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+    
+    .news-hero p {
+        font-size: 1.2rem;
+        opacity: 0.9;
+    }
+    
+    .news-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        border: 1px solid #e5e7eb;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        height: 100%;
+    }
+    
+    .news-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 25px rgba(0, 0, 0, 0.1);
+    }
+    
+    .news-card-image {
+        height: 200px;
+        background-size: cover;
+        background-position: center;
+        position: relative;
+    }
+    
+    .news-card-badge {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: rgba(0, 0, 0, 0.7);
+        color: white;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 500;
+    }
+    
+    .news-card-content {
+        padding: 1.5rem;
+    }
+    
+    .news-card-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 0.75rem;
+        line-height: 1.4;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    
+    .news-card-summary {
+        color: #6b7280;
+        font-size: 0.9rem;
+        line-height: 1.5;
+        margin-bottom: 1rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    
+    .news-card-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.8rem;
+        color: #9ca3af;
+    }
+    
+    .news-card-category {
+        background: #f3f4f6;
+        color: #374151;
+        padding: 0.25rem 0.75rem;
+        border-radius: 15px;
+        font-weight: 500;
+    }
+    
+    .news-card-stats {
+        display: flex;
+        gap: 1rem;
+    }
+    
+    .news-card-stat {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+    }
+    
+    .featured-news {
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        border-radius: 20px;
+        padding: 2rem;
+        margin-bottom: 3rem;
+    }
+    
+    .featured-news h3 {
+        color: #374151;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        text-align: center;
+    }
+    
+    .featured-card {
+        background: white;
+        border-radius: 15px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        border: 1px solid #e5e7eb;
+        margin-bottom: 1rem;
+    }
+    
+    .featured-card:last-child {
+        margin-bottom: 0;
+    }
+    
+    .featured-card h5 {
+        color: #374151;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+    
+    .featured-card p {
+        color: #6b7280;
+        font-size: 0.9rem;
+        margin: 0;
+    }
+    
+    .search-filters {
+        background: white;
+        border-radius: 15px;
+        padding: 2rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        border: 1px solid #e5e7eb;
+        margin-bottom: 2rem;
+    }
+    
+    .pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 3rem;
+    }
+    
+    .pagination .page-link {
+        color: #667eea;
+        border: 1px solid #e5e7eb;
+        padding: 0.75rem 1rem;
+        margin: 0 0.25rem;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+    
+    .pagination .page-link:hover {
+        background: #667eea;
+        color: white;
+        border-color: #667eea;
+    }
+    
+    .pagination .page-item.active .page-link {
+        background: #667eea;
+        border-color: #667eea;
+        color: white;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="news-hero">
+    <div class="container">
+        <div class="row justify-content-center text-center">
+            <div class="col-lg-8">
+                <h1>
+                    <i class="fas fa-newspaper me-3"></i>
+                    اخبار و مقالات
+                </h1>
+                <p>آخرین اخبار و مقالات تکنولوژی، کسب‌وکار و نوآوری</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <!-- Main Content -->
+        <div class="col-lg-8">
+            <!-- Search and Filters -->
+            <div class="search-filters">
+                <form method="get" class="row g-3">
+                    <div class="col-md-4">
+                        <input type="text" name="search" class="form-control" 
+                               placeholder="جستجو در اخبار..." 
+                               value="{{ request.GET.search }}">
+                    </div>
+                    <div class="col-md-3">
+                        <select name="category" class="form-select">
+                            <option value="">همه دسته‌بندی‌ها</option>
+                            {% for category in categories %}
+                            <option value="{{ category.slug }}" 
+                                    {% if request.GET.category == category.slug %}selected{% endif %}>
+                                {{ category.name }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="date" name="date_from" class="form-control" 
+                               value="{{ request.GET.date_from }}">
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fas fa-search me-2"></i>جستجو
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- News Grid -->
+            {% if news_list %}
+                <div class="row">
+                    {% for news in news_list %}
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="news-card">
+                            {% if news.featured_image %}
+                            <div class="news-card-image" 
+                                 style="background-image: url('{{ news.featured_image.url }}')">
+                            {% else %}
+                            <div class="news-card-image" 
+                                 style="background: linear-gradient(135deg, #667eea, #764ba2)">
+                            {% endif %}
+                                {% if news.is_featured %}
+                                <div class="news-card-badge">
+                                    <i class="fas fa-star me-1"></i>ویژه
+                                </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="news-card-content">
+                                <h5 class="news-card-title">
+                                    <a href="{% url 'news:news_detail' news.slug %}" 
+                                       class="text-decoration-none text-dark">
+                                        {{ news.title }}
+                                    </a>
+                                </h5>
+                                
+                                <p class="news-card-summary">{{ news.summary }}</p>
+                                
+                                <div class="news-card-meta">
+                                    <span class="news-card-category">{{ news.category.name }}</span>
+                                    <div class="news-card-stats">
+                                        <span class="news-card-stat">
+                                            <i class="fas fa-eye"></i>
+                                            {{ news.view_count }}
+                                        </span>
+                                        <span class="news-card-stat">
+                                            <i class="fas fa-heart"></i>
+                                            {{ news.like_count }}
+                                        </span>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-2">
+                                    <small class="text-muted">
+                                        <i class="fas fa-clock me-1"></i>
+                                        {{ news.published_at|jformat:"%Y/%m/%d" }}
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <!-- Pagination -->
+                {% if is_paginated %}
+                <nav aria-label="صفحه‌بندی اخبار">
+                    <ul class="pagination">
+                        {% if page_obj.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page=1{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">
+                                    <i class="fas fa-angle-double-right"></i>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">
+                                    <i class="fas fa-angle-right"></i>
+                                </a>
+                            </li>
+                        {% endif %}
+                        
+                        <li class="page-item active">
+                            <span class="page-link">
+                                صفحه {{ page_obj.number }} از {{ page_obj.paginator.num_pages }}
+                            </span>
+                        </li>
+                        
+                        {% if page_obj.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">
+                                    <i class="fas fa-angle-left"></i>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">
+                                    <i class="fas fa-angle-double-left"></i>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+                {% endif %}
+            {% else %}
+                <div class="text-center py-5">
+                    <i class="fas fa-newspaper fa-3x text-muted mb-3"></i>
+                    <h4>هیچ خبری یافت نشد</h4>
+                    <p class="text-muted">لطفاً فیلترهای جستجو را تغییر دهید.</p>
+                </div>
+            {% endif %}
+        </div>
+        
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <!-- Featured News -->
+            {% if featured_news %}
+            <div class="featured-news">
+                <h3>
+                    <i class="fas fa-star me-2"></i>
+                    اخبار ویژه
+                </h3>
+                {% for news in featured_news %}
+                <div class="featured-card">
+                    <h5>
+                        <a href="{% url 'news:news_detail' news.slug %}" 
+                           class="text-decoration-none text-dark">
+                            {{ news.title }}
+                        </a>
+                    </h5>
+                    <p>{{ news.summary|truncatechars:100 }}</p>
+                    <small class="text-muted">
+                        <i class="fas fa-clock me-1"></i>
+                        {{ news.published_at|jformat:"%Y/%m/%d" }}
+                    </small>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            
+            <!-- Recent News -->
+            {% if recent_news %}
+            <div class="featured-news">
+                <h3>
+                    <i class="fas fa-clock me-2"></i>
+                    اخبار اخیر
+                </h3>
+                {% for news in recent_news %}
+                <div class="featured-card">
+                    <h5>
+                        <a href="{% url 'news:news_detail' news.slug %}" 
+                           class="text-decoration-none text-dark">
+                            {{ news.title }}
+                        </a>
+                    </h5>
+                    <p>{{ news.summary|truncatechars:80 }}</p>
+                    <small class="text-muted">
+                        <i class="fas fa-clock me-1"></i>
+                        {{ news.published_at|jformat:"%Y/%m/%d" }}
+                    </small>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            
+            <!-- Categories -->
+            {% if categories %}
+            <div class="featured-news">
+                <h3>
+                    <i class="fas fa-folder me-2"></i>
+                    دسته‌بندی‌ها
+                </h3>
+                {% for category in categories %}
+                <div class="featured-card">
+                    <h5>
+                        <a href="?category={{ category.slug }}" 
+                           class="text-decoration-none text-dark">
+                            <i class="fas fa-folder me-2" style="color: {{ category.color }}"></i>
+                            {{ category.name }}
+                        </a>
+                    </h5>
+                    {% if category.description %}
+                    <p>{{ category.description|truncatechars:60 }}</p>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

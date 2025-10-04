@@ -12,6 +12,7 @@ from django.contrib.auth import get_user_model
 from django.contrib import messages
 
 from .models import SiteSettings, SiteTemplate, FeatureFlag, FontSettings
+from news.models import News, NewsCategory, NewsTag
 
 
 class DynamicCSSView(TemplateView):

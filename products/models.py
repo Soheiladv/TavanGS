@@ -50,7 +50,8 @@ class ProductCategory(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     
     class Meta:
-        verbose_name_plural = 'Product Categories'
+        verbose_name = 'دسته‌بندی محصول'
+        verbose_name_plural = 'دسته‌بندی‌های محصولات'
         default_permissions = ()
         permissions = [
             ('ProductCategory_view', 'می‌تواند دسته‌بندی محصولات را مشاهده کند'),
@@ -232,3 +233,10 @@ class Product(models.Model):
     @property
     def full_name(self):
         return f"{self.brand_prefix} {self.name}"
+    
+    def increment_view_count(self):
+        """افزایش تعداد بازدید محصول"""
+        from django.db import models
+        Product.objects.filter(pk=self.pk).update(
+            view_count=models.F('view_count') + 1
+        )

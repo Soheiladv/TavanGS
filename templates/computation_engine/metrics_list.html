@@ -1,0 +1,108 @@
+{% extends "base/base.html" %}
+{% load static rcms_custom_filters i18n jformat %}
+
+{% block title %}متریک‌های محاسباتی{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-chart-bar me-2"></i>متریک‌های محاسباتی
+                    </h3>
+                    <div class="card-tools">
+                        <a href="{% url 'computation_engine:metrics_create' %}" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> متریک جدید
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    {% if metrics %}
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>ردیف</th>
+                                        <th>تاریخ</th>
+                                        <th>نوع متریک</th>
+                                        <th>مقدار</th>
+                                        <th>واحد</th>
+                                        <th>توضیحات</th>
+                                        <th>عملیات</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for metric in metrics %}
+                                    <tr>
+                                        <td>{{ forloop.counter |format_negative }}</td>
+                                        <td>{{ metric.date|jformat:"%Y/%m/%d" }}</td>
+                                        <td>
+                                            <span class="badge badge-primary">
+                                                {{ metric.get_metric_type_display }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <strong>{{ metric.value|floatformat:2 }}</strong>
+                                        </td>
+                                        <td>{{ metric.unit|default:"-" }}</td>
+                                        <td>{{ metric.description|truncatechars:50|default:"-" }}</td>
+                                        <td>
+                                            <a href="{% url 'computation_engine:metrics_edit' metric.pk %}" 
+                                               class="btn btn-sm btn-warning" title="ویرایش">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- Pagination -->
+                        {% if is_paginated %}
+                        <nav aria-label="صفحه‌بندی متریک‌ها">
+                            <ul class="pagination justify-content-center">
+                                {% if page_obj.has_previous %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page=1">اول</a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">قبلی</a>
+                                    </li>
+                                {% endif %}
+                                
+                                <li class="page-item active">
+                                    <span class="page-link">
+                                        صفحه {{ page_obj.number }} از {{ page_obj.paginator.num_pages }}
+                                    </span>
+                                </li>
+                                
+                                {% if page_obj.has_next %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ page_obj.next_page_number }}">بعدی</a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">آخر</a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                        {% endif %}
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i class="fas fa-chart-bar fa-3x text-muted mb-3"></i>
+                            <h4>هیچ متریک محاسباتی یافت نشد</h4>
+                            <p class="text-muted">برای شروع، متریک محاسباتی جدیدی ایجاد کنید.</p>
+                            <a href="{% url 'computation_engine:metrics_create' %}" class="btn btn-primary">
+                                <i class="fas fa-plus"></i> متریک جدید
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

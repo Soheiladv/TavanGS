@@ -223,8 +223,8 @@ class SiteSettings(SingletonModel):
     updated_at = models.DateTimeField(auto_now=True)
     
     class Meta:
-        verbose_name = "Site Settings"
-        verbose_name_plural = "Site Settings"
+        verbose_name = "تنظیمات سایت"
+        verbose_name_plural = "تنظیمات سایت"
         default_permissions = ()
         permissions = [
             ('SiteSettings_view', 'می‌تواند تنظیمات سایت را مشاهده کند'),
@@ -333,8 +333,8 @@ class APIConfiguration(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     
     class Meta:
-        verbose_name = "API Configuration"
-        verbose_name_plural = "API Configurations"
+        verbose_name = "تنظیمات API"
+        verbose_name_plural = "تنظیمات‌های API"
         default_permissions = ()
         permissions = [
             ('APIConfiguration_view', 'می‌تواند تنظیمات API را مشاهده کند'),
@@ -376,8 +376,8 @@ class FeatureFlag(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     
     class Meta:
-        verbose_name = "Feature Flag"
-        verbose_name_plural = "Feature Flags"
+        verbose_name = "پرچم ویژگی"
+        verbose_name_plural = "پرچم‌های ویژگی"
         ordering = ['name']
         default_permissions = ()
         permissions = [

@@ -1,14 +1,14 @@
 {% extends 'base/base.html' %}
 {% load i18n %}
 
-{% block title %}{% trans "Consultation Request" %}{% endblock %}
+{% block title %}{% trans "درخواست مشاوره" %}{% endblock %}
 
 {% block content %}
 <section class="container mx-auto px-4 py-10">
-    <h1 class="text-3xl font-bold mb-6">{% trans "Consultation Request" %}</h1>
+    <h1 class="text-3xl font-bold mb-6">{% trans "درخواست مشاوره" %}</h1>
     <form method="post" class="grid grid-cols-1 gap-4 max-w-2xl">{% csrf_token %}
         {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
+        <button type="submit" class="btn btn-primary">{% trans "تایید درخواست" %}</button>
     </form>
 </section>
 {% endblock %}

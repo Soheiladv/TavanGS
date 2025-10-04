@@ -1,0 +1,279 @@
+{% load i18n static humanize jformat %}
+
+<h6 class="mb-3 mt-4 text-primary">
+    <i class="fas fa-tasks me-2"></i>{% translate "سرفصل‌های بودجه تخصیص یافته" %}
+</h6>
+
+<div class="table-responsive">
+    <table class="table table-bordered table-striped table-hover small">
+        <thead class="table-light">
+            <tr>
+                <th scope="col" width="15%">{% translate "ردیف" %}</th>
+                <th scope="col" width="25%">{% translate "نام سرفصل" %}</th>
+                <th scope="col" width="10%">{% translate "کد سرفصل" %}</th>
+                <th scope="col" width="15%" class="text-center">{% translate "مبلغ تخصیص" %}</th>
+                <th scope="col" width="15%" class="text-center">{% translate "مبلغ مصرف" %}</th>
+                <th scope="col" width="15%" class="text-center">{% translate "مانده" %}</th>
+                <th scope="col" width="10%" class="text-center">{% translate "% مصرف" %}</th>
+                <th scope="col" width="10%" class="text-center no-print">{% translate "عملیات" %}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ba in budget_allocations_data %}
+                <tr data-bs-toggle="collapse" data-bs-target="#budgetItemCollapse-{{ ba.ba_pk }}"
+                    aria-expanded="false" aria-controls="budgetItemCollapse-{{ ba.ba_pk }}"
+                    class="table-row-clickable" style="cursor: pointer;">
+                    <td class="fw-bold">{{ forloop.counter }}</td>
+                    <td>{{ ba.budget_item_name }}</td>
+                    <td>{{ ba.budget_item_code|default:"-" }}</td>
+                    <td class="text-center">{{ ba.ba_allocated_amount_formatted }}</td>
+                    <td class="text-center">{{ ba.ba_consumed_amount_formatted }}</td>
+                    <td class="text-center">{{ ba.ba_remaining_amount_formatted }}</td>
+                    <td class="text-center">
+                        <span class="badge bg-{% if ba.ba_utilization_percentage > 90 %}danger{% elif ba.ba_utilization_percentage > 70 %}warning{% else %}success{% endif %}">
+                            {{ ba.ba_utilization_percentage|floatformat:"0" }}%
+                        </span>
+                    </td>
+                    <td class="text-center no-print">
+                        <a href="{{ ba.ba_report_url }}" class="btn btn-sm btn-info me-1" title="{% translate 'گزارش جزئیات' %}">
+                            <i class="fas fa-file-alt"></i>
+                        </a>
+                        {% if ba.tankhahs_count > 0 %}
+                            <button class="btn btn-sm btn-info"
+                                    onclick="loadTankhahs('{{ ba.tankhahs_ajax_url }}', this, '#tankhahContainer-{{ ba.ba_pk }}')">
+                                {% translate "نمایش تنخواه‌ها" %}
+                            </button>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="8" class="p-0 border-0">
+                        <div class="collapse" id="budgetItemCollapse-{{ ba.ba_pk }}">
+                            <div class="card card-body border-0 rounded-0 bg-light-subtle p-3">
+                                {% if ba.tankhahs_count > 0 %}
+                                    <h6 class="mb-3 text-warning">
+                                        <i class="fas fa-wallet me-2"></i>{% translate "تنخواه‌ها" %}
+                                    </h6>
+                                    <div id="tankhahContainer-{{ ba.ba_pk }}">
+                                        <p class="text-muted text-center py-4">
+                                            <i class="fas fa-spinner fa-spin me-2"></i>
+                                            {% translate "در حال بارگذاری تنخواه‌ها..." %}
+                                        </p>
+                                    </div>
+                                {% else %}
+                                    <div class="alert alert-info text-center mb-0 py-2">
+                                        {% translate "هیچ تنخواهی برای این تخصیص ثبت نشده است." %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="8" class="text-center py-4">
+                        {% translate "هیچ سرفصل بودجه‌ای برای این سازمان در این دوره ثبت نشده است." %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+function loadTankhahs(url, button, targetId) {
+    const target = $(targetId);
+    const btn = $(button);
+    
+    if (!target.length) {
+        console.error('Tankhah target not found:', targetId);
+        return;
+    }
+    if (target.data('loaded')) {
+        console.log('Tankhahs already loaded for', targetId);
+        return;
+    }
+    
+    // نمایش حالت بارگذاری
+    target.html(`
+        <div class="text-center py-4">
+            <i class="fas fa-spinner fa-spin fa-2x"></i>
+            <p>در حال بارگذاری تنخواه‌ها...</p>
+        </div>
+    `);
+    btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> در حال بارگذاری...');
+    
+    $.ajax({
+        url: url,
+        type: 'GET',
+        dataType: 'json',
+        cache: false,
+        timeout: 15000,
+        headers: {
+            'X-CSRFToken': $('[name=csrfmiddlewaretoken]').val(),
+            'X-Requested-With': 'XMLHttpRequest'
+        },
+        beforeSend: function(xhr) {
+            console.log('Requesting tankhahs:', url, '→ target:', targetId);
+        },
+        success: function(data, textStatus, xhr) {
+            try {
+                if (data && (data.status === 'success' || data.html_content)) {
+                    target.html(data.html_content || '').data('loaded', true);
+                } else if (data && data.status === 'empty') {
+                    target.html(`
+                        <div class="alert alert-info text-center mb-0 py-2">
+                            هیچ تنخواهی برای این تخصیص یافت نشد.
+                        </div>
+                    `).data('loaded', true);
+                } else {
+                    target.html(`
+                        <div class="alert alert-warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            داده‌ای دریافت نشد
+                        </div>
+                    `);
+                }
+            } catch (e) {
+                console.error('Parse error:', e);
+                target.html(`
+                    <div class="alert alert-danger text-center">
+                        <i class="fas fa-times-circle"></i>
+                        خطا در پردازش پاسخ سرور
+                    </div>
+                `);
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Tankhahs AJAX error:', status, error, '→', xhr.responseText);
+            target.html(`
+                <div class="alert alert-danger">
+                    <i class="fas fa-times-circle"></i>
+                    خطا در ارتباط با سرور
+                </div>
+            `);
+        },
+        complete: function() {
+            btn.prop('disabled', false).html('نمایش تنخواه‌ها');
+        }
+    });
+}
+
+</script>
+
+{#{% load i18n static humanize jformat %}#}
+{##}
+{#<h6 class="mb-3 mt-4 text-primary">#}
+{#    <i class="fas fa-tasks me-2"></i>{% translate "سرفصل‌های بودجه تخصیص یافته" %}#}
+{#</h6>#}
+{##}
+{#<div class="table-responsive">#}
+{#    <table class="table table-bordered table-striped table-hover small">#}
+{#        <thead class="table-light">#}
+{#            <tr>#}
+{#                <th scope="col" width="15%">{% translate "ردیف" %}</th>#}
+{#                <th scope="col" width="25%">{% translate "نام سرفصل" %}</th>#}
+{#                <th scope="col" width="10%">{% translate "کد سرفصل" %}</th>#}
+{#                <th scope="col" width="15%" class="text-center">{% translate "مبلغ تخصیص" %}</th>#}
+{#                <th scope="col" width="15%" class="text-center">{% translate "مبلغ مصرف" %}</th>#}
+{#                <th scope="col" width="15%" class="text-center">{% translate "مانده" %}</th>#}
+{#                <th scope="col" width="10%" class="text-center">{% translate "% مصرف" %}</th>#}
+{#                <th scope="col" width="10%" class="text-center no-print">{% translate "عملیات" %}</th>#}
+{#            </tr>#}
+{#        </thead>#}
+{#        <tbody>#}
+{#            {% for ba in budget_allocations_data %}#}
+{#                <tr data-bs-toggle="collapse" data-bs-target="#budgetItemCollapse-{{ ba.ba_pk }}"#}
+{#                    aria-expanded="false" aria-controls="budgetItemCollapse-{{ ba.ba_pk }}"#}
+{#                    class="table-row-clickable" style="cursor: pointer;">#}
+{#                    <td class="fw-bold">{{ forloop.counter }}</td>#}
+{#                    <td>{{ ba.budget_item_name }}</td>#}
+{#                    <td>{{ ba.budget_item_code|default:"-" }}</td>#}
+{#                    <td class="text-center">{{ ba.ba_allocated_amount_formatted }}</td>#}
+{#                    <td class="text-center">{{ ba.ba_consumed_amount_formatted }}</td>#}
+{#                    <td class="text-center">{{ ba.ba_remaining_amount_formatted }}</td>#}
+{#                    <td class="text-center">#}
+{#                        <span class="badge bg-{% if ba.ba_utilization_percentage > 90 %}danger{% elif ba.ba_utilization_percentage > 70 %}warning{% else %}success{% endif %}">#}
+{#                            {{ ba.ba_utilization_percentage|floatformat:"0" }}%#}
+{#                        </span>#}
+{#                    </td>#}
+{#                    <td class="text-center no-print">#}
+{#                        <a href="{{ ba.ba_report_url }}" class="btn btn-sm btn-info me-1" title="{% translate 'گزارش جزئیات' %}">#}
+{#                            <i class="fas fa-file-alt"></i>#}
+{#                        </a>#}
+{#                        {% if ba.tankhahs_count > 0 %}#}
+{#                            <button class="btn btn-sm btn-info" #}
+{#                                    onclick="loadTankhahs('{{ ba.tankhahs_ajax_url }}', this, '#tankhahContainer-{{ ba.ba_pk }}')">#}
+{#                                {% translate "نمایش تنخواه‌ها" %}#}
+{#                            </button>#}
+{#                        {% endif %}#}
+{#                    </td>#}
+{#                </tr>#}
+{#                <tr>#}
+{#                    <td colspan="8" class="p-0 border-0">#}
+{#                        <div class="collapse" id="budgetItemCollapse-{{ ba.ba_pk }}">#}
+{#                            <div class="card card-body border-0 rounded-0 bg-light-subtle p-3">#}
+{#                                {% if ba.tankhahs_count > 0 %}#}
+{#                                    <h6 class="mb-3 text-warning">#}
+{#                                        <i class="fas fa-wallet me-2"></i>{% translate "تنخواه‌ها" %}#}
+{#                                    </h6>#}
+{#                                    <div id="tankhahContainer-{{ ba.ba_pk }}">#}
+{#                                        <p class="text-muted text-center py-4">#}
+{#                                            <i class="fas fa-spinner fa-spin me-2"></i>#}
+{#                                            {% translate "در حال بارگذاری تنخواه‌ها..." %}#}
+{#                                        </p>#}
+{#                                    </div>#}
+{#                                {% else %}#}
+{#                                    <div class="alert alert-info text-center mb-0 py-2">#}
+{#                                        {% translate "هیچ تنخواهی برای این تخصیص ثبت نشده است." %}#}
+{#                                    </div>#}
+{#                                {% endif %}#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </td>#}
+{#                </tr>#}
+{#            {% empty %}#}
+{#                <tr>#}
+{#                    <td colspan="8" class="text-center py-4">#}
+{#                        {% translate "هیچ سرفصل بودجه‌ای برای این سازمان در این دوره ثبت نشده است." %}#}
+{#                    </td>#}
+{#                </tr>#}
+{#            {% endfor %}#}
+{#        </tbody>#}
+{#    </table>#}
+{#</div>#}
+{##}
+{#<script>#}
+{#document.addEventListener('DOMContentLoaded', function() {#}
+{#    function loadTankhahs(url, button, targetId) {#}
+{#        console.log(`Sending AJAX request to: ${url}`);#}
+{#        const target = document.querySelector(targetId);#}
+{#        if (target && !target.dataset.loaded) {#}
+{#            target.dataset.loading = 'true';#}
+{#            fetch(url, {#}
+{#                method: 'GET',#}
+{#                headers: {#}
+{#                    'X-Requested-With': 'XMLHttpRequest',#}
+{#                    'X-CSRFToken': document.querySelector('input[name="csrfmiddlewaretoken"]').value#}
+{#                }#}
+{#            })#}
+{#                .then(response => {#}
+{#                    console.log(`Received response with status: ${response.status}`);#}
+{#                    if (!response.ok) throw new Error(`HTTP ${response.status}`);#}
+{#                    return response.json();#}
+{#                })#}
+{#                .then(data => {#}
+{#                    console.log('Response data:', data);#}
+{#                    target.innerHTML = data.html_content || '<div class="alert alert-danger text-center">{% translate "خطا در بارگذاری تنخواه‌ها." %}</div>';#}
+{#                    target.dataset.loaded = 'true';#}
+{#                    delete target.dataset.loading;#}
+{#                })#}
+{#                .catch(error => {#}
+{#                    console.error('Error loading tankhahs:', error);#}
+{#                    target.innerHTML = '<div class="alert alert-danger text-center">{% translate "خطا در ارتباط با سرور." %}</div>';#}
+{#                    delete target.dataset.loading;#}
+{#                });#}
+{#        }#}
+{#    }#}
+{#});#}
+{#</script>#}

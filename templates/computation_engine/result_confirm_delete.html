@@ -1,0 +1,57 @@
+{% extends "base/base.html" %}
+{% load static rcms_custom_filters i18n jformat %}
+
+{% block title %}حذف نتیجه محاسباتی{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-exclamation-triangle me-2 text-warning"></i>تأیید حذف
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-warning">
+                        <h5>آیا مطمئن هستید که می‌خواهید این نتیجه محاسباتی را حذف کنید؟</h5>
+                        <p class="mb-0">این عمل قابل بازگشت نیست.</p>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h6>جزئیات نتیجه:</h6>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>شناسه جلسه:</strong> {{ object.session.session_id }}</p>
+                            <p><strong>نوع جلسه:</strong> {{ object.session.get_session_type_display }}</p>
+                            <p><strong>وضعیت:</strong> {{ object.session.get_status_display }}</p>
+                            <p><strong>تاریخ ایجاد:</strong> {{ object.created_at|jformat:"%Y/%m/%d %H:%M" }}</p>
+                            <p><strong>معتبر:</strong> 
+                                {% if object.is_valid %}
+                                    <span class="badge badge-success">بله</span>
+                                {% else %}
+                                    <span class="badge badge-danger">خیر</span>
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <form method="post" class="mt-3">
+                        {% csrf_token %}
+                        <div class="form-actions">
+                            <a href="{% url 'computation_engine:result_list' %}" class="btn btn-secondary">
+                                <i class="fas fa-times me-2"></i>انصراف
+                            </a>
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fas fa-trash me-2"></i>حذف نتیجه
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends "base/base.html" %}
+{% load static rcms_custom_filters i18n jformat %}
+
+{% block title %}لیست سرنخ‌های فروش{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-chart-line me-2"></i>مدیریت سرنخ‌های فروش
+                    </h3>
+                    <div class="card-tools">
+                        <a href="{% url 'sales:sales_lead_create' %}" class="btn btn-success">
+                            <i class="fas fa-plus"></i> افزودن سرنخ
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    {% if object_list %}
+                        <div class="row">
+                            {% for lead in object_list %}
+                            <div class="col-md-6 col-lg-4 mb-4">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ lead.full_name }}</h5>
+                                        <p class="card-text">
+                                            <strong>شرکت:</strong> {{ lead.company|default:"نامشخص" }}<br>
+                                            <strong>ایمیل:</strong> {{ lead.email }}<br>
+                                            <strong>وضعیت:</strong> 
+                                            <span class="badge badge-{{ lead.status|status_badge }}">
+                                                {{ lead.get_status_display }}
+                                            </span>
+                                        </p>
+                                    </div>
+                                    <div class="card-footer">
+                                        <div class="btn-group w-100">
+                                            <a href="{% url 'sales:sales_lead_detail' lead.pk %}" class="btn btn-sm btn-outline-primary">
+                                                <i class="fas fa-eye"></i> مشاهده
+                                            </a>
+                                            <a href="{% url 'sales:sales_lead_edit' lead.pk %}" class="btn btn-sm btn-outline-warning">
+                                                <i class="fas fa-edit"></i> ویرایش
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i class="fas fa-chart-line fa-3x text-muted mb-3"></i>
+                            <h4>هیچ سرنخ فروشی وجود ندارد</h4>
+                            <p class="text-muted">برای شروع کار، اولین سرنخ فروش خود را ایجاد کنید.</p>
+                            <a href="{% url 'sales:sales_lead_create' %}" class="btn btn-primary btn-lg">
+                                <i class="fas fa-plus"></i> ایجاد سرنخ جدید
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -401,7 +401,7 @@ class UserListView(StaffRequiredMixin, ListView):
     paginate_by = 20
     
     def get_queryset(self):
-        queryset = User.objects.all().order_by('-date_joined')
+        queryset = User.objects.all().order_by('-created_at')
         
         # فیلتر بر اساس نوع کاربر
         user_type = self.request.GET.get('user_type')
@@ -527,7 +527,9 @@ class AdvancedDashboardView(LoginRequiredMixin, TemplateView):
         ]
         
         # System status
-        context['api_usage_percentage'] = (user.api_calls_count / user.api_rate_limit) * 100
+        api_calls = getattr(user, 'api_calls_count', 0) or 0
+        api_limit = getattr(user, 'api_rate_limit', 1000) or 1000
+        context['api_usage_percentage'] = (api_calls / api_limit) * 100 if api_limit > 0 else 0
         context['storage_used'] = getattr(user, 'storage_used_mb', 0)
         
         return context

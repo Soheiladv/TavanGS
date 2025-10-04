@@ -290,9 +290,9 @@ class SalesLead(models.Model):
     ]
     
     # Lead identification
-    lead_id = models.UUIDField(default=uuid.uuid4, unique=True)
-    source = models.CharField(max_length=20, choices=LEAD_SOURCES)
-    status = models.CharField(max_length=20, choices=LEAD_STATUS, default='new')
+    lead_id = models.UUIDField(default=uuid.uuid4, unique=True, verbose_name="شناسه سرنخ")
+    source = models.CharField(max_length=20, choices=LEAD_SOURCES, verbose_name="منبع")
+    status = models.CharField(max_length=20, choices=LEAD_STATUS, default='new', verbose_name="وضعیت")
     
     # Contact information
     full_name = models.CharField(max_length=100, verbose_name="نام کامل")
@@ -302,19 +302,19 @@ class SalesLead(models.Model):
     job_title = models.CharField(max_length=100, blank=True, verbose_name="سمت")
     
     # Lead details
-    product_interest = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, blank=True)
-    estimated_value = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
-    currency = models.CharField(max_length=3, default='IRR')
+    product_interest = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="محصول مورد علاقه")
+    estimated_value = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True, verbose_name="ارزش تخمینی")
+    currency = models.CharField(max_length=3, default='IRR', verbose_name="واحد پول")
     notes = models.TextField(blank=True, verbose_name="یادداشت‌ها")
     
     # Assignment and follow-up
-    assigned_to = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='assigned_leads')
-    last_contact_date = models.DateTimeField(null=True, blank=True)
-    next_follow_up = models.DateTimeField(null=True, blank=True)
+    assigned_to = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='assigned_leads', verbose_name="واگذار شده به")
+    last_contact_date = models.DateTimeField(null=True, blank=True, verbose_name="آخرین تماس")
+    next_follow_up = models.DateTimeField(null=True, blank=True, verbose_name="پیگیری بعدی")
     
     # Timestamps
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="تاریخ ایجاد")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="تاریخ بروزرسانی")
     
     class Meta:
         ordering = ['-created_at']

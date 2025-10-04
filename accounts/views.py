@@ -431,7 +431,7 @@ class RoleCreateView(PermissionBaseView, CreateView):
 class RoleFormMixin:
     model = Role
     form_class = RoleForm
-    template_name = 'accounts/role/role_form.html'
+    template_name = 'accounts/role/role_form.html'  # آدرس تمپلیت جدید
     success_url = reverse_lazy('accounts:role_list')
 
     def get_context_data(self, **kwargs):
@@ -473,7 +473,9 @@ class RoleFormMixin:
         return sorted_tree
 
 class RoleUpdateView(PermissionBaseView, RoleFormMixin, UpdateView):
-    permission_codename = 'accounts.change_role'
+    permission_codename = 'modify_role'
+
+
 
 
 @method_decorator(has_permission('remove_role'), name='dispatch')

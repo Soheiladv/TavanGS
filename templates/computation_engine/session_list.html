@@ -1,0 +1,135 @@
+{% extends "base/base.html" %}
+{% load static rcms_custom_filters i18n jformat %}
+
+{% block title %}جلسات محاسباتی{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-cogs me-2"></i>جلسات محاسباتی
+                    </h3>
+                    <div class="card-tools">
+                        <a href="{% url 'computation_engine:session_create' %}" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> جلسه جدید
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    {% if sessions %}
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>ردیف</th>
+                                        <th>شناسه جلسه</th>
+                                        <th>کاربر</th>
+                                        <th>نوع جلسه</th>
+                                        <th>وضعیت</th>
+                                        <th>پیشرفت</th>
+                                        <th>تاریخ ایجاد</th>
+                                        <th>مدت زمان</th>
+                                        <th>عملیات</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for session in sessions %}
+                                    <tr>
+                                        <td>{{ forloop.counter |format_negative }}</td>
+                                        <td>
+                                            <code>{{ session.session_id|truncatechars:8 }}</code>
+                                        </td>
+                                        <td>{{ session.user.get_full_name|default:session.user.username }}</td>
+                                        <td>
+                                            <span class="badge badge-info">
+                                                {{ session.get_session_type_display }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="badge badge-{{ session.status|status_badge }}">
+                                                {{ session.get_status_display }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <div class="progress" style="width: 100px;">
+                                                <div class="progress-bar" role="progressbar" 
+                                                     style="width: {{ session.progress_percentage }}%"
+                                                     aria-valuenow="{{ session.progress_percentage }}" 
+                                                     aria-valuemin="0" aria-valuemax="100">
+                                                    {{ session.progress_percentage }}%
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>{{ session.created_at|jformat:"%Y/%m/%d %H:%M" }}</td>
+                                        <td>
+                                            {% if session.duration %}
+                                                {{ session.duration|floatformat:2 }} ثانیه
+                                            {% else %}
+                                                -
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <a href="{% url 'computation_engine:session_detail' session.session_id %}" 
+                                               class="btn btn-sm btn-info" title="مشاهده جزئیات">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <a href="{% url 'computation_engine:session_edit' session.pk %}" 
+                                               class="btn btn-sm btn-warning" title="ویرایش">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- Pagination -->
+                        {% if is_paginated %}
+                        <nav aria-label="صفحه‌بندی جلسات">
+                            <ul class="pagination justify-content-center">
+                                {% if page_obj.has_previous %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page=1">اول</a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">قبلی</a>
+                                    </li>
+                                {% endif %}
+                                
+                                <li class="page-item active">
+                                    <span class="page-link">
+                                        صفحه {{ page_obj.number }} از {{ page_obj.paginator.num_pages }}
+                                    </span>
+                                </li>
+                                
+                                {% if page_obj.has_next %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ page_obj.next_page_number }}">بعدی</a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">آخر</a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                        {% endif %}
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i class="fas fa-cogs fa-3x text-muted mb-3"></i>
+                            <h4>هیچ جلسه محاسباتی یافت نشد</h4>
+                            <p class="text-muted">برای شروع، جلسه محاسباتی جدیدی ایجاد کنید.</p>
+                            <a href="{% url 'computation_engine:session_create' %}" class="btn btn-primary">
+                                <i class="fas fa-plus"></i> جلسه جدید
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -36,6 +36,7 @@
     <link href="{% static 'css/fonts.css' %}" rel="stylesheet">
     {% load system_fonts %}
     {% include 'settings_app/font_css_include.html' %}
+
     <link href="{% static 'css/fa-path.css' %}" rel="stylesheet">
     <link href="{% static 'vendor/bootstrap/bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'css/all.min.css' %}" rel="stylesheet">
@@ -45,7 +46,9 @@
         <!-- Font Awesome CSS - اولویت بالا -->
     <link href="{% static 'css/all.min.css' %}" rel="stylesheet" crossorigin="anonymous">
    <!-- استایل‌های سفارشی -->
-    <link rel="stylesheet" href="{% static 'admin/css/' %}">
+    <link href="{% static 'css/custom.css' %}" rel="stylesheet">
+    <link href="{% static 'css/custom_admin.css' %}" rel="stylesheet">
+    <link href="{% static 'css/custom_base.css' %}" rel="stylesheet">
     
     <!-- RTL Support -->
     <style>
@@ -109,6 +112,7 @@
                     <a href="{% url 'products:home' %}" class="text-gray-700 hover:text-primary font-medium">خانه</a>
                     <a href="{% url 'products:list' %}" class="text-gray-700 hover:text-primary font-medium">محصولات</a>
                     <a href="{% url 'services:list' %}" class="text-gray-700 hover:text-primary font-medium">خدمات</a>
+                    <a href="{% url 'news:news_list' %}" class="text-gray-700 hover:text-primary font-medium">اخبار</a>
                     {% if feature_flags.sandbox %}
                     <a href="{% url 'products:sandbox' %}" class="text-gray-700 hover:text-primary font-medium">آزمایشگاه</a>
                     {% endif %}
@@ -135,6 +139,9 @@
                         <div class="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
                             <a href="{% url 'users:profile' %}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">{% trans "Profile" %}</a>
                             <a href="{% url 'tickets:list' %}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">{% trans "My Tickets" %}</a>
+                            <a href="{% url 'accounts:custom_theme_designer' %}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-palette me-2"></i>طراح تم
+                            </a>
                             <hr>
                             <a href="{% url 'account_logout' %}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">{% trans "Logout" %}</a>
                         </div>
@@ -157,6 +164,7 @@
                     <a href="{% url 'products:home' %}" class="text-gray-700 hover:text-primary py-2">خانه</a>
                     <a href="{% url 'products:list' %}" class="text-gray-700 hover:text-primary py-2">محصولات</a>
                     <a href="{% url 'services:list' %}" class="text-gray-700 hover:text-primary py-2">خدمات</a>
+                    <a href="{% url 'news:news_list' %}" class="text-gray-700 hover:text-primary py-2">اخبار</a>
                     {% if feature_flags.sandbox %}
                     <a href="{% url 'products:sandbox' %}" class="text-gray-700 hover:text-primary py-2">آزمایشگاه</a>
                     {% endif %}
@@ -167,6 +175,9 @@
                     <a href="{% url 'products:hero_quiz' %}" class="text-gray-700 hover:text-primary py-2">کوئیز قهرمان</a>
                     {% if user.is_authenticated %}
                     <a href="{% url 'users:dashboard' %}" class="text-gray-700 hover:text-primary py-2">داشبورد</a>
+                    <a href="{% url 'accounts:custom_theme_designer' %}" class="text-gray-700 hover:text-primary py-2">
+                        <i class="fas fa-palette me-2"></i>طراح تم
+                    </a>
                     {% else %}
                     <a href="{% url 'account_login' %}" class="text-gray-700 hover:text-primary py-2">ورود</a>
                     <a href="{% url 'account_signup' %}" class="text-gray-700 hover:text-primary py-2">ثبت‌نام</a>
@@ -184,6 +195,8 @@
                 <span class="text-gray-700">میانبر:</span>
                 <a href="{% url 'users:dashboard' %}" class="text-primary hover:underline">داشبورد</a>
                 <a href="{% url 'tickets:list' %}" class="text-primary hover:underline">تیکت‌ها</a>
+                <a href="{% url 'news:news_list' %}" class="text-primary hover:underline">اخبار</a>
+                <a href="{% url 'accounts:custom_theme_designer' %}" class="text-primary hover:underline">طراح تم</a>
                 {% if user.is_staff %}
                 <a href="{% url 'settings_app:control_dashboard' %}" class="text-secondary hover:underline">کنترل‌پنل</a>
                 {% endif %}

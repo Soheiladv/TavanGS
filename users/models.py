@@ -102,8 +102,8 @@ class User(AbstractUser):
     objects = UserManager()
     
     class Meta:
-        verbose_name = _('User')
-        verbose_name_plural = _('Users')
+        verbose_name = 'کاربر'
+        verbose_name_plural = 'کاربران'
         ordering = ['-created_at']
         default_permissions = ()
         permissions = [

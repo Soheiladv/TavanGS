@@ -78,6 +78,7 @@ TAKOTECH_APPS = [
     'tickets.apps.TicketsConfig',
     'security.apps.SecurityConfig',
     'accounts.apps.AccountsConfig',  # Advanced Accounts Management
+    'news.apps.NewsConfig',  # News Management System
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + TAKOTECH_APPS
@@ -160,9 +161,11 @@ AUTHENTICATION_BACKENDS = (
 )
 
 # Session  os.getenvuration
-SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
-SESSION_CACHE_ALIAS = 'default'
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 SESSION_COOKIE_AGE = 86400  # 24 hours
+SESSION_COOKIE_SECURE = False  # Set to True in production with HTTPS
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = 'Lax'
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [

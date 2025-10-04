@@ -84,6 +84,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(max_length=150, blank=True, verbose_name=_('فامیلی'))
     is_active = models.BooleanField(default=True, verbose_name=_('فعالیت'))
     is_staff = models.BooleanField(default=False, verbose_name=_('کارمندی؟'))
+    created_at = models.DateTimeField(auto_now_add=True)
 
     user_permissions = models.ManyToManyField(
         Permission,

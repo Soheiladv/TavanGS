@@ -136,24 +136,4 @@ error: پیام خطا (در صورت وجود).
 
 مدیریت خطا: خطاها (مثل کاربر ناموجود یا خطای دسترسی به current_stage) لاگ شده و خروجی مناسب برگردانده می‌شود.
 '''
-
-
-def check_user_factor_access__(username, tankhah, action_type, entity_type, default_stage_order=1):
-    user = CustomUser.objects.get(username=username)
-    user_post = user.userpost_set.filter(is_active=True).first()
-    if not user_post:
-        return {'has_access': False, 'error': 'No active post'}
-
-    user_level = user_post.post.level
-    access_rule = AccessRule.objects.filter(
-        entity_type=entity_type,
-        stage_order=default_stage_order,
-        action_type=action_type,
-        organization=tankhah.organization,
-        min_level__gte=user_level,  # تغییر به gte برای سازگاری با level کمتر = مقام بالاتر
-        is_active=True
-    ).first()
-
-    if access_rule:
-        return {'has_access': True}
-    return {'has_access': False, 'error': f'User level {user_level} not sufficient for min_level'}
+ 

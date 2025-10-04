@@ -1,0 +1,1099 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block title %}طراح تم پیشرفته{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/global-styles.css' %}">
+<style>
+    .theme-designer {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 2rem 0;
+    }
+    
+    .designer-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 1rem;
+    }
+    
+    .designer-header {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+    
+    .designer-header h1 {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+    
+    .designer-header p {
+        color: #6b7280;
+        font-size: 1.1rem;
+        margin-bottom: 0;
+    }
+    
+    .designer-grid {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+    
+    .control-panel {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        height: fit-content;
+        position: sticky;
+        top: 2rem;
+    }
+    
+    .preview-panel {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+    
+    .control-section {
+        margin-bottom: 2rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid #e5e7eb;
+    }
+    
+    .control-section:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+    }
+    
+    .section-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .section-title i {
+        color: #667eea;
+    }
+    
+    .color-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+    
+    .color-item {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .color-label {
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: #374151;
+    }
+    
+    .color-input-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .color-input {
+        width: 100%;
+        height: 40px;
+        border: 2px solid #e5e7eb;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .color-input:hover {
+        border-color: #667eea;
+        transform: scale(1.02);
+    }
+    
+    .color-value {
+        font-size: 0.8rem;
+        color: #6b7280;
+        font-family: monospace;
+        background: #f3f4f6;
+        padding: 0.25rem 0.5rem;
+        border-radius: 5px;
+        min-width: 80px;
+        text-align: center;
+    }
+    
+    .slider-item {
+        margin-bottom: 1.5rem;
+    }
+    
+    .slider-label {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: #374151;
+    }
+    
+    .slider-value {
+        background: #667eea;
+        color: white;
+        padding: 0.25rem 0.5rem;
+        border-radius: 5px;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+    
+    .slider {
+        width: 100%;
+        height: 8px;
+        border-radius: 4px;
+        background: linear-gradient(90deg, #e5e7eb, #667eea);
+        outline: none;
+        -webkit-appearance: none;
+        cursor: pointer;
+    }
+    
+    .slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #667eea;
+        cursor: pointer;
+        box-shadow: 0 2px 6px rgba(102, 126, 234, 0.4);
+        transition: all 0.3s ease;
+    }
+    
+    .slider::-webkit-slider-thumb:hover {
+        transform: scale(1.2);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.6);
+    }
+    
+    .preset-buttons {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+    }
+    
+    .preset-btn {
+        padding: 0.75rem;
+        border: 2px solid #e5e7eb;
+        border-radius: 10px;
+        background: white;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+    
+    .preset-btn:hover {
+        border-color: #667eea;
+        background: #f8fafc;
+        transform: translateY(-2px);
+    }
+    
+    .preset-btn.active {
+        border-color: #667eea;
+        background: #667eea;
+        color: white;
+    }
+    
+    .preview-container {
+        background: #f8fafc;
+        border-radius: 15px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+    }
+    
+    .preview-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    
+    .preview-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 0.5rem;
+    }
+    
+    .preview-subtitle {
+        color: #6b7280;
+        font-size: 1rem;
+    }
+    
+    .preview-components {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+    }
+    
+    .preview-card {
+        background: white;
+        border-radius: 15px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        border: 1px solid #e5e7eb;
+    }
+    
+    .preview-card h6 {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+    
+    .preview-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        justify-content: center;
+    }
+    
+    .preview-btn {
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .preview-btn-primary {
+        background: var(--primary-color, #667eea);
+        color: white;
+    }
+    
+    .preview-btn-secondary {
+        background: var(--secondary-color, #6b7280);
+        color: white;
+    }
+    
+    .preview-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    .preview-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .preview-input {
+        padding: 0.75rem;
+        border: 2px solid #e5e7eb;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+    }
+    
+    .preview-input:focus {
+        outline: none;
+        border-color: var(--primary-color, #667eea);
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+    
+    .preview-table {
+        width: 100%;
+        border-collapse: collapse;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    
+    .preview-table th {
+        background: var(--primary-color, #667eea);
+        color: white;
+        padding: 0.75rem;
+        font-weight: 600;
+        text-align: center;
+    }
+    
+    .preview-table td {
+        padding: 0.75rem;
+        text-align: center;
+        border-bottom: 1px solid #e5e7eb;
+    }
+    
+    .preview-table tr:nth-child(even) {
+        background: #f8fafc;
+    }
+    
+    .action-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 2rem;
+    }
+    
+    .action-btn {
+        padding: 1rem 2rem;
+        border: none;
+        border-radius: 12px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .btn-save {
+        background: linear-gradient(135deg, #10b981, #059669);
+        color: white;
+    }
+    
+    .btn-apply {
+        background: linear-gradient(135deg, #3b82f6, #2563eb);
+        color: white;
+    }
+    
+    .btn-reset {
+        background: linear-gradient(135deg, #ef4444, #dc2626);
+        color: white;
+    }
+    
+    .btn-export {
+        background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+        color: white;
+    }
+    
+    .action-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+    
+    .help-section {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        margin-top: 2rem;
+    }
+    
+    .help-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+    
+    .help-content {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+    }
+    
+    .help-item {
+        background: #f8fafc;
+        border-radius: 12px;
+        padding: 1.5rem;
+        border-left: 4px solid #667eea;
+    }
+    
+    .help-item h6 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 0.5rem;
+    }
+    
+    .help-item p {
+        color: #6b7280;
+        font-size: 0.9rem;
+        line-height: 1.5;
+        margin: 0;
+    }
+    
+    .live-preview-widget {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        padding: 1rem;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        z-index: 1000;
+        min-width: 200px;
+        border: 1px solid #e5e7eb;
+    }
+    
+    .live-preview-title {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 0.5rem;
+        text-align: center;
+    }
+    
+    .live-preview-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+        font-size: 0.8rem;
+    }
+    
+    .live-preview-color {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        border: 2px solid #e5e7eb;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    @media (max-width: 1024px) {
+        .designer-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .control-panel {
+            position: relative;
+            top: auto;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .color-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .preset-buttons {
+            grid-template-columns: 1fr;
+        }
+        
+        .action-buttons {
+            flex-direction: column;
+        }
+        
+        .live-preview-widget {
+            position: relative;
+            top: auto;
+            right: auto;
+            margin-bottom: 2rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="theme-designer">
+    <div class="designer-container">
+        <div class="designer-header">
+            <h1>
+                <i class="fas fa-palette me-2"></i>
+                طراح تم پیشرفته
+            </h1>
+            <p>رنگ‌ها، فونت‌ها و استایل‌های خود را با راهنمای کامل طراحی کنید</p>
+        </div>
+        
+        <div class="designer-grid">
+            <!-- Control Panel -->
+            <div class="control-panel">
+                <form method="post" id="themeForm">
+                    {% csrf_token %}
+                    
+                    <!-- Live Preview Widget -->
+                    <div class="live-preview-widget">
+                        <div class="live-preview-title">پیش‌نمایش زنده</div>
+                        <div class="live-preview-item">
+                            <span>رنگ اصلی:</span>
+                            <div class="live-preview-color" id="previewPrimary"></div>
+                        </div>
+                        <div class="live-preview-item">
+                            <span>رنگ ثانویه:</span>
+                            <div class="live-preview-color" id="previewSecondary"></div>
+                        </div>
+                        <div class="live-preview-item">
+                            <span>پس‌زمینه:</span>
+                            <div class="live-preview-color" id="previewBackground"></div>
+                        </div>
+                        <div class="live-preview-item">
+                            <span>سطح:</span>
+                            <div class="live-preview-color" id="previewSurface"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Color Presets -->
+                    <div class="control-section">
+                        <div class="section-title">
+                            <i class="fas fa-palette"></i>
+                            تم‌های آماده
+                        </div>
+                        <div class="preset-buttons">
+                            <button type="button" class="preset-btn" onclick="applyPreset('modern')">مدرن</button>
+                            <button type="button" class="preset-btn" onclick="applyPreset('classic')">کلاسیک</button>
+                            <button type="button" class="preset-btn" onclick="applyPreset('dark')">تیره</button>
+                            <button type="button" class="preset-btn" onclick="applyPreset('minimal')">مینیمال</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Color Controls -->
+                    <div class="control-section">
+                        <div class="section-title">
+                            <i class="fas fa-fill-drip"></i>
+                            رنگ‌بندی
+                        </div>
+                        <div class="color-grid">
+                            <div class="color-item">
+                                <label class="color-label">رنگ اصلی</label>
+                                <div class="color-input-wrapper">
+                                    <input type="color" class="color-input" name="primary_color" id="primaryColor" 
+                                           value="{{ custom_theme.primary_color|default:'#667eea' }}" onchange="updatePreview()">
+                                    <span class="color-value" id="primaryValue">#667eea</span>
+                                </div>
+                            </div>
+                            
+                            <div class="color-item">
+                                <label class="color-label">رنگ ثانویه</label>
+                                <div class="color-input-wrapper">
+                                    <input type="color" class="color-input" name="secondary_color" id="secondaryColor" 
+                                           value="{{ custom_theme.secondary_color|default:'#6b7280' }}" onchange="updatePreview()">
+                                    <span class="color-value" id="secondaryValue">#6b7280</span>
+                                </div>
+                            </div>
+                            
+                            <div class="color-item">
+                                <label class="color-label">پس‌زمینه</label>
+                                <div class="color-input-wrapper">
+                                    <input type="color" class="color-input" name="background_color" id="backgroundColor" 
+                                           value="{{ custom_theme.background_color|default:'#f8fafc' }}" onchange="updatePreview()">
+                                    <span class="color-value" id="backgroundValue">#f8fafc</span>
+                                </div>
+                            </div>
+                            
+                            <div class="color-item">
+                                <label class="color-label">سطح</label>
+                                <div class="color-input-wrapper">
+                                    <input type="color" class="color-input" name="surface_color" id="surfaceColor" 
+                                           value="{{ custom_theme.surface_color|default:'#ffffff' }}" onchange="updatePreview()">
+                                    <span class="color-value" id="surfaceValue">#ffffff</span>
+                                </div>
+                            </div>
+                            
+                            <div class="color-item">
+                                <label class="color-label">متن</label>
+                                <div class="color-input-wrapper">
+                                    <input type="color" class="color-input" name="text_color" id="textColor" 
+                                           value="{{ custom_theme.text_color|default:'#374151' }}" onchange="updatePreview()">
+                                    <span class="color-value" id="textValue">#374151</span>
+                                </div>
+                            </div>
+                            
+                            <div class="color-item">
+                                <label class="color-label">حاشیه</label>
+                                <div class="color-input-wrapper">
+                                    <input type="color" class="color-input" name="border_color" id="borderColor" 
+                                           value="{{ custom_theme.border_color|default:'#e5e7eb' }}" onchange="updatePreview()">
+                                    <span class="color-value" id="borderValue">#e5e7eb</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Typography Controls -->
+                    <div class="control-section">
+                        <div class="section-title">
+                            <i class="fas fa-font"></i>
+                            تایپوگرافی
+                        </div>
+                        <div class="slider-item">
+                            <div class="slider-label">
+                                <span>اندازه فونت</span>
+                                <span class="slider-value" id="fontSizeValue">{{ custom_theme.font_size|default:'14' }}px</span>
+                            </div>
+                            <input type="range" class="slider" name="font_size" id="fontSize" 
+                                   min="12" max="20" value="{{ custom_theme.font_size|default:'14' }}" 
+                                   oninput="updateSliderValue('fontSizeValue', this.value + 'px'); updatePreview()">
+                        </div>
+                        
+                        <div class="slider-item">
+                            <div class="slider-label">
+                                <span>فاصله خطوط</span>
+                                <span class="slider-value" id="lineHeightValue">{{ custom_theme.line_height|default:'1.5' }}</span>
+                            </div>
+                            <input type="range" class="slider" name="line_height" id="lineHeight" 
+                                   min="1.2" max="2.0" step="0.1" value="{{ custom_theme.line_height|default:'1.5' }}" 
+                                   oninput="updateSliderValue('lineHeightValue', this.value); updatePreview()">
+                        </div>
+                    </div>
+                    
+                    <!-- Layout Controls -->
+                    <div class="control-section">
+                        <div class="section-title">
+                            <i class="fas fa-ruler-combined"></i>
+                            چیدمان
+                        </div>
+                        <div class="slider-item">
+                            <div class="slider-label">
+                                <span>شعاع گوشه‌ها</span>
+                                <span class="slider-value" id="borderRadiusValue">{{ custom_theme.border_radius|default:'8' }}px</span>
+                            </div>
+                            <input type="range" class="slider" name="border_radius" id="borderRadius" 
+                                   min="0" max="25" value="{{ custom_theme.border_radius|default:'8' }}" 
+                                   oninput="updateSliderValue('borderRadiusValue', this.value + 'px'); updatePreview()">
+                        </div>
+                        
+                        <div class="slider-item">
+                            <div class="slider-label">
+                                <span>فاصله‌گذاری</span>
+                                <span class="slider-value" id="spacingValue">{{ custom_theme.spacing|default:'16' }}px</span>
+                            </div>
+                            <input type="range" class="slider" name="spacing" id="spacing" 
+                                   min="8" max="32" value="{{ custom_theme.spacing|default:'16' }}" 
+                                   oninput="updateSliderValue('spacingValue', this.value + 'px'); updatePreview()">
+                        </div>
+                    </div>
+                    
+                    <!-- Shadow Controls -->
+                    <div class="control-section">
+                        <div class="section-title">
+                            <i class="fas fa-layer-group"></i>
+                            سایه‌ها
+                        </div>
+                        <div class="slider-item">
+                            <div class="slider-label">
+                                <span>شدت سایه</span>
+                                <span class="slider-value" id="shadowValue">{{ custom_theme.shadow_intensity|default:'0.1' }}</span>
+                            </div>
+                            <input type="range" class="slider" name="shadow_intensity" id="shadowIntensity" 
+                                   min="0" max="0.5" step="0.05" value="{{ custom_theme.shadow_intensity|default:'0.1' }}" 
+                                   oninput="updateSliderValue('shadowValue', this.value); updatePreview()">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Preview Panel -->
+            <div class="preview-panel">
+                <div class="preview-container">
+                    <div class="preview-header">
+                        <h3 class="preview-title">پیش‌نمایش زنده</h3>
+                        <p class="preview-subtitle">تغییرات شما به صورت لحظه‌ای نمایش داده می‌شود</p>
+                    </div>
+                    
+                    <div class="preview-components">
+                        <!-- Buttons Preview -->
+                        <div class="preview-card">
+                            <h6>دکمه‌ها</h6>
+                            <div class="preview-buttons">
+                                <button class="preview-btn preview-btn-primary">دکمه اصلی</button>
+                                <button class="preview-btn preview-btn-secondary">دکمه ثانویه</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Form Preview -->
+                        <div class="preview-card">
+                            <h6>فرم‌ها</h6>
+                            <div class="preview-form">
+                                <input type="text" class="preview-input" placeholder="نام کاربری">
+                                <input type="email" class="preview-input" placeholder="ایمیل">
+                                <select class="preview-input">
+                                    <option>انتخاب کنید</option>
+                                    <option>گزینه 1</option>
+                                    <option>گزینه 2</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <!-- Table Preview -->
+                        <div class="preview-card">
+                            <h6>جدول‌ها</h6>
+                            <table class="preview-table">
+                                <thead>
+                                    <tr>
+                                        <th>نام</th>
+                                        <th>ایمیل</th>
+                                        <th>وضعیت</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>احمد محمدی</td>
+                                        <td>ahmad@example.com</td>
+                                        <td>فعال</td>
+                                    </tr>
+                                    <tr>
+                                        <td>فاطمه احمدی</td>
+                                        <td>fatemeh@example.com</td>
+                                        <td>غیرفعال</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- Cards Preview -->
+                        <div class="preview-card">
+                            <h6>کارت‌ها</h6>
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
+                                <div style="background: var(--surface-color, #ffffff); border: 1px solid var(--border-color, #e5e7eb); border-radius: var(--border-radius-md, 8px); padding: 1rem; text-align: center;">
+                                    <h6 style="margin: 0 0 0.5rem 0; color: var(--text-color, #374151);">کارت 1</h6>
+                                    <p style="margin: 0; color: var(--text-color, #6b7280); font-size: 0.9rem;">توضیحات</p>
+                                </div>
+                                <div style="background: var(--surface-color, #ffffff); border: 1px solid var(--border-color, #e5e7eb); border-radius: var(--border-radius-md, 8px); padding: 1rem; text-align: center;">
+                                    <h6 style="margin: 0 0 0.5rem 0; color: var(--text-color, #374151);">کارت 2</h6>
+                                    <p style="margin: 0; color: var(--text-color, #6b7280); font-size: 0.9rem;">توضیحات</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button type="submit" form="themeForm" class="action-btn btn-save">
+                        <i class="fas fa-save"></i>
+                        ذخیره تم
+                    </button>
+                    
+                    <button type="button" class="action-btn btn-apply" onclick="applyCustomTheme()">
+                        <i class="fas fa-check"></i>
+                        اعمال تم
+                    </button>
+                    
+                    <button type="button" class="action-btn btn-export" onclick="exportTheme()">
+                        <i class="fas fa-download"></i>
+                        صادرات CSS
+                    </button>
+                    
+                    <button type="button" class="action-btn btn-reset" onclick="resetTheme()">
+                        <i class="fas fa-undo"></i>
+                        بازنشانی
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Help Section -->
+        <div class="help-section">
+            <h3 class="help-title">
+                <i class="fas fa-question-circle me-2"></i>
+                راهنمای استفاده
+            </h3>
+            <div class="help-content">
+                <div class="help-item">
+                    <h6>🎨 انتخاب رنگ‌ها</h6>
+                    <p>برای انتخاب رنگ‌ها، روی مربع رنگی کلیک کنید و رنگ مورد نظر خود را انتخاب کنید. تغییرات به صورت لحظه‌ای در پیش‌نمایش نمایش داده می‌شود.</p>
+                </div>
+                
+                <div class="help-item">
+                    <h6>📏 تنظیم اندازه‌ها</h6>
+                    <p>از اسلایدرها برای تنظیم اندازه فونت، شعاع گوشه‌ها و سایر ابعاد استفاده کنید. مقادیر به صورت زنده به‌روزرسانی می‌شوند.</p>
+                </div>
+                
+                <div class="help-item">
+                    <h6>🎯 تم‌های آماده</h6>
+                    <p>برای شروع سریع، از تم‌های آماده استفاده کنید. هر تم شامل مجموعه‌ای از رنگ‌ها و تنظیمات بهینه است.</p>
+                </div>
+                
+                <div class="help-item">
+                    <h6>💾 ذخیره و اعمال</h6>
+                    <p>پس از طراحی، تم خود را ذخیره کنید. می‌توانید CSS تولید شده را نیز صادر کنید تا در پروژه‌های دیگر استفاده کنید.</p>
+                </div>
+                
+                <div class="help-item">
+                    <h6>🔄 بازنشانی</h6>
+                    <p>در هر زمان می‌توانید تنظیمات را به حالت پیش‌فرض بازگردانید یا از تم‌های آماده استفاده کنید.</p>
+                </div>
+                
+                <div class="help-item">
+                    <h6>📱 سازگاری موبایل</h6>
+                    <p>تم طراحی شده شما در تمام دستگاه‌ها (دسکتاپ، تبلت، موبایل) به درستی نمایش داده می‌شود.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Color presets
+const presets = {
+    modern: {
+        primary: '#667eea',
+        secondary: '#764ba2',
+        background: '#f8fafc',
+        surface: '#ffffff',
+        text: '#374151',
+        border: '#e5e7eb'
+    },
+    classic: {
+        primary: '#3b82f6',
+        secondary: '#6b7280',
+        background: '#ffffff',
+        surface: '#f9fafb',
+        text: '#1f2937',
+        border: '#d1d5db'
+    },
+    dark: {
+        primary: '#8b5cf6',
+        secondary: '#a78bfa',
+        background: '#111827',
+        surface: '#1f2937',
+        text: '#f9fafb',
+        border: '#374151'
+    },
+    minimal: {
+        primary: '#000000',
+        secondary: '#6b7280',
+        background: '#ffffff',
+        surface: '#ffffff',
+        text: '#000000',
+        border: '#e5e7eb'
+    }
+};
+
+// Update slider value display
+function updateSliderValue(elementId, value) {
+    document.getElementById(elementId).textContent = value;
+}
+
+// Update color value display
+function updateColorValue(colorId, value) {
+    document.getElementById(colorId + 'Value').textContent = value;
+}
+
+// Update live preview
+function updatePreview() {
+    const primaryColor = document.getElementById('primaryColor').value;
+    const secondaryColor = document.getElementById('secondaryColor').value;
+    const backgroundColor = document.getElementById('backgroundColor').value;
+    const surfaceColor = document.getElementById('surfaceColor').value;
+    const textColor = document.getElementById('textColor').value;
+    const borderColor = document.getElementById('borderColor').value;
+    const borderRadius = document.getElementById('borderRadius').value;
+    const fontSize = document.getElementById('fontSize').value;
+    const lineHeight = document.getElementById('lineHeight').value;
+    const spacing = document.getElementById('spacing').value;
+    const shadowIntensity = document.getElementById('shadowIntensity').value;
+    
+    // Update preview colors
+    document.getElementById('previewPrimary').style.backgroundColor = primaryColor;
+    document.getElementById('previewSecondary').style.backgroundColor = secondaryColor;
+    document.getElementById('previewBackground').style.backgroundColor = backgroundColor;
+    document.getElementById('previewSurface').style.backgroundColor = surfaceColor;
+    
+    // Update color value displays
+    updateColorValue('primary', primaryColor);
+    updateColorValue('secondary', secondaryColor);
+    updateColorValue('background', backgroundColor);
+    updateColorValue('surface', surfaceColor);
+    updateColorValue('text', textColor);
+    updateColorValue('border', borderColor);
+    
+    // Update CSS variables for live preview
+    document.documentElement.style.setProperty('--primary-color', primaryColor);
+    document.documentElement.style.setProperty('--secondary-color', secondaryColor);
+    document.documentElement.style.setProperty('--background-color', backgroundColor);
+    document.documentElement.style.setProperty('--surface-color', surfaceColor);
+    document.documentElement.style.setProperty('--text-color', textColor);
+    document.documentElement.style.setProperty('--border-color', borderColor);
+    document.documentElement.style.setProperty('--border-radius-md', borderRadius + 'px');
+    document.documentElement.style.setProperty('--font-size-base', fontSize + 'px');
+    document.documentElement.style.setProperty('--line-height-base', lineHeight);
+    document.documentElement.style.setProperty('--spacing-md', spacing + 'px');
+    document.documentElement.style.setProperty('--shadow-color', `rgba(0, 0, 0, ${shadowIntensity})`);
+}
+
+// Apply preset
+function applyPreset(presetName) {
+    const preset = presets[presetName];
+    if (!preset) return;
+    
+    // Update form values
+    document.getElementById('primaryColor').value = preset.primary;
+    document.getElementById('secondaryColor').value = preset.secondary;
+    document.getElementById('backgroundColor').value = preset.background;
+    document.getElementById('surfaceColor').value = preset.surface;
+    document.getElementById('textColor').value = preset.text;
+    document.getElementById('borderColor').value = preset.border;
+    
+    // Update preview
+    updatePreview();
+    
+    // Update active preset button
+    document.querySelectorAll('.preset-btn').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+}
+
+// Apply custom theme
+function applyCustomTheme() {
+    const form = document.getElementById('themeForm');
+    const formData = new FormData(form);
+    
+    fetch('{% url "accounts:apply_custom_theme" %}', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            // Show success message
+            showNotification('تم با موفقیت اعمال شد!', 'success');
+            setTimeout(() => location.reload(), 1000);
+        } else {
+            showNotification('خطا در اعمال تم!', 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showNotification('خطا در اعمال تم!', 'error');
+    });
+}
+
+// Export theme as CSS
+function exportTheme() {
+    const primaryColor = document.getElementById('primaryColor').value;
+    const secondaryColor = document.getElementById('secondaryColor').value;
+    const backgroundColor = document.getElementById('backgroundColor').value;
+    const surfaceColor = document.getElementById('surfaceColor').value;
+    const textColor = document.getElementById('textColor').value;
+    const borderColor = document.getElementById('borderColor').value;
+    const borderRadius = document.getElementById('borderRadius').value;
+    const fontSize = document.getElementById('fontSize').value;
+    const lineHeight = document.getElementById('lineHeight').value;
+    const spacing = document.getElementById('spacing').value;
+    const shadowIntensity = document.getElementById('shadowIntensity').value;
+    
+    const css = `:root {
+    --primary-color: ${primaryColor};
+    --secondary-color: ${secondaryColor};
+    --background-color: ${backgroundColor};
+    --surface-color: ${surfaceColor};
+    --text-color: ${textColor};
+    --border-color: ${borderColor};
+    --border-radius-md: ${borderRadius}px;
+    --font-size-base: ${fontSize}px;
+    --line-height-base: ${lineHeight};
+    --spacing-md: ${spacing}px;
+    --shadow-color: rgba(0, 0, 0, ${shadowIntensity});
+}`;
+    
+    // Create and download file
+    const blob = new Blob([css], { type: 'text/css' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'custom-theme.css';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    showNotification('فایل CSS صادر شد!', 'success');
+}
+
+// Reset theme
+function resetTheme() {
+    if (confirm('آیا مطمئن هستید که می‌خواهید تم را به حالت پیش‌فرض بازگردانید؟')) {
+        document.getElementById('primaryColor').value = '#667eea';
+        document.getElementById('secondaryColor').value = '#6b7280';
+        document.getElementById('backgroundColor').value = '#f8fafc';
+        document.getElementById('surfaceColor').value = '#ffffff';
+        document.getElementById('textColor').value = '#374151';
+        document.getElementById('borderColor').value = '#e5e7eb';
+        document.getElementById('borderRadius').value = '8';
+        document.getElementById('fontSize').value = '14';
+        document.getElementById('lineHeight').value = '1.5';
+        document.getElementById('spacing').value = '16';
+        document.getElementById('shadowIntensity').value = '0.1';
+        
+        updatePreview();
+        showNotification('تم به حالت پیش‌فرض بازگردانده شد!', 'info');
+    }
+}
+
+// Show notification
+function showNotification(message, type = 'info') {
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6'};
+        color: white;
+        padding: 1rem 1.5rem;
+        border-radius: 10px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        z-index: 10000;
+        font-weight: 500;
+        animation: slideIn 0.3s ease;
+    `;
+    notification.textContent = message;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => document.body.removeChild(notification), 300);
+    }, 3000);
+}
+
+// Add CSS animations
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideIn {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    @keyframes slideOut {
+        from { transform: translateX(0); opacity: 1; }
+        to { transform: translateX(100%); opacity: 0; }
+    }
+`;
+document.head.appendChild(style);
+
+// Initialize preview on page load
+document.addEventListener('DOMContentLoaded', function() {
+    updatePreview();
+    
+    // Add event listeners for all color inputs
+    document.querySelectorAll('input[type="color"]').forEach(input => {
+        input.addEventListener('input', updatePreview);
+    });
+    
+    // Add event listeners for all sliders
+    document.querySelectorAll('input[type="range"]').forEach(slider => {
+        slider.addEventListener('input', updatePreview);
+    });
+});
+</script>
+{% endblock %}
