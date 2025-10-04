@@ -4859,3 +4859,6 @@ INFO 2025-10-04 11:04:49,316 basehttp 3724 2612 "GET /settings/css/dynamic.css H
 WARNING 2025-10-04 11:04:55,776 base 3724 2612 Method Not Allowed (POST): /users/advanced-profile/
 WARNING 2025-10-04 11:04:55,778 log 3724 2612 Method Not Allowed: /users/advanced-profile/
 WARNING 2025-10-04 11:04:55,779 basehttp 3724 2612 "POST /users/advanced-profile/ HTTP/1.1" 405 0
+INFO 2025-10-04 11:16:43,586 basehttp 3724 30260 "GET /settings/control/ HTTP/1.1" 200 33550
+INFO 2025-10-04 11:16:43,683 basehttp 3724 21016 "GET /settings/css/dynamic.css HTTP/1.1" 200 5524
+WARNING 2025-10-04 11:16:43,698 basehttp 3724 30260 "GET /static/vendor/fontawesome/css/all.min.css HTTP/1.1" 404 2029
