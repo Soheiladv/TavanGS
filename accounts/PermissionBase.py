@@ -184,7 +184,7 @@ class PermissionBaseView(View):
         if not user.is_authenticated:
             logger.warning(f"[PERM_CHECK] Unauthorized access attempt by anonymous user to {request.path}")
             messages.error(request, self.login_required_message)
-            return redirect('login')
+            return redirect('accounts:login')
 
         # --- مرحله 2: بررسی پریمیژن‌های عمومی ---
         if not self.has_required_permissions(user):
@@ -238,7 +238,7 @@ def check_permission_and_organization(permissions: Union[str, List[str]] = None,
             # بررسی احراز هویت
             if not user.is_authenticated:
                 logger.warning(f"[PERM_CHECK] Unauthorized access attempt by anonymous user to {request.path}")
-                return redirect('login')
+                return redirect('accounts:login')
             
             # بررسی مجوزها
             if permissions:

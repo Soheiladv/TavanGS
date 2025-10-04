@@ -75,6 +75,16 @@ class ComputationSession(models.Model):
             models.Index(fields=['status', 'created_at']),
             models.Index(fields=['user', 'session_type']),
         ]
+        default_permissions = ()
+        permissions = [
+            ('ComputationSession_view', 'می‌تواند جلسات محاسباتی را مشاهده کند'),
+            ('ComputationSession_add', 'می‌تواند جلسه محاسباتی جدید ایجاد کند'),
+            ('ComputationSession_change', 'می‌تواند جلسات محاسباتی را تغییر دهد'),
+            ('ComputationSession_delete', 'می‌تواند جلسات محاسباتی را حذف کند'),
+            ('ComputationSession_execute', 'می‌تواند محاسبات را اجرا کند'),
+            ('ComputationSession_view_results', 'می‌تواند نتایج محاسبات را مشاهده کند'),
+            ('ComputationSession_manage_queue', 'می‌تواند صف محاسبات را مدیریت کند'),
+        ]
     
     def __str__(self):
         return f"{self.session_type} - {self.session_id}"
@@ -157,6 +167,15 @@ class ComputationTemplate(models.Model):
         verbose_name = 'Computation Template'
         verbose_name_plural = 'Computation Templates'
         ordering = ['name']
+        default_permissions = ()
+        permissions = [
+            ('ComputationTemplate_view', 'می‌تواند قالب‌های محاسباتی را مشاهده کند'),
+            ('ComputationTemplate_add', 'می‌تواند قالب محاسباتی جدید ایجاد کند'),
+            ('ComputationTemplate_change', 'می‌تواند قالب‌های محاسباتی را تغییر دهد'),
+            ('ComputationTemplate_delete', 'می‌تواند قالب‌های محاسباتی را حذف کند'),
+            ('ComputationTemplate_use', 'می‌تواند از قالب‌های محاسباتی استفاده کند'),
+            ('ComputationTemplate_manage', 'می‌تواند قالب‌های محاسباتی را مدیریت کند'),
+        ]
     
     def __str__(self):
         return self.name
@@ -216,6 +235,14 @@ class ComputationResult(models.Model):
             models.Index(fields=['input_hash', 'session_type']),
             models.Index(fields=['expires_at', 'is_valid']),
         ]
+        default_permissions = ()
+        permissions = [
+            ('ComputationResult_view', 'می‌تواند نتایج محاسباتی را مشاهده کند'),
+            ('ComputationResult_add', 'می‌تواند نتیجه محاسباتی جدید ایجاد کند'),
+            ('ComputationResult_change', 'می‌تواند نتایج محاسباتی را تغییر دهد'),
+            ('ComputationResult_delete', 'می‌تواند نتایج محاسباتی را حذف کند'),
+            ('ComputationResult_cache', 'می‌تواند کش نتایج را مدیریت کند'),
+        ]
     
     def __str__(self):
         return f"Cached {self.session_type} - {self.input_hash[:8]}"
@@ -274,6 +301,14 @@ class ComputationMetrics(models.Model):
         verbose_name = 'Computation Metrics'
         verbose_name_plural = 'Computation Metrics'
         ordering = ['-date']
+        default_permissions = ()
+        permissions = [
+            ('ComputationMetrics_view', 'می‌تواند متریک‌های محاسباتی را مشاهده کند'),
+            ('ComputationMetrics_add', 'می‌تواند متریک محاسباتی جدید ایجاد کند'),
+            ('ComputationMetrics_change', 'می‌تواند متریک‌های محاسباتی را تغییر دهد'),
+            ('ComputationMetrics_delete', 'می‌تواند متریک‌های محاسباتی را حذف کند'),
+            ('ComputationMetrics_analytics', 'می‌تواند گزارش‌های تحلیلی را مشاهده کند'),
+        ]
     
     def __str__(self):
         return f"Metrics for {self.date}"

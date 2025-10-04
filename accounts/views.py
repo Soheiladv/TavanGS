@@ -85,7 +85,7 @@ def dashboard_view(request):
             "items": [
                 {"label": "لیست نقش‌ها", "url": "accounts:role_list", "icon": "fas fa-list", "color": "info"},
                 {"label": "ایجاد نقش جدید", "url": "accounts:role_create", "icon": "fas fa-plus", "color": "success"},
-                {"label": "مدیریت قانون کاربری", "url": "user_permission_report", "icon": "fas fa-plus",  "color": "danger"},
+                {"label": "مدیریت قانون کاربری", "url": "accounts:user_permission_report", "icon": "fas fa-plus",  "color": "danger"},
             ],
         },
         {
@@ -115,30 +115,28 @@ def dashboard_view(request):
         },
 
         {
-            "title": "تنطیمات سامانه",
+            "title": "تنظیمات سامانه",
             "icon": "fas fa-user-tag",
             "items": [
-                {'name': '  نتنظیمات ساماه (SystemSettings)' , 'url': 'system_settings_dashboard',
-                 'icon': 'fas fa-sliders-h'},
+                {"label": "تنظیمات سیستم", "url": "settings_app:control_panel", "icon": "fas fa-sliders-h",
+                 "color": "primary"},
             ],
         },
         {
             "title": "مدیریت دیتابیس",
             "icon": "fas fa-soft",
             "items": [
-                {"label": "  مدیریت دیتابیس ", "url": "accounts:new_databasebackup", "icon": "fas fa-database",
-                 "color": "warning"},
-                {"label": "  مدیریت پشتیبانی از دیتابیس ", "url": "backup:list", "icon": "fas fa-database",
+                {"label": "مدیریت دیتابیس", "url": "accounts:new_databasebackup", "icon": "fas fa-database",
                  "color": "warning"},
 
             ],
         },
         {
-            "title": "تنظیمات پیام ها ",
+            "title": "تنظیمات پیام‌ها",
             "icon": "fas fa-user-tag",
             "items": [
-                {"label": "مدیریت پیام ها " , "url": "notifications:inbox", "icon": "fas fa-chart", "color": "danger"},
-                 ],
+                {"label": "مدیریت پیام‌ها", "url": "accounts:audit_log_list", "icon": "fas fa-envelope", "color": "info"},
+            ],
         },
 
 
@@ -150,14 +148,10 @@ def dashboard_view(request):
             ],
         },
         {
-            "title": "مدیریت گردش کار ",
+            "title": "مدیریت گردش کار",
             "icon": "fas fa-user-tag",
             "items": [
-                {"label": " داشبورد گردش کار", "url": "workflow_dashboard", "icon": "fas fa-chart", "color": "danger"},
-                {"label": " وضعیت گردش کار گردش کار  (A)", "url": "status_list", "icon": "fas fa-chart", "color": "danger"},
-                {"label": " اقدام گردش کار (B)", "url": "action_list", "icon": "fas fa-chart", "color": "danger"},
-                {"label": " گذار گردش کار (C)", "url": "transition_list", "icon": "fas fa-chart", "color": "danger"},
-                # {"label": " مجوز گردش کار (D)", "url": "permission_list", "icon": "fas fa-chart", "color": "danger"},
+                {"label": "گزارش فعالیت‌ها", "url": "accounts:audit_log_list", "icon": "fas fa-chart", "color": "info"},
             ],
         },
 
@@ -279,8 +273,35 @@ class RoleCRUDMixin(LoginRequiredMixin, UserPassesTestMixin):
     raise_exception = True
     model = Role
     form_class = RoleForm
-    template_name = 'accounts/users/rols/role_form.html'
-    success_url = reverse_lazy('role_list')
+    template_name = 'accounts/role/role_form.html'
+    success_url = reverse_lazy('accounts:role_list')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['permissions_tree'] = self.get_permissions_tree()
+        context['title'] = _("ایجاد نقش جدید") if 'create' in self.request.path else _("ویرایش نقش")
+        return context
+    
+    def get_permissions_tree(self):
+        """
+        درخت مجوزها را با گروه‌بندی بر اساس نام فارسی اپلیکیشن‌ها ایجاد و مرتب می‌کند.
+        """
+        # می‌توانید لیست اپلیکیشن‌های مورد نظر برای حذف را در settings.py تعریف کنید
+        EXCLUDED_APPS = getattr(settings, 'ROLE_FORM_EXCLUDED_APPS', [
+            'admin', 'auth', 'contenttypes', 'sessions', 'messages', 'staticfiles'
+        ])
+
+        # مجوزها را یکجا با content_type دریافت و مرتب می‌کنیم
+        permissions = Permission.objects.select_related('content_type').order_by('content_type__app_label', 'codename')
+
+        tree = {}
+        for perm in permissions:
+            app_label = perm.content_type.app_label
+            if app_label not in EXCLUDED_APPS:
+                if app_label not in tree:
+                    tree[app_label] = []
+                tree[app_label].append(perm)
+        return tree
 # ==============================================
 class RoleListView(PermissionBaseView, ListView):
     model = Role
@@ -410,7 +431,7 @@ class RoleCreateView(PermissionBaseView, CreateView):
 class RoleFormMixin:
     model = Role
     form_class = RoleForm
-    template_name = 'accounts/role/role_form.html'  # آدرس تمپلیت جدید
+    template_name = 'accounts/role/role_form.html'
     success_url = reverse_lazy('accounts:role_list')
 
     def get_context_data(self, **kwargs):

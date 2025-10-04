@@ -85,6 +85,13 @@ class TicketCategory(models.Model):
         verbose_name = "دسته‌بندی تیکت"
         verbose_name_plural = "دسته‌بندی‌های تیکت"
         ordering = ['name']
+        default_permissions = ()
+        permissions = [
+            ('TicketCategory_view', 'می‌تواند دسته‌بندی تیکت‌ها را مشاهده کند'),
+            ('TicketCategory_add', 'می‌تواند دسته‌بندی تیکت جدید ایجاد کند'),
+            ('TicketCategory_change', 'می‌تواند دسته‌بندی تیکت‌ها را تغییر دهد'),
+            ('TicketCategory_delete', 'می‌تواند دسته‌بندی تیکت‌ها را حذف کند'),
+        ]
     
     def __str__(self):
         return self.name
@@ -284,6 +291,17 @@ class Ticket(models.Model):
             models.Index(fields=['assigned_to', 'status']),
             models.Index(fields=['created_at']),
         ]
+        default_permissions = ()
+        permissions = [
+            ('Ticket_view', 'می‌تواند تیکت‌ها را مشاهده کند'),
+            ('Ticket_add', 'می‌تواند تیکت جدید ایجاد کند'),
+            ('Ticket_change', 'می‌تواند تیکت‌ها را تغییر دهد'),
+            ('Ticket_delete', 'می‌تواند تیکت‌ها را حذف کند'),
+            ('Ticket_assign', 'می‌تواند تیکت‌ها را تخصیص دهد'),
+            ('Ticket_resolve', 'می‌تواند تیکت‌ها را حل کند'),
+            ('Ticket_close', 'می‌تواند تیکت‌ها را ببندد'),
+            ('Ticket_escalate', 'می‌تواند تیکت‌ها را ارتقا دهد'),
+        ]
     
     def __str__(self):
         return f"#{str(self.ticket_id)[:8]} - {self.title}"
@@ -409,6 +427,13 @@ class TicketReply(models.Model):
         verbose_name = "پاسخ تیکت"
         verbose_name_plural = "پاسخ‌های تیکت"
         ordering = ['created_at']
+        default_permissions = ()
+        permissions = [
+            ('TicketReply_view', 'می‌تواند پاسخ‌های تیکت را مشاهده کند'),
+            ('TicketReply_add', 'می‌تواند پاسخ تیکت جدید ایجاد کند'),
+            ('TicketReply_change', 'می‌تواند پاسخ‌های تیکت را تغییر دهد'),
+            ('TicketReply_delete', 'می‌تواند پاسخ‌های تیکت را حذف کند'),
+        ]
     
     def __str__(self):
         return f"پاسخ {self.ticket.title} - {self.user.get_full_name()}"
@@ -476,6 +501,13 @@ class TicketAttachment(models.Model):
         verbose_name = "فایل پیوست"
         verbose_name_plural = "فایل‌های پیوست"
         ordering = ['-created_at']
+        default_permissions = ()
+        permissions = [
+            ('TicketAttachment_view', 'می‌تواند فایل‌های پیوست را مشاهده کند'),
+            ('TicketAttachment_add', 'می‌تواند فایل پیوست جدید ایجاد کند'),
+            ('TicketAttachment_change', 'می‌تواند فایل‌های پیوست را تغییر دهد'),
+            ('TicketAttachment_delete', 'می‌تواند فایل‌های پیوست را حذف کند'),
+        ]
     
     def __str__(self):
         return self.filename

@@ -25,7 +25,7 @@ class BaseComputationService(ABC):
         self.user = user
         self.session_type = session_type or self.get_session_type()
         self.session = None
-        
+    
     @abstractmethod
     def get_session_type(self):
         """Return the session type for this service"""
@@ -110,11 +110,11 @@ class BaseComputationService(ABC):
                 return None
             
             # Increment access count
-            cached.increment_access()
-            return cached.output_data
+                cached.increment_access()
+                return cached.output_data
             
         except ComputationResult.DoesNotExist:
-            return None
+        return None
     
     def cache_result(self, input_data: Dict[str, Any], output_data: Dict[str, Any], 
                     processing_time: float):
@@ -301,23 +301,23 @@ class AIInferenceService(BaseComputationService):
             text = data.get('text', '')
             positive_words = ['خوب', 'عالی', 'ممتاز', 'عالی', 'بسیار خوب']
             negative_words = ['بد', 'ضعیف', 'مشکل', 'خراب', 'بد']
-            
-            positive_count = sum(1 for word in positive_words if word in text)
-            negative_count = sum(1 for word in negative_words if word in text)
-            
-            if positive_count > negative_count:
-                sentiment = 'positive'
+        
+        positive_count = sum(1 for word in positive_words if word in text)
+        negative_count = sum(1 for word in negative_words if word in text)
+        
+        if positive_count > negative_count:
+            sentiment = 'positive'
                 confidence = 0.8
-            elif negative_count > positive_count:
-                sentiment = 'negative'
+        elif negative_count > positive_count:
+            sentiment = 'negative'
                 confidence = 0.8
-            else:
-                sentiment = 'neutral'
+        else:
+            sentiment = 'neutral'
                 confidence = 0.6
-            
+        
             result = {
-                'sentiment': sentiment,
-                'confidence': confidence,
+            'sentiment': sentiment,
+            'confidence': confidence,
                 'model_type': model_type,
                 'processed_at': timezone.now().isoformat()
             }

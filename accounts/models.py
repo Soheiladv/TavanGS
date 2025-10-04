@@ -226,10 +226,11 @@ class Role(models.Model):
         ordering = ["name"]
         default_permissions = []
         permissions = [
-            ('Role_create', _('می‌تواند نقش جدید ایجاد کند')),
-            ('Role_view', _('می‌تواند نقش‌ها را مشاهده کند')),
-            ('Role_modify', _('می‌تواند نقش را تغییر دهد')),
-            ('Role_delete ', _('می‌تواند نقش را حذف کند')),
+            ('Role_view', 'می‌تواند نقش‌ها را مشاهده کند'),
+            ('Role_add', 'می‌تواند نقش جدید ایجاد کند'),
+            ('Role_change', 'می‌تواند نقش‌ها را تغییر دهد'),
+            ('Role_delete', 'می‌تواند نقش‌ها را حذف کند'),
+            ('Role_assign_permissions', 'می‌تواند مجوزها را به نقش‌ها تخصیص دهد'),
         ]
 
     def __str__(self):

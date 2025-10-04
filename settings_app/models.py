@@ -225,6 +225,12 @@ class SiteSettings(SingletonModel):
     class Meta:
         verbose_name = "Site Settings"
         verbose_name_plural = "Site Settings"
+        default_permissions = ()
+        permissions = [
+            ('SiteSettings_view', 'می‌تواند تنظیمات سایت را مشاهده کند'),
+            ('SiteSettings_change', 'می‌تواند تنظیمات سایت را تغییر دهد'),
+            ('SiteSettings_manage', 'می‌تواند تنظیمات سایت را مدیریت کند'),
+        ]
     
     def __str__(self):
         return f"{self.company_name} Settings"
@@ -329,6 +335,12 @@ class APIConfiguration(models.Model):
     class Meta:
         verbose_name = "API Configuration"
         verbose_name_plural = "API Configurations"
+        default_permissions = ()
+        permissions = [
+            ('APIConfiguration_view', 'می‌تواند تنظیمات API را مشاهده کند'),
+            ('APIConfiguration_change', 'می‌تواند تنظیمات API را تغییر دهد'),
+            ('APIConfiguration_manage', 'می‌تواند تنظیمات API را مدیریت کند'),
+        ]
     
     def __str__(self):
         return "API Configuration"
@@ -367,6 +379,14 @@ class FeatureFlag(models.Model):
         verbose_name = "Feature Flag"
         verbose_name_plural = "Feature Flags"
         ordering = ['name']
+        default_permissions = ()
+        permissions = [
+            ('FeatureFlag_view', 'می‌تواند پرچم‌های ویژگی را مشاهده کند'),
+            ('FeatureFlag_add', 'می‌تواند پرچم ویژگی جدید ایجاد کند'),
+            ('FeatureFlag_change', 'می‌تواند پرچم‌های ویژگی را تغییر دهد'),
+            ('FeatureFlag_delete', 'می‌تواند پرچم‌های ویژگی را حذف کند'),
+            ('FeatureFlag_toggle', 'می‌تواند پرچم‌های ویژگی را فعال/غیرفعال کند'),
+        ]
     
     def __str__(self):
         return f"{self.name} ({'Active' if self.is_active else 'Inactive'})"
@@ -518,6 +538,14 @@ class SiteTemplate(models.Model):
         verbose_name = "قالب سایت"
         verbose_name_plural = "قالب‌های سایت"
         ordering = ['-is_default', 'template_type', 'name']
+        default_permissions = ()
+        permissions = [
+            ('SiteTemplate_view', 'می‌تواند قالب‌های سایت را مشاهده کند'),
+            ('SiteTemplate_add', 'می‌تواند قالب سایت جدید ایجاد کند'),
+            ('SiteTemplate_change', 'می‌تواند قالب‌های سایت را تغییر دهد'),
+            ('SiteTemplate_delete', 'می‌تواند قالب‌های سایت را حذف کند'),
+            ('SiteTemplate_activate', 'می‌تواند قالب‌های سایت را فعال کند'),
+        ]
     
     def __str__(self):
         return f"{self.name} ({self.get_template_type_display()})"
@@ -584,6 +612,14 @@ class FontSettings(models.Model):
         verbose_name = _("تنظیمات فونت")
         verbose_name_plural = _("تنظیمات فونت‌ها")
         ordering = ['-is_default', '-is_active', 'name']
+        default_permissions = ()
+        permissions = [
+            ('FontSettings_view', 'می‌تواند تنظیمات فونت‌ها را مشاهده کند'),
+            ('FontSettings_add', 'می‌تواند تنظیمات فونت جدید ایجاد کند'),
+            ('FontSettings_change', 'می‌تواند تنظیمات فونت‌ها را تغییر دهد'),
+            ('FontSettings_delete', 'می‌تواند تنظیمات فونت‌ها را حذف کند'),
+            ('FontSettings_activate', 'می‌تواند تنظیمات فونت‌ها را فعال کند'),
+        ]
 
     def __str__(self):
         status = "فعال" if self.is_active else "غیرفعال"

@@ -23,6 +23,13 @@ class ServiceCategory(models.Model):
     
     class Meta:
         verbose_name_plural = 'Service Categories'
+        default_permissions = ()
+        permissions = [
+            ('ServiceCategory_view', 'می‌تواند دسته‌بندی خدمات را مشاهده کند'),
+            ('ServiceCategory_add', 'می‌تواند دسته‌بندی خدمت جدید ایجاد کند'),
+            ('ServiceCategory_change', 'می‌تواند دسته‌بندی خدمات را تغییر دهد'),
+            ('ServiceCategory_delete', 'می‌تواند دسته‌بندی خدمات را حذف کند'),
+        ]
     
     def __str__(self):
         return self.name
@@ -78,6 +85,16 @@ class Service(models.Model):
     
     class Meta:
         ordering = ['-is_featured', '-created_at']
+        default_permissions = ()
+        permissions = [
+            ('Service_view', 'می‌تواند خدمات را مشاهده کند'),
+            ('Service_add', 'می‌تواند خدمت جدید ایجاد کند'),
+            ('Service_change', 'می‌تواند خدمات را تغییر دهد'),
+            ('Service_delete', 'می‌تواند خدمات را حذف کند'),
+            ('Service_feature', 'می‌تواند خدمات را ویژه کند'),
+            ('Service_publish', 'می‌تواند خدمات را منتشر کند'),
+            ('Service_analytics', 'می‌تواند آمار خدمات را مشاهده کند'),
+        ]
     
     def __str__(self):
         return self.name

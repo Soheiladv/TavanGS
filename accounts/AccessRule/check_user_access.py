@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django.db.models import Q, Max
 
 from accounts.models import CustomUser
-from core.models import Status, Organization, Post
+# from core.models import Status, Organization, Post  # Commented out - core app not available
 import logging
 
 logger = logging.getLogger('Log_check_user_factor_access')
@@ -35,10 +35,11 @@ def check_user_factor_access(username, tankhah=None, action_type='EDIT', entity_
                 'stage': None
             }
 
-        is_hq_user = any(
-            Organization.objects.filter(id=up.post.organization.id, is_core=True).exists()
-            for up in user.userpost_set.filter(is_active=True, end_date__isnull=True)
-        )
+        # is_hq_user = any(
+        #     Organization.objects.filter(id=up.post.organization.id, is_core=True).exists()
+        #     for up in user.userpost_set.filter(is_active=True, end_date__isnull=True)
+        # )  # Commented out - core app not available
+        is_hq_user = False  # Placeholder - no core app
         if user.is_superuser or is_hq_user or user.has_perm('tankhah.Tankhah_view_all'):
             logger.info(f"کاربر {username} دسترسی کامل دارد.")
             access_rule = AccessRule.objects.filter(

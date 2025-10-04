@@ -105,6 +105,16 @@ class User(AbstractUser):
         verbose_name = _('User')
         verbose_name_plural = _('Users')
         ordering = ['-created_at']
+        default_permissions = ()
+        permissions = [
+            ('User_view', 'می‌تواند کاربران را مشاهده کند'),
+            ('User_add', 'می‌تواند کاربر جدید ایجاد کند'),
+            ('User_change', 'می‌تواند کاربران را تغییر دهد'),
+            ('User_delete', 'می‌تواند کاربران را حذف کند'),
+            ('User_manage_permissions', 'می‌تواند مجوزهای کاربران را مدیریت کند'),
+            ('User_reset_password', 'می‌تواند رمز عبور کاربران را ریست کند'),
+            ('User_activate_deactivate', 'می‌تواند کاربران را فعال/غیرفعال کند'),
+        ]
     
     def __str__(self):
         return self.email

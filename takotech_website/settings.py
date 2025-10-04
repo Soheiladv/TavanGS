@@ -1,19 +1,25 @@
 """
 Django settings for TakoTech Website - Advanced Tech Company Platform
-Modular, Scalable, and Production-Ready Configuration
+Modular, Scalable, and Production-Ready  os.getenvuration
 """
 
 import os
 from pathlib import Path
-from decouple import config
 
+from dotenv import load_dotenv
+
+# لود فایل .env
+load_dotenv() 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Security Settings
-SECRET_KEY = config('SECRET_KEY', default='django-insecure-dev-key-change-in-production')
-DEBUG = config('DEBUG', default=True, cast=bool)
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1', cast=lambda v: [s.strip() for s in v.split(',')])
+SECRET_KEY =  os.getenv('SECRET_KEY', default='django-insecure-dev-key-change-in-production')
+# DEBUG =  os.getenv('DEBUG', default=True, cast=bool)
+DEBUG = os.getenv("DEBUG", "False") == "True"
+
+# ALLOWED_HOSTS =  os.getenv('ALLOWED_HOSTS', default='localhost,127.0.0.1', cast=lambda v: [s.strip() for s in v.split(',')])
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,testserver,*.trycloudflare.com,*.cfargotunnel.com' ).split(',')  # تبدیل به لیست
 
 # Application definition - Modular Architecture
 DJANGO_APPS = [
@@ -53,7 +59,7 @@ THIRD_PARTY_APPS = [
     'corsheaders',
     'django_extensions',
     'django_jalali',  # Persian date support
-    'humanize',
+    # 'humanize',
     # Real-time & Async
     # 'channels',  # Uncomment when Redis is available
     
@@ -76,7 +82,7 @@ TAKOTECH_APPS = [
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + TAKOTECH_APPS
 
-# Middleware Configuration
+# Middleware  os.getenvuration
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'corsheaders.middleware.CorsMiddleware',
@@ -93,7 +99,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'takotech_website.urls'
 
-# Template Configuration
+# Template  os.getenvuration
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -114,15 +120,15 @@ TEMPLATES = [
 WSGI_APPLICATION = 'takotech_website.wsgi.application'
 ASGI_APPLICATION = 'takotech_website.asgi.application'
 
-# Database Configuration - MySQL (via .env). Fallback values for local dev
+# Database  os.getenvuration - MySQL (via .env). Fallback values for local dev
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': config('DATABASE_DEFAULT_NAME', default='takotech'),
-        'USER': config('DATABASE_DEFAULT_USER', default='root'),
-        'PASSWORD': config('DATABASE_DEFAULT_PASSWORD', default=''),
-        'HOST': config('DATABASE_DEFAULT_HOST', default='127.0.0.1'),
-        'PORT': config('DATABASE_DEFAULT_PORT', default='3306'),
+        'NAME':  os.getenv('DATABASE_DEFAULT_NAME', default='takotech'),
+        'USER':  os.getenv('DATABASE_DEFAULT_USER', default='root'),
+        'PASSWORD':  os.getenv('DATABASE_DEFAULT_PASSWORD', default=''),
+        'HOST':  os.getenv('DATABASE_DEFAULT_HOST', default='127.0.0.1'),
+        'PORT':  os.getenv('DATABASE_DEFAULT_PORT', default='3306'),
         'OPTIONS': {
             'charset': 'utf8mb4',
             'use_unicode': True,
@@ -130,11 +136,11 @@ DATABASES = {
     },
     'logs': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': config('DATABASE_LOGS_NAME', default='tankhah_logs_db'),
-        'USER': config('DATABASE_LOGS_USER', default='root'),
-        'PASSWORD': config('DATABASE_LOGS_PASSWORD', default=''),
-        'HOST': config('DATABASE_LOGS_HOST', default='127.0.0.1'),
-        'PORT': config('DATABASE_LOGS_PORT', default='3306'),
+        'NAME':  os.getenv('DATABASE_LOGS_NAME', default='tankhah_logs_db'),
+        'USER':  os.getenv('DATABASE_LOGS_USER', default='root'),
+        'PASSWORD':  os.getenv('DATABASE_LOGS_PASSWORD', default=''),
+        'HOST':  os.getenv('DATABASE_LOGS_HOST', default='127.0.0.1'),
+        'PORT':  os.getenv('DATABASE_LOGS_PORT', default='3306'),
         'OPTIONS': {
             'charset': 'utf8mb4',
             'use_unicode': True,
@@ -142,36 +148,18 @@ DATABASES = {
     }
 }
 
-# Redis / Cache Configuration
-REDIS_URL = config('REDIS_URL', default='redis://localhost:6379/0')
-USE_REDIS_CACHE = config('USE_REDIS_CACHE', default=False, cast=bool)
+# Redis / Cache  os.getenvuration
+REDIS_URL =  os.getenv('REDIS_URL', default='redis://localhost:6379/0')
+# USE_REDIS_CACHE =  os.getenv('USE_REDIS_CACHE', default=False, cast=bool)
+USE_REDIS_CACHE = os.getenv("USE_REDIS_CACHE", "False") == "True"
 
-if DEBUG and not USE_REDIS_CACHE:
-    # In development, fallback to local memory cache to avoid Redis dependency
-    CACHES = {
-        'default': {
-            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-            'LOCATION': 'takotech-local',
-        }
-    }
-else:
-    CACHES = {
-        'default': {
-            'BACKEND': 'django_redis.cache.RedisCache',
-            'LOCATION': REDIS_URL,
-            'OPTIONS': {
-                'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-            },
-            'KEY_PREFIX': 'takotech'
-        }
-    }
 # Authentication backends (guardian)
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'guardian.backends.ObjectPermissionBackend',
 )
 
-# Session Configuration
+# Session  os.getenvuration
 SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 SESSION_CACHE_ALIAS = 'default'
 SESSION_COOKIE_AGE = 86400  # 24 hours
@@ -239,11 +227,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Custom User Model
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
-# RCMS Security Configuration
+# RCMS Security  os.getenvuration
 from cryptography.fernet import Fernet
 RCMS_SECRET_KEY_CIPHER = Fernet(Fernet.generate_key())
 
-# REST Framework Configuration
+# REST Framework  os.getenvuration
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -261,7 +249,7 @@ REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
-# JWT Configuration
+# JWT  os.getenvuration
 from datetime import timedelta
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
@@ -269,7 +257,7 @@ SIMPLE_JWT = {
     'ROTATE_REFRESH_TOKENS': True,
 }
 
-# Django Allauth Configuration
+# Django Allauth  os.getenvuration
 SITE_ID = 1
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
@@ -302,10 +290,13 @@ SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
 
 # CORS Settings
-CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', default='http://localhost:3000', cast=lambda v: [s.strip() for s in v.split(',')])
+# CORS_ALLOWED_ORIGINS =  os.getenv('CORS_ALLOWED_ORIGINS', default='http://localhost:3000', cast=lambda v: [s.strip() for s in v.split(',')])
+CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", 'http://localhost:3000').split(',')
+
 CORS_ALLOW_CREDENTIALS = True
 
-# Celery Configuration
+
+# Celery  os.getenvuration
 CELERY_BROKER_URL = REDIS_URL
 CELERY_RESULT_BACKEND = REDIS_URL
 CELERY_ACCEPT_CONTENT = ['json']
@@ -313,33 +304,36 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = TIME_ZONE
 
-# Channels Configuration
+# Channels  os.getenvuration
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
+        ' os.getenv': {
             'hosts': [REDIS_URL],
         },
     },
 }
 
-# Email Configuration
+# Email  os.getenvuration
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = config('EMAIL_HOST', default='smtp.gmail.com')
-EMAIL_PORT = config('EMAIL_PORT', default=587, cast=int)
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
-DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='noreply@takotech.com')
+EMAIL_HOST =  os.getenv('EMAIL_HOST', default='smtp.gmail.com')
+# EMAIL_PORT =  os.getenv('EMAIL_PORT', default=587, cast=int)
+EMAIL_PORT = os.getenv("EMAIL_PORT", '587')
 
-# Elasticsearch Configuration
+
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER =  os.getenv('EMAIL_HOST_USER', default='')
+EMAIL_HOST_PASSWORD =  os.getenv('EMAIL_HOST_PASSWORD', default='')
+DEFAULT_FROM_EMAIL =  os.getenv('DEFAULT_FROM_EMAIL', default='noreply@takotech.com')
+
+# Elasticsearch  os.getenvuration
 ELASTICSEARCH_DSL = {
     'default': {
-        'hosts': config('ELASTICSEARCH_HOST', default='localhost:9200')
+        'hosts':  os.getenv('ELASTICSEARCH_HOST', default='localhost:9200')
     },
 }
 
-# Logging Configuration
+# Logging  os.getenvuration
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -398,8 +392,8 @@ DATA_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024  # 10MB
 # Custom Settings for TakoTech Features
 TAKOTECH_SETTINGS = {
     'COMPANY_NAME': 'TakoTech',
-    'ENABLE_AI_FEATURES': config('ENABLE_AI_FEATURES', default=True, cast=bool),
-    'ENABLE_SANDBOX': config('ENABLE_SANDBOX', default=True, cast=bool),
-    'MAX_CONCURRENT_COMPUTATIONS': config('MAX_CONCURRENT_COMPUTATIONS', default=10, cast=int),
+    'ENABLE_AI_FEATURES':  os.getenv('ENABLE_AI_FEATURES', 'True').lower() == 'true',
+    'ENABLE_SANDBOX':  os.getenv('ENABLE_SANDBOX', 'True').lower() == 'true',
+    'MAX_CONCURRENT_COMPUTATIONS':  int(os.getenv('MAX_CONCURRENT_COMPUTATIONS', '10')),
     'DEMO_SESSION_TIMEOUT': 1800,  # 30 minutes
 }

@@ -51,6 +51,13 @@ class ProductCategory(models.Model):
     
     class Meta:
         verbose_name_plural = 'Product Categories'
+        default_permissions = ()
+        permissions = [
+            ('ProductCategory_view', 'می‌تواند دسته‌بندی محصولات را مشاهده کند'),
+            ('ProductCategory_add', 'می‌تواند دسته‌بندی محصول جدید ایجاد کند'),
+            ('ProductCategory_change', 'می‌تواند دسته‌بندی محصولات را تغییر دهد'),
+            ('ProductCategory_delete', 'می‌تواند دسته‌بندی محصولات را حذف کند'),
+        ]
     
     def __str__(self):
         return self.name
@@ -203,6 +210,16 @@ class Product(models.Model):
         verbose_name = "محصول"
         verbose_name_plural = "محصولات"
         ordering = ['-is_featured', '-created_at']
+        default_permissions = ()
+        permissions = [
+            ('Product_view', 'می‌تواند محصولات را مشاهده کند'),
+            ('Product_add', 'می‌تواند محصول جدید ایجاد کند'),
+            ('Product_change', 'می‌تواند محصولات را تغییر دهد'),
+            ('Product_delete', 'می‌تواند محصولات را حذف کند'),
+            ('Product_feature', 'می‌تواند محصولات را ویژه کند'),
+            ('Product_publish', 'می‌تواند محصولات را منتشر کند'),
+            ('Product_analytics', 'می‌تواند آمار محصولات را مشاهده کند'),
+        ]
     
     def __str__(self):
         return f"{self.brand_prefix} {self.name}"

@@ -18,6 +18,85 @@
         <p class="text-gray-600 mt-2">
             {% if object %}ویرایش قالب محاسباتی{% else %}تعریف قالب جدید برای محاسبات{% endif %}
         </p>
+        
+        <!-- Help Section -->
+        <div class="mt-4 bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <div class="flex items-start">
+                <i class="fas fa-info-circle text-blue-600 text-lg ml-3 mt-1"></i>
+                <div>
+                    <h3 class="text-sm font-medium text-blue-900 mb-2">راهنمای ایجاد قالب محاسباتی</h3>
+                    <p class="text-sm text-blue-700 mb-3">
+                        این فرم برای ایجاد قالب‌های محاسباتی استفاده می‌شود. هر قالب شامل اسکیمای ورودی، خروجی و تنظیمات پیش‌فرض است.
+                        برای راهنمای کامل هر فیلد، روی آیکون <i class="fas fa-question-circle text-blue-600"></i> کلیک کنید.
+                    </p>
+                    
+                    <!-- Quick Help Buttons -->
+                    <div class="flex flex-wrap gap-2">
+                        <button type="button" class="help-trigger text-xs bg-blue-100 hover:bg-blue-200 text-blue-800 px-3 py-1 rounded-full transition" data-target="quick-help-basic">
+                            <i class="fas fa-lightbulb ml-1"></i>
+                            اطلاعات پایه
+                        </button>
+                        <button type="button" class="help-trigger text-xs bg-green-100 hover:bg-green-200 text-green-800 px-3 py-1 rounded-full transition" data-target="quick-help-requirements">
+                            <i class="fas fa-cogs ml-1"></i>
+                            نیازمندی‌ها
+                        </button>
+                        <button type="button" class="help-trigger text-xs bg-purple-100 hover:bg-purple-200 text-purple-800 px-3 py-1 rounded-full transition" data-target="quick-help-json">
+                            <i class="fas fa-code ml-1"></i>
+                            JSON Schema
+                        </button>
+                        <button type="button" class="help-trigger text-xs bg-orange-100 hover:bg-orange-200 text-orange-800 px-3 py-1 rounded-full transition" data-target="quick-help-examples">
+                            <i class="fas fa-book ml-1"></i>
+                            مثال‌ها
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Quick Help Contents -->
+            <div id="quick-help-basic" class="help-content hidden mt-4 p-4 bg-white border border-blue-200 rounded-lg">
+                <h4 class="font-medium text-blue-900 mb-2">اطلاعات پایه</h4>
+                <ul class="text-sm text-blue-800 space-y-1">
+                    <li>• <strong>نام:</strong> نام منحصر به فرد و قابل فهم</li>
+                    <li>• <strong>نوع جلسه:</strong> نوع محاسبه (بودجه، امنیت، عملکرد، ...)</li>
+                    <li>• <strong>توضیحات:</strong> شرح کامل قالب و کاربرد آن</li>
+                </ul>
+            </div>
+            
+            <div id="quick-help-requirements" class="help-content hidden mt-4 p-4 bg-white border border-green-200 rounded-lg">
+                <h4 class="font-medium text-green-900 mb-2">نیازمندی‌های سیستم</h4>
+                <ul class="text-sm text-green-800 space-y-1">
+                    <li>• <strong>زمان تخمینی:</strong> مدت زمان اجرا (ثانیه)</li>
+                    <li>• <strong>حافظه:</strong> مقدار RAM مورد نیاز (MB)</li>
+                    <li>• <strong>نوع کاربر:</strong> حداقل سطح دسترسی</li>
+                    <li>• <strong>CPU-Intensive:</strong> محاسبات سنگین پردازنده</li>
+                </ul>
+            </div>
+            
+            <div id="quick-help-json" class="help-content hidden mt-4 p-4 bg-white border border-purple-200 rounded-lg">
+                <h4 class="font-medium text-purple-900 mb-2">JSON Schema</h4>
+                <ul class="text-sm text-purple-800 space-y-1">
+                    <li>• <strong>Input Schema:</strong> ساختار ورودی‌های مورد نیاز</li>
+                    <li>• <strong>Output Schema:</strong> ساختار خروجی‌های تولید شده</li>
+                    <li>• <strong>Default Config:</strong> تنظیمات پیش‌فرض قالب</li>
+                </ul>
+            </div>
+            
+            <div id="quick-help-examples" class="help-content hidden mt-4 p-4 bg-white border border-orange-200 rounded-lg">
+                <h4 class="font-medium text-orange-900 mb-2">مثال‌های کاربردی</h4>
+                <div class="text-sm text-orange-800 space-y-2">
+                    <div>
+                        <strong>محاسبه بودجه:</strong>
+                        <pre class="text-xs bg-gray-100 p-2 rounded mt-1">Input: {"budget": 100000, "duration": 12}
+Output: {"monthly": 8333, "total": 100000}</pre>
+                    </div>
+                    <div>
+                        <strong>تحلیل امنیتی:</strong>
+                        <pre class="text-xs bg-gray-100 p-2 rounded mt-1">Input: {"vulnerabilities": [...]}
+Output: {"risk_score": 85, "recommendations": [...]}</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Back Navigation -->
@@ -39,116 +118,312 @@
                     <div>
                         <label for="{{ form.name.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
                             {{ form.name.label }} <span class="text-red-500">*</span>
+                            <button type="button" class="help-trigger ml-2 text-blue-600 hover:text-blue-800" data-target="name-help">
+                                <i class="fas fa-question-circle"></i>
+                            </button>
                         </label>
                         {{ form.name }}
                         {% if form.name.errors %}
                             <div class="text-red-600 text-sm mt-1">{{ form.name.errors.0 }}</div>
                         {% endif %}
+                        <div id="name-help" class="help-content hidden mt-2 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                            <div class="flex items-start">
+                                <i class="fas fa-lightbulb text-blue-600 text-sm ml-2 mt-1"></i>
+                                <div class="text-sm text-blue-800">
+                                    <strong>نام قالب:</strong> نام منحصر به فرد و قابل فهم برای قالب محاسباتی. 
+                                    مثال: "محاسبه بودجه پروژه"، "تحلیل امنیتی سیستم"، "تست عملکرد سرور"
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     
                     <div>
                         <label for="{{ form.session_type.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
                             {{ form.session_type.label }} <span class="text-red-500">*</span>
+                            <button type="button" class="help-trigger ml-2 text-blue-600 hover:text-blue-800" data-target="session-type-help">
+                                <i class="fas fa-question-circle"></i>
+                            </button>
                         </label>
                         {{ form.session_type }}
                         {% if form.session_type.errors %}
                             <div class="text-red-600 text-sm mt-1">{{ form.session_type.errors.0 }}</div>
                         {% endif %}
+                        <div id="session-type-help" class="help-content hidden mt-2 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                            <div class="flex items-start">
+                                <i class="fas fa-lightbulb text-blue-600 text-sm ml-2 mt-1"></i>
+                                <div class="text-sm text-blue-800">
+                                    <strong>نوع جلسه:</strong> نوع محاسبه‌ای که این قالب انجام می‌دهد:
+                                    <ul class="mt-2 space-y-1">
+                                        <li><strong>Budget Calculation:</strong> محاسبات مالی و بودجه‌بندی</li>
+                                        <li><strong>Security Analysis:</strong> تحلیل امنیتی و آسیب‌پذیری</li>
+                                        <li><strong>Performance Test:</strong> تست عملکرد و سرعت</li>
+                                        <li><strong>Data Processing:</strong> پردازش و تحلیل داده‌ها</li>
+                                        <li><strong>AI Inference:</strong> استنتاج هوش مصنوعی</li>
+                                        <li><strong>Custom:</strong> محاسبات سفارشی</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     
                     <div class="lg:col-span-2">
                         <label for="{{ form.description.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
                             {{ form.description.label }}
+                            <button type="button" class="help-trigger ml-2 text-blue-600 hover:text-blue-800" data-target="description-help">
+                                <i class="fas fa-question-circle"></i>
+                            </button>
                         </label>
                         {{ form.description }}
                         {% if form.description.errors %}
                             <div class="text-red-600 text-sm mt-1">{{ form.description.errors.0 }}</div>
                         {% endif %}
+                        <div id="description-help" class="help-content hidden mt-2 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                            <div class="flex items-start">
+                                <i class="fas fa-lightbulb text-blue-600 text-sm ml-2 mt-1"></i>
+                                <div class="text-sm text-blue-800">
+                                    <strong>توضیحات:</strong> شرح کامل قالب محاسباتی شامل:
+                                    <ul class="mt-2 space-y-1">
+                                        <li>• هدف و کاربرد قالب</li>
+                                        <li>• ورودی‌های مورد نیاز</li>
+                                        <li>• خروجی‌های مورد انتظار</li>
+                                        <li>• محدودیت‌ها و پیش‌نیازها</li>
+                                        <li>• مثال‌های کاربردی</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     
                     <!-- Requirements -->
                     <div>
                         <label for="{{ form.estimated_time_seconds.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
                             {{ form.estimated_time_seconds.label }}
+                            <button type="button" class="help-trigger ml-2 text-blue-600 hover:text-blue-800" data-target="time-help">
+                                <i class="fas fa-question-circle"></i>
+                            </button>
                         </label>
                         {{ form.estimated_time_seconds }}
                         {% if form.estimated_time_seconds.errors %}
                             <div class="text-red-600 text-sm mt-1">{{ form.estimated_time_seconds.errors.0 }}</div>
                         {% endif %}
+                        <div id="time-help" class="help-content hidden mt-2 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                            <div class="flex items-start">
+                                <i class="fas fa-lightbulb text-blue-600 text-sm ml-2 mt-1"></i>
+                                <div class="text-sm text-blue-800">
+                                    <strong>زمان تخمینی:</strong> مدت زمان تقریبی اجرای محاسبه (به ثانیه):
+                                    <ul class="mt-2 space-y-1">
+                                        <li>• محاسبات ساده: 10-30 ثانیه</li>
+                                        <li>• محاسبات متوسط: 30-120 ثانیه</li>
+                                        <li>• محاسبات پیچیده: 2-10 دقیقه</li>
+                                        <li>• محاسبات سنگین: بیش از 10 دقیقه</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     
                     <div>
                         <label for="{{ form.memory_requirement_mb.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
                             {{ form.memory_requirement_mb.label }}
+                            <button type="button" class="help-trigger ml-2 text-blue-600 hover:text-blue-800" data-target="memory-help">
+                                <i class="fas fa-question-circle"></i>
+                            </button>
                         </label>
                         {{ form.memory_requirement_mb }}
                         {% if form.memory_requirement_mb.errors %}
                             <div class="text-red-600 text-sm mt-1">{{ form.memory_requirement_mb.errors.0 }}</div>
                         {% endif %}
+                        <div id="memory-help" class="help-content hidden mt-2 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                            <div class="flex items-start">
+                                <i class="fas fa-lightbulb text-blue-600 text-sm ml-2 mt-1"></i>
+                                <div class="text-sm text-blue-800">
+                                    <strong>نیاز حافظه:</strong> مقدار RAM مورد نیاز (به مگابایت):
+                                    <ul class="mt-2 space-y-1">
+                                        <li>• محاسبات سبک: 64-256 MB</li>
+                                        <li>• محاسبات متوسط: 256-512 MB</li>
+                                        <li>• محاسبات سنگین: 512-1024 MB</li>
+                                        <li>• محاسبات فوق‌سنگین: بیش از 1 GB</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     
                     <div>
                         <label for="{{ form.required_user_type.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
                             {{ form.required_user_type.label }}
+                            <button type="button" class="help-trigger ml-2 text-blue-600 hover:text-blue-800" data-target="user-type-help">
+                                <i class="fas fa-question-circle"></i>
+                            </button>
                         </label>
                         {{ form.required_user_type }}
                         {% if form.required_user_type.errors %}
                             <div class="text-red-600 text-sm mt-1">{{ form.required_user_type.errors.0 }}</div>
                         {% endif %}
+                        <div id="user-type-help" class="help-content hidden mt-2 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                            <div class="flex items-start">
+                                <i class="fas fa-lightbulb text-blue-600 text-sm ml-2 mt-1"></i>
+                                <div class="text-sm text-blue-800">
+                                    <strong>نوع کاربر مورد نیاز:</strong> حداقل سطح دسترسی کاربر:
+                                    <ul class="mt-2 space-y-1">
+                                        <li>• <strong>Free:</strong> کاربران رایگان - محاسبات ساده</li>
+                                        <li>• <strong>Premium:</strong> کاربران پولی - محاسبات متوسط</li>
+                                        <li>• <strong>Enterprise:</strong> کاربران سازمانی - محاسبات پیشرفته</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     
                     <div class="flex items-center">
                         {{ form.cpu_intensive }}
                         <label for="{{ form.cpu_intensive.id_for_label }}" class="mr-2 text-sm text-gray-700">
                             {{ form.cpu_intensive.label }}
+                            <button type="button" class="help-trigger ml-2 text-blue-600 hover:text-blue-800" data-target="cpu-help">
+                                <i class="fas fa-question-circle"></i>
+                            </button>
                         </label>
+                    </div>
+                    <div id="cpu-help" class="help-content hidden mt-2 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                        <div class="flex items-start">
+                            <i class="fas fa-lightbulb text-blue-600 text-sm ml-2 mt-1"></i>
+                            <div class="text-sm text-blue-800">
+                                <strong>محاسبات CPU-Intensive:</strong> اگر محاسبه نیاز به پردازش سنگین CPU دارد، این گزینه را فعال کنید.
+                                این محاسبات معمولاً شامل الگوریتم‌های پیچیده، تحلیل داده‌های بزرگ یا محاسبات ریاضی سنگین هستند.
+                            </div>
+                        </div>
                     </div>
                     
                     <div class="flex items-center">
                         {{ form.is_active }}
                         <label for="{{ form.is_active.id_for_label }}" class="mr-2 text-sm text-gray-700">
                             {{ form.is_active.label }}
+                            <button type="button" class="help-trigger ml-2 text-blue-600 hover:text-blue-800" data-target="active-help">
+                                <i class="fas fa-question-circle"></i>
+                            </button>
                         </label>
+                    </div>
+                    <div id="active-help" class="help-content hidden mt-2 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                        <div class="flex items-start">
+                            <i class="fas fa-lightbulb text-blue-600 text-sm ml-2 mt-1"></i>
+                            <div class="text-sm text-blue-800">
+                                <strong>وضعیت فعال:</strong> قالب‌های غیرفعال در فهرست کاربران نمایش داده نمی‌شوند.
+                                از این گزینه برای مخفی کردن موقت قالب‌های در حال توسعه یا غیرقابل استفاده استفاده کنید.
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
                 <!-- JSON Schemas -->
                 <div class="border-t pt-6">
-                    <h3 class="text-lg font-medium text-gray-900 mb-4">اسکیمای JSON</h3>
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-medium text-gray-900">اسکیمای JSON</h3>
+                        <button type="button" class="help-trigger text-blue-600 hover:text-blue-800" data-target="json-schema-help">
+                            <i class="fas fa-question-circle ml-1"></i>
+                            راهنمای JSON Schema
+                        </button>
+                    </div>
+                    
+                    <div id="json-schema-help" class="help-content hidden mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                        <div class="flex items-start">
+                            <i class="fas fa-lightbulb text-blue-600 text-lg ml-3 mt-1"></i>
+                            <div class="text-sm text-blue-800">
+                                <strong>راهنمای JSON Schema:</strong>
+                                <p class="mt-2">JSON Schema یک استاندارد برای تعریف ساختار داده‌هاست که برای اعتبارسنجی ورودی و خروجی استفاده می‌شود.</p>
+                                <ul class="mt-2 space-y-1">
+                                    <li>• <strong>Input Schema:</strong> ساختار ورودی‌های مورد نیاز</li>
+                                    <li>• <strong>Output Schema:</strong> ساختار خروجی‌های تولید شده</li>
+                                    <li>• <strong>Default Config:</strong> تنظیمات پیش‌فرض قالب</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                     
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         <div>
                             <label for="{{ form.input_schema.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
                                 {{ form.input_schema.label }}
+                                <button type="button" class="help-trigger ml-2 text-blue-600 hover:text-blue-800" data-target="input-schema-help">
+                                    <i class="fas fa-question-circle"></i>
+                                </button>
                             </label>
                             {{ form.input_schema }}
                             {% if form.input_schema.errors %}
                                 <div class="text-red-600 text-sm mt-1">{{ form.input_schema.errors.0 }}</div>
                             {% endif %}
-                            <p class="text-sm text-gray-500 mt-1">JSON Schema برای اعتبارسنجی ورودی</p>
+                            <div id="input-schema-help" class="help-content hidden mt-2 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                                <div class="flex items-start">
+                                    <i class="fas fa-lightbulb text-blue-600 text-sm ml-2 mt-1"></i>
+                                    <div class="text-sm text-blue-800">
+                                        <strong>Input Schema:</strong> تعریف ساختار ورودی‌های مورد نیاز:
+                                        <pre class="mt-2 text-xs bg-gray-100 p-2 rounded">{
+  "type": "object",
+  "properties": {
+    "budget": {"type": "number", "minimum": 0},
+    "duration": {"type": "integer", "minimum": 1}
+  },
+  "required": ["budget", "duration"]
+}</pre>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         
                         <div>
                             <label for="{{ form.output_schema.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
                                 {{ form.output_schema.label }}
+                                <button type="button" class="help-trigger ml-2 text-blue-600 hover:text-blue-800" data-target="output-schema-help">
+                                    <i class="fas fa-question-circle"></i>
+                                </button>
                             </label>
                             {{ form.output_schema }}
                             {% if form.output_schema.errors %}
                                 <div class="text-red-600 text-sm mt-1">{{ form.output_schema.errors.0 }}</div>
                             {% endif %}
-                            <p class="text-sm text-gray-500 mt-1">ساختار خروجی مورد انتظار</p>
+                            <div id="output-schema-help" class="help-content hidden mt-2 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                                <div class="flex items-start">
+                                    <i class="fas fa-lightbulb text-blue-600 text-sm ml-2 mt-1"></i>
+                                    <div class="text-sm text-blue-800">
+                                        <strong>Output Schema:</strong> تعریف ساختار خروجی‌های تولید شده:
+                                        <pre class="mt-2 text-xs bg-gray-100 p-2 rounded">{
+  "type": "object",
+  "properties": {
+    "result": {"type": "number"},
+    "status": {"type": "string"},
+    "message": {"type": "string"}
+  }
+}</pre>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     
                     <div class="mt-6">
                         <label for="{{ form.default_config.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
                             {{ form.default_config.label }}
+                            <button type="button" class="help-trigger ml-2 text-blue-600 hover:text-blue-800" data-target="config-help">
+                                <i class="fas fa-question-circle"></i>
+                            </button>
                         </label>
                         {{ form.default_config }}
                         {% if form.default_config.errors %}
                             <div class="text-red-600 text-sm mt-1">{{ form.default_config.errors.0 }}</div>
                         {% endif %}
-                        <p class="text-sm text-gray-500 mt-1">پیکربندی پیش‌فرض برای قالب</p>
+                        <div id="config-help" class="help-content hidden mt-2 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                            <div class="flex items-start">
+                                <i class="fas fa-lightbulb text-blue-600 text-sm ml-2 mt-1"></i>
+                                <div class="text-sm text-blue-800">
+                                    <strong>Default Config:</strong> تنظیمات پیش‌فرض قالب:
+                                    <pre class="mt-2 text-xs bg-gray-100 p-2 rounded">{
+  "algorithm": "standard",
+  "precision": 2,
+  "timeout": 300,
+  "retry_count": 3
+}</pre>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
@@ -165,4 +440,125 @@
         </div>
     </div>
 </div>
+
+<!-- Help System JavaScript -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Help trigger functionality
+    const helpTriggers = document.querySelectorAll('.help-trigger');
+    
+    helpTriggers.forEach(trigger => {
+        trigger.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const targetId = this.getAttribute('data-target');
+            const helpContent = document.getElementById(targetId);
+            
+            if (helpContent) {
+                // Toggle help content visibility
+                if (helpContent.classList.contains('hidden')) {
+                    // Hide all other help contents
+                    document.querySelectorAll('.help-content').forEach(content => {
+                        content.classList.add('hidden');
+                    });
+                    
+                    // Show current help content
+                    helpContent.classList.remove('hidden');
+                    
+                    // Scroll to help content
+                    helpContent.scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'nearest' 
+                    });
+                } else {
+                    // Hide current help content
+                    helpContent.classList.add('hidden');
+                }
+            }
+        });
+    });
+    
+    // Auto-hide help contents when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.help-trigger') && !e.target.closest('.help-content')) {
+            document.querySelectorAll('.help-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+        }
+    });
+    
+    // JSON Schema validation helper
+    const jsonFields = ['input_schema', 'output_schema', 'default_config'];
+    
+    jsonFields.forEach(fieldName => {
+        const field = document.querySelector(`[name="${fieldName}"]`);
+        if (field) {
+            field.addEventListener('blur', function() {
+                const value = this.value.trim();
+                if (value) {
+                    try {
+                        JSON.parse(value);
+                        this.classList.remove('border-red-500');
+                        this.classList.add('border-green-500');
+                    } catch (e) {
+                        this.classList.remove('border-green-500');
+                        this.classList.add('border-red-500');
+                        
+                        // Show error message
+                        let errorDiv = this.parentNode.querySelector('.json-error');
+                        if (!errorDiv) {
+                            errorDiv = document.createElement('div');
+                            errorDiv.className = 'json-error text-red-600 text-sm mt-1';
+                            this.parentNode.appendChild(errorDiv);
+                        }
+                        errorDiv.textContent = 'JSON نامعتبر: ' + e.message;
+                    }
+                }
+            });
+        }
+    });
+});
+</script>
+
+<!-- Help System CSS -->
+<style>
+.help-content {
+    transition: all 0.3s ease;
+}
+
+.help-trigger {
+    transition: all 0.2s ease;
+}
+
+.help-trigger:hover {
+    transform: scale(1.1);
+}
+
+.json-error {
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* JSON field styling */
+textarea[name*="schema"], textarea[name*="config"] {
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+/* Help content styling */
+.help-content pre {
+    direction: ltr;
+    text-align: left;
+    font-family: 'Courier New', monospace;
+    font-size: 0.8rem;
+    line-height: 1.3;
+    max-height: 200px;
+    overflow-y: auto;
+}
+</style>
 {% endblock %}

@@ -73,6 +73,15 @@ class ProductVersion(models.Model):
         unique_together = ['product', 'version_number']
         verbose_name = "نسخه محصول"
         verbose_name_plural = "نسخه‌های محصول"
+        default_permissions = ()
+        permissions = [
+            ('ProductVersion_view', 'می‌تواند نسخه‌های محصولات را مشاهده کند'),
+            ('ProductVersion_add', 'می‌تواند نسخه محصول جدید ایجاد کند'),
+            ('ProductVersion_change', 'می‌تواند نسخه‌های محصولات را تغییر دهد'),
+            ('ProductVersion_delete', 'می‌تواند نسخه‌های محصولات را حذف کند'),
+            ('ProductVersion_publish', 'می‌تواند نسخه‌های محصولات را منتشر کند'),
+            ('ProductVersion_analytics', 'می‌تواند آمار نسخه‌ها را مشاهده کند'),
+        ]
     
     def __str__(self):
         return f"{self.product.full_name} v{self.version_number}"
@@ -126,6 +135,14 @@ class DownloadSession(models.Model):
         ordering = ['-started_at']
         verbose_name = "جلسه دانلود"
         verbose_name_plural = "جلسات دانلود"
+        default_permissions = ()
+        permissions = [
+            ('DownloadSession_view', 'می‌تواند جلسات دانلود را مشاهده کند'),
+            ('DownloadSession_add', 'می‌تواند جلسه دانلود جدید ایجاد کند'),
+            ('DownloadSession_change', 'می‌تواند جلسات دانلود را تغییر دهد'),
+            ('DownloadSession_delete', 'می‌تواند جلسات دانلود را حذف کند'),
+            ('DownloadSession_analytics', 'می‌تواند آمار دانلودها را مشاهده کند'),
+        ]
 
 
 class DemoRequest(models.Model):
@@ -172,6 +189,15 @@ class DemoRequest(models.Model):
         ordering = ['-created_at']
         verbose_name = "درخواست دمو"
         verbose_name_plural = "درخواست‌های دمو"
+        default_permissions = ()
+        permissions = [
+            ('DemoRequest_view', 'می‌تواند درخواست‌های دمو را مشاهده کند'),
+            ('DemoRequest_add', 'می‌تواند درخواست دمو جدید ایجاد کند'),
+            ('DemoRequest_change', 'می‌تواند درخواست‌های دمو را تغییر دهد'),
+            ('DemoRequest_delete', 'می‌تواند درخواست‌های دمو را حذف کند'),
+            ('DemoRequest_schedule', 'می‌تواند درخواست‌های دمو را زمان‌بندی کند'),
+            ('DemoRequest_assign', 'می‌تواند درخواست‌های دمو را تخصیص دهد'),
+        ]
     
     def __str__(self):
         return f"Demo Request: {self.product.name} - {self.full_name}"
@@ -224,6 +250,15 @@ class PricingRequest(models.Model):
         ordering = ['-created_at']
         verbose_name = "درخواست قیمت"
         verbose_name_plural = "درخواست‌های قیمت"
+        default_permissions = ()
+        permissions = [
+            ('PricingRequest_view', 'می‌تواند درخواست‌های قیمت را مشاهده کند'),
+            ('PricingRequest_add', 'می‌تواند درخواست قیمت جدید ایجاد کند'),
+            ('PricingRequest_change', 'می‌تواند درخواست‌های قیمت را تغییر دهد'),
+            ('PricingRequest_delete', 'می‌تواند درخواست‌های قیمت را حذف کند'),
+            ('PricingRequest_quote', 'می‌تواند درخواست‌های قیمت را قیمت‌گذاری کند'),
+            ('PricingRequest_assign', 'می‌تواند درخواست‌های قیمت را تخصیص دهد'),
+        ]
     
     def __str__(self):
         return f"Pricing Request: {self.product.name} - {self.company}"
@@ -285,6 +320,16 @@ class SalesLead(models.Model):
         ordering = ['-created_at']
         verbose_name = "سرنخ فروش"
         verbose_name_plural = "سرنخ‌های فروش"
+        default_permissions = ()
+        permissions = [
+            ('SalesLead_view', 'می‌تواند سرنخ‌های فروش را مشاهده کند'),
+            ('SalesLead_add', 'می‌تواند سرنخ فروش جدید ایجاد کند'),
+            ('SalesLead_change', 'می‌تواند سرنخ‌های فروش را تغییر دهد'),
+            ('SalesLead_delete', 'می‌تواند سرنخ‌های فروش را حذف کند'),
+            ('SalesLead_qualify', 'می‌تواند سرنخ‌های فروش را صلاحیت‌دار کند'),
+            ('SalesLead_assign', 'می‌تواند سرنخ‌های فروش را تخصیص دهد'),
+            ('SalesLead_analytics', 'می‌تواند آمار سرنخ‌های فروش را مشاهده کند'),
+        ]
     
     def __str__(self):
         return f"Lead: {self.full_name} - {self.company}"

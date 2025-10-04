@@ -1,5 +1,5 @@
 {% extends "base/base.html" %}
-
+{%  load rcms_custom_filters %}
 
 {% block content %}
 <div class="container mt-5">
@@ -87,7 +87,7 @@
                         <a href="{% url 'accounts:user_edit' user.id %}" class="btn btn-sm btn-warning animate__animated animate__pulse animate__infinite">
                             <i class="fas fa-edit"></i> ویرایش
                         </a>
-                        <a href="{% url 'user_permission_report'  %}" class="btn btn-sm btn-warning animate__animated animate__pulse animate__infinite">
+                        <a href="{% url 'accounts:user_permission_report' %}" class="btn btn-sm btn-warning animate__animated animate__pulse animate__infinite">
                             <i class="fas fa-accusoft"></i> قانون برای کاربر
                         </a>
                         <a href="{% url 'accounts:user_change_password' user.id %}" class="btn btn-sm btn-info">

@@ -50,9 +50,10 @@ class ActiveUserMiddleware:
             if request.user.is_authenticated:
                 # احترام به تنظیمات سیستم برای تک‌سشنی بودن
                 try:
-                    from core.models import SystemSettings
-                    if not SystemSettings.get_solo().enforce_single_browser_session:
-                        return redirect('/')
+                    # from core.models import SystemSettings  # Commented out - core app not available
+                    # if not SystemSettings.get_solo().enforce_single_browser_session:
+                    #     return redirect('/')  # Commented out - core app not available
+                    pass
                 except Exception:
                     pass
                 # در صورت وجود چند رکورد، جدیدترین را نگه دار و بقیه را حذف کن
@@ -128,9 +129,10 @@ class ActiveUserMiddleware:
         if request.user.is_authenticated and session_key:
             # احترام به تنظیمات سیستم برای تک‌سشنی بودن
             try:
-                from core.models import SystemSettings
-                if not SystemSettings.get_solo().enforce_single_browser_session:
-                    return self.get_response(request)
+                # from core.models import SystemSettings  # Commented out - core app not available
+                # if not SystemSettings.get_solo().enforce_single_browser_session:
+                #     return self.get_response(request)  # Commented out - core app not available
+                pass
             except Exception:
                 pass
             # رفع رکوردهای اضافی احتمالی

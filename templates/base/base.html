@@ -38,13 +38,15 @@
     {% include 'settings_app/font_css_include.html' %}
     <link href="{% static 'css/fa-path.css' %}" rel="stylesheet">
     <link href="{% static 'vendor/bootstrap/bootstrap.min.css' %}" rel="stylesheet">
-    <link href="{% static 'vendor/fontawesome/css/all.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/all.min.css' %}" rel="stylesheet">
     <link href="{% static 'css/dynamic-theme.css' %}" rel="stylesheet">
     <link href="{% url 'settings_app:dynamic_css' %}" rel="stylesheet">
     <link href="{% static 'css/main.css' %}" rel="stylesheet">
         <!-- Font Awesome CSS - اولویت بالا -->
     <link href="{% static 'css/all.min.css' %}" rel="stylesheet" crossorigin="anonymous">
-
+   <!-- استایل‌های سفارشی -->
+    <link rel="stylesheet" href="{% static 'admin/css/' %}">
+    
     <!-- RTL Support -->
     <style>
          @font-face {

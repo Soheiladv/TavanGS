@@ -243,7 +243,7 @@ class RoleForm(forms.ModelForm):
         widgets = {
             'name': forms.TextInput(
                 attrs={'class': 'form-control', 'placeholder': 'عنوان نقش', 'aria-label': 'عنوان نقش', }),
-            'permissions': forms.SelectMultiple(attrs={'class': 'form-control'}),  # استفاده از CheckboxSelectMultiple
+            'permissions': forms.CheckboxSelectMultiple(),  # استفاده از CheckboxSelectMultiple
             'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 1, 'placeholder': 'توضیحات نقش',
                                                  'aria-label': 'توضیحات نقش', }),
             'parent': forms.Select(attrs={'class': 'form-control'}),
