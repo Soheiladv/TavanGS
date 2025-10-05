@@ -1,0 +1,173 @@
+{% extends 'base/base.html' %}
+{% load i18n %}
+
+{% block title %}
+    {% if object %}ویرایش دسته‌بندی{% else %}ایجاد دسته‌بندی جدید{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="max-w-2xl mx-auto">
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <div class="bg-gradient-to-r from-blue-600 to-purple-600 px-6 py-4">
+                <h1 class="text-2xl font-bold text-white">
+                    {% if object %}
+                        <i class="fas fa-edit mr-2"></i>ویرایش دسته‌بندی
+                    {% else %}
+                        <i class="fas fa-plus mr-2"></i>ایجاد دسته‌بندی جدید
+                    {% endif %}
+                </h1>
+            </div>
+            
+            <div class="p-6">
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    
+                    <div class="space-y-6">
+                        <!-- نام دسته -->
+                        <div>
+                            <label for="{{ form.name.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                نام دسته‌بندی <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" 
+                                   id="{{ form.name.id_for_label }}" 
+                                   name="{{ form.name.name }}" 
+                                   value="{{ form.name.value|default:'' }}"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                   placeholder="مثال: فناوری، ورزش، سیاست"
+                                   required>
+                            {% if form.name.errors %}
+                                <div class="mt-1 text-sm text-red-600">
+                                    {% for error in form.name.errors %}
+                                        <div>{{ error }}</div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- توضیحات -->
+                        <div>
+                            <label for="{{ form.description.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                توضیحات (اختیاری)
+                            </label>
+                            <textarea id="{{ form.description.id_for_label }}" 
+                                      name="{{ form.description.name }}" 
+                                      rows="3"
+                                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                      placeholder="توضیح کوتاهی درباره این دسته‌بندی...">{{ form.description.value|default:'' }}</textarea>
+                            {% if form.description.errors %}
+                                <div class="mt-1 text-sm text-red-600">
+                                    {% for error in form.description.errors %}
+                                        <div>{{ error }}</div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- آیکون -->
+                        <div>
+                            <label for="{{ form.icon.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                آیکون (اختیاری)
+                            </label>
+                            <input type="text" 
+                                   id="{{ form.icon.id_for_label }}" 
+                                   name="{{ form.icon.name }}" 
+                                   value="{{ form.icon.value|default:'' }}"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                   placeholder="مثال: fas fa-newspaper, fas fa-sports-ball">
+                            <p class="mt-1 text-sm text-gray-500">نام کلاس آیکون از Font Awesome</p>
+                            {% if form.icon.errors %}
+                                <div class="mt-1 text-sm text-red-600">
+                                    {% for error in form.icon.errors %}
+                                        <div>{{ error }}</div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- رنگ -->
+                        <div>
+                            <label for="{{ form.color.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                رنگ دسته‌بندی <span class="text-red-500">*</span>
+                            </label>
+                            <div class="flex items-center space-x-4 space-x-reverse">
+                                <input type="color" 
+                                       id="{{ form.color.id_for_label }}" 
+                                       name="{{ form.color.name }}" 
+                                       value="{{ form.color.value|default:'#3B82F6' }}"
+                                       class="w-12 h-10 border border-gray-300 rounded cursor-pointer">
+                                <input type="text" 
+                                       id="color-text" 
+                                       value="{{ form.color.value|default:'#3B82F6' }}"
+                                       class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                       placeholder="#3B82F6"
+                                       pattern="^#[0-9A-Fa-f]{6}$">
+                            </div>
+                            <p class="mt-1 text-sm text-gray-500">رنگ دسته‌بندی را انتخاب کنید یا کد هگز وارد کنید</p>
+                            {% if form.color.errors %}
+                                <div class="mt-1 text-sm text-red-600">
+                                    {% for error in form.color.errors %}
+                                        <div>{{ error }}</div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- وضعیت فعال -->
+                        <div class="flex items-center">
+                            <input type="checkbox" 
+                                   id="{{ form.is_active.id_for_label }}" 
+                                   name="{{ form.is_active.name }}" 
+                                   {% if form.is_active.value %}checked{% endif %}
+                                   class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                            <label for="{{ form.is_active.id_for_label }}" class="mr-2 block text-sm text-gray-900">
+                                دسته‌بندی فعال است
+                            </label>
+                        </div>
+                        {% if form.is_active.errors %}
+                            <div class="mt-1 text-sm text-red-600">
+                                {% for error in form.is_active.errors %}
+                                    <div>{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- دکمه‌های عملیات -->
+                    <div class="mt-8 flex justify-end space-x-4 space-x-reverse">
+                        <a href="{% url 'news:category_list' %}" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition">
+                            <i class="fas fa-times mr-2"></i>انصراف
+                        </a>
+                        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
+                            {% if object %}
+                                <i class="fas fa-save mr-2"></i>ذخیره تغییرات
+                            {% else %}
+                                <i class="fas fa-plus mr-2"></i>ایجاد دسته
+                            {% endif %}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const colorPicker = document.getElementById('{{ form.color.id_for_label }}');
+    const colorText = document.getElementById('color-text');
+    
+    // همگام‌سازی رنگ‌پیکر با فیلد متنی
+    colorPicker.addEventListener('input', function() {
+        colorText.value = this.value;
+    });
+    
+    // همگام‌سازی فیلد متنی با رنگ‌پیکر
+    colorText.addEventListener('input', function() {
+        if (/^#[0-9A-Fa-f]{6}$/.test(this.value)) {
+            colorPicker.value = this.value;
+        }
+    });
+});
+</script>
+{% endblock %}

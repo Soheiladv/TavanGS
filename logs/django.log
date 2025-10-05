@@ -4743,3 +4743,132 @@ WARNING 2025-10-04 22:03:15,166 basehttp 20864 22688 "GET /news/create/ HTTP/1.1
 INFO 2025-10-04 22:03:31,413 basehttp 20864 22688 "GET /news/tags/create/ HTTP/1.1" 200 30994
 INFO 2025-10-04 22:03:31,492 basehttp 20864 22688 "GET /settings/css/dynamic.css HTTP/1.1" 200 5524
 WARNING 2025-10-04 22:03:31,638 basehttp 20864 22688 "GET /static/fonts/Parastoo.ttf HTTP/1.1" 404 1981
+INFO 2025-10-04 22:04:00,008 basehttp 20864 26804 "POST /news/tags/create/ HTTP/1.1" 302 0
+WARNING 2025-10-04 22:04:00,066 log 20864 26804 Not Found: /news/tags/
+WARNING 2025-10-04 22:04:00,067 basehttp 20864 26804 "GET /news/tags/ HTTP/1.1" 404 10396
+WARNING 2025-10-04 22:04:22,660 log 20864 26804 Not Found: /news/tags/
+WARNING 2025-10-04 22:04:22,661 basehttp 20864 26804 "GET /news/tags/ HTTP/1.1" 404 10396
+INFO 2025-10-04 22:04:26,734 basehttp 20864 26804 "GET /news/ HTTP/1.1" 200 32119
+INFO 2025-10-04 22:04:26,844 basehttp 20864 26804 "GET /settings/css/dynamic.css HTTP/1.1" 200 5524
+WARNING 2025-10-04 22:04:26,901 basehttp 20864 26804 "GET /static/fonts/Parastoo.ttf HTTP/1.1" 404 1981
+INFO 2025-10-04 22:04:31,548 basehttp 20864 2828 "GET /news/tags/create/ HTTP/1.1" 200 30994
+INFO 2025-10-04 22:04:31,657 basehttp 20864 2828 "GET /settings/css/dynamic.css HTTP/1.1" 200 5524
+WARNING 2025-10-04 22:04:31,703 basehttp 20864 2828 "GET /static/fonts/Parastoo.ttf HTTP/1.1" 404 1981
+WARNING 2025-10-04 22:04:33,967 log 20864 8872 Not Found: /news/tags/
+WARNING 2025-10-04 22:04:33,969 basehttp 20864 8872 "GET /news/tags/ HTTP/1.1" 404 10396
+INFO 2025-10-04 22:04:36,921 basehttp 20864 8872 "GET /news/tags/create/ HTTP/1.1" 200 30994
+INFO 2025-10-04 22:04:36,997 basehttp 20864 8872 "GET /settings/css/dynamic.css HTTP/1.1" 200 5524
+WARNING 2025-10-04 22:04:37,060 basehttp 20864 8872 "GET /static/fonts/Parastoo.ttf HTTP/1.1" 404 1981
+WARNING 2025-10-04 22:04:39,990 log 20864 5720 Not Found: /news/categories/
+WARNING 2025-10-04 22:04:39,992 basehttp 20864 5720 "GET /news/categories/ HTTP/1.1" 404 10414
+WARNING 2025-10-04 22:04:42,194 log 20864 5720 Not Found: /news/create/
+WARNING 2025-10-04 22:04:42,196 basehttp 20864 5720 "GET /news/create/ HTTP/1.1" 404 10402
+INFO 2025-10-05 08:52:48,785 basehttp 20864 28852 "GET /settings/control/ HTTP/1.1" 200 63942
+ERROR 2025-10-05 08:53:32,806 log 20864 24688 Internal Server Error: /settings/control/users/
+Traceback (most recent call last):
+  File "D:\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python312\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Python312\Lib\site-packages\django\utils\decorators.py", line 48, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "D:\Python312\Lib\site-packages\django\contrib\auth\decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "D:\Python312\Lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\Python312\Lib\site-packages\django\views\generic\base.py", line 226, in get
+    context = self.get_context_data(**kwargs)
+  File "D:\Source.TavanGS\WebSite\settings_app\views.py", line 120, in get_context_data
+    context['users'] = User.objects.all().order_by('-date_joined')[:50]
+                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "D:\Python312\Lib\site-packages\django\db\models\query.py", line 1701, in order_by
+    obj.query.add_ordering(*field_names)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "D:\Python312\Lib\site-packages\django\db\models\sql\query.py", line 2249, in add_ordering
+    self.names_to_path(item.split(LOOKUP_SEP), self.model._meta)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Python312\Lib\site-packages\django\db\models\sql\query.py", line 1768, in names_to_path
+    raise FieldError(
+    ...<2 lines>...
+    )
+django.core.exceptions.FieldError: Cannot resolve keyword 'date_joined' into field. Choices are: active_session, assigned_demos, assigned_leads, assigned_quotes, assigned_tickets, auditlog, auth_token, auto_assigned_categories, computationsession, created_at, created_tickets, customusergroup, demorequest, downloadsession, email, emailaddress, first_name, fontsettings, groups, id, is_active, is_staff, is_superuser, last_login, last_name, logentry, news, newscomment, password, pricingrequest, profile, roles, socialaccount, staticdevice, ticketattachment, ticketreply, totpdevice, user_permissions, username, userobjectpermission
+ERROR 2025-10-05 08:53:32,814 basehttp 20864 24688 "GET /settings/control/users/ HTTP/1.1" 500 127603
+INFO 2025-10-05 08:59:48,404 basehttp 23028 26404 "GET /settings/control/ HTTP/1.1" 200 63913
+INFO 2025-10-05 08:59:48,469 basehttp 23028 26404 "GET /static/css/fonts.css HTTP/1.1" 304 0
+INFO 2025-10-05 08:59:48,472 basehttp 23028 30872 "GET /static/css/fa-path.css HTTP/1.1" 304 0
+INFO 2025-10-05 08:59:48,478 basehttp 23028 26404 "GET /static/vendor/bootstrap/bootstrap.min.css HTTP/1.1" 304 0
+INFO 2025-10-05 08:59:48,486 basehttp 23028 5516 "GET /static/css/dynamic-theme.css HTTP/1.1" 304 0
+INFO 2025-10-05 08:59:48,487 basehttp 23028 29888 "GET /static/css/main.css HTTP/1.1" 304 0
+INFO 2025-10-05 08:59:48,508 basehttp 23028 2064 "GET /settings/css/dynamic.css HTTP/1.1" 200 5524
+INFO 2025-10-05 08:59:48,508 basehttp 23028 5516 "GET /static/images/flags/us.svg HTTP/1.1" 304 0
+INFO 2025-10-05 08:59:48,508 basehttp 23028 29888 "GET /static/images/logo.svg HTTP/1.1" 304 0
+INFO 2025-10-05 08:59:48,524 basehttp 23028 2064 "GET /static/images/flags/ir.svg HTTP/1.1" 304 0
+INFO 2025-10-05 08:59:48,534 basehttp 23028 2064 "GET /static/images/flags/sa.svg HTTP/1.1" 304 0
+INFO 2025-10-05 08:59:48,552 basehttp 23028 2064 "GET /static/vendor/jquery/jquery-3.7.1.min.js HTTP/1.1" 304 0
+INFO 2025-10-05 08:59:48,563 basehttp 23028 2064 "GET /static/vendor/bootstrap/bootstrap.bundle.min.js HTTP/1.1" 304 0
+INFO 2025-10-05 08:59:48,569 basehttp 23028 2064 "GET /static/js/main.js HTTP/1.1" 304 0
+INFO 2025-10-05 08:59:48,581 basehttp 23028 2064 "GET /static/images/flags/tr.svg HTTP/1.1" 304 0
+WARNING 2025-10-05 08:59:49,895 basehttp 23028 2064 "GET /static/fonts/Parastoo.ttf HTTP/1.1" 404 1981
+INFO 2025-10-05 08:59:50,081 basehttp 23028 29888 "GET /media/fonts/Parastoo.woff2 HTTP/1.1" 304 0
+WARNING 2025-10-05 08:59:50,709 log 23028 30288 Not Found: /news/create/
+WARNING 2025-10-05 08:59:50,710 basehttp 23028 30288 "GET /news/create/ HTTP/1.1" 404 10425
+INFO 2025-10-05 09:02:16,860 basehttp 23028 14700 "GET /settings/control/ HTTP/1.1" 200 63913
+INFO 2025-10-05 09:02:16,961 basehttp 23028 14700 "GET /settings/css/dynamic.css HTTP/1.1" 200 5524
+WARNING 2025-10-05 09:02:17,169 basehttp 23028 14700 "GET /static/fonts/Parastoo.ttf HTTP/1.1" 404 1981
+WARNING 2025-10-05 09:02:42,208 log 23028 5424 Not Found: /news/create/
+WARNING 2025-10-05 09:02:42,209 basehttp 23028 5424 "GET /news/create/ HTTP/1.1" 404 10425
+INFO 2025-10-05 09:02:53,525 basehttp 19652 26728 "GET /news/create/ HTTP/1.1" 302 0
+INFO 2025-10-05 09:02:53,579 basehttp 19652 26728 "GET /accounts/login/?next=/news/create/ HTTP/1.1" 200 38698
+INFO 2025-10-05 09:03:50,447 basehttp 19652 2828 "GET /news/create/ HTTP/1.1" 200 39755
+INFO 2025-10-05 09:03:50,575 basehttp 19652 2828 "GET /settings/css/dynamic.css HTTP/1.1" 200 5524
+WARNING 2025-10-05 09:03:50,724 basehttp 19652 2828 "GET /static/fonts/Parastoo.ttf HTTP/1.1" 404 1981
+INFO 2025-10-05 09:04:45,142 basehttp 19652 21604 "POST /news/create/ HTTP/1.1" 200 40913
+INFO 2025-10-05 09:04:45,252 basehttp 19652 21604 "GET /settings/css/dynamic.css HTTP/1.1" 200 5524
+WARNING 2025-10-05 09:04:45,412 basehttp 19652 21604 "GET /static/fonts/Parastoo.ttf HTTP/1.1" 404 1981
+ERROR 2025-10-05 09:04:52,529 log 19652 29176 Internal Server Error: /news/categories/
+Traceback (most recent call last):
+  File "D:\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\Python312\Lib\site-packages\django\core\handlers\base.py", line 220, in _get_response
+    response = response.render()
+  File "D:\Python312\Lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Python312\Lib\site-packages\django\template\response.py", line 90, in rendered_content
+    template = self.resolve_template(self.template_name)
+  File "D:\Python312\Lib\site-packages\django\template\response.py", line 72, in resolve_template
+    return select_template(template, using=self.using)
+  File "D:\Python312\Lib\site-packages\django\template\loader.py", line 47, in select_template
+    raise TemplateDoesNotExist(", ".join(template_name_list), chain=chain)
+django.template.exceptions.TemplateDoesNotExist: news/category_list.html, news/newscategory_list.html
+ERROR 2025-10-05 09:04:52,540 basehttp 19652 29176 "GET /news/categories/ HTTP/1.1" 500 105739
+INFO 2025-10-05 09:06:38,278 basehttp 19652 8924 "GET /news/tags/ HTTP/1.1" 302 0
+INFO 2025-10-05 09:06:38,299 basehttp 19652 8924 "GET /accounts/login/?next=/news/tags/ HTTP/1.1" 200 38688
+INFO 2025-10-05 09:06:40,739 basehttp 19652 8924 "GET /settings/control/ HTTP/1.1" 302 0
+INFO 2025-10-05 09:06:40,756 basehttp 19652 8924 "GET /admin/login/?next=/settings/control/ HTTP/1.1" 200 3777
+ERROR 2025-10-05 09:07:05,679 log 19652 29176 Internal Server Error: /news/categories/
+Traceback (most recent call last):
+  File "D:\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\Python312\Lib\site-packages\django\core\handlers\base.py", line 220, in _get_response
+    response = response.render()
+  File "D:\Python312\Lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Python312\Lib\site-packages\django\template\response.py", line 90, in rendered_content
+    template = self.resolve_template(self.template_name)
+  File "D:\Python312\Lib\site-packages\django\template\response.py", line 72, in resolve_template
+    return select_template(template, using=self.using)
+  File "D:\Python312\Lib\site-packages\django\template\loader.py", line 47, in select_template
+    raise TemplateDoesNotExist(", ".join(template_name_list), chain=chain)
+django.template.exceptions.TemplateDoesNotExist: news/category_list.html, news/newscategory_list.html
+ERROR 2025-10-05 09:07:05,681 basehttp 19652 29176 "GET /news/categories/ HTTP/1.1" 500 105571
+INFO 2025-10-05 09:10:08,036 basehttp 19652 24112 "GET /news/categories/ HTTP/1.1" 302 0
+INFO 2025-10-05 09:10:08,057 basehttp 19652 24112 "GET /accounts/login/?next=/news/categories/ HTTP/1.1" 200 38718
+INFO 2025-10-05 09:10:10,671 basehttp 19652 24112 "GET /news/categories/create/ HTTP/1.1" 302 0
+INFO 2025-10-05 09:10:10,686 basehttp 19652 24112 "GET /accounts/login/?next=/news/categories/create/ HTTP/1.1" 200 38753
+INFO 2025-10-05 09:10:12,910 basehttp 19652 24112 "GET /news/tags/create/ HTTP/1.1" 302 0
+INFO 2025-10-05 09:10:12,919 basehttp 19652 24112 "GET /accounts/login/?next=/news/tags/create/ HTTP/1.1" 200 38723

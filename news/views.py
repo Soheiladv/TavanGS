@@ -155,6 +155,11 @@ class NewsCategoryListView(StaffRequiredMixin, ListView):
     template_name = 'news/category_list.html'
     context_object_name = 'categories'
     paginate_by = 20
+    
+    def get_queryset(self):
+        return NewsCategory.objects.annotate(
+            news_count=Count('news')
+        ).order_by('-created_at')
 
 
 class NewsCategoryCreateView(StaffRequiredMixin, CreateView):

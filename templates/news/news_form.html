@@ -1,0 +1,274 @@
+{% extends 'base/base.html' %}
+{% load i18n %}
+
+{% block title %}
+    {% if object %}ویرایش خبر{% else %}ایجاد خبر جدید{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="max-w-4xl mx-auto">
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <div class="bg-gradient-to-r from-blue-600 to-purple-600 px-6 py-4">
+                <h1 class="text-2xl font-bold text-white">
+                    {% if object %}
+                        <i class="fas fa-edit mr-2"></i>ویرایش خبر
+                    {% else %}
+                        <i class="fas fa-plus mr-2"></i>ایجاد خبر جدید
+                    {% endif %}
+                </h1>
+            </div>
+            
+            <div class="p-6">
+                <form method="post" enctype="multipart/form-data" novalidate>
+                    {% csrf_token %}
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <!-- محتوای اصلی -->
+                        <div class="lg:col-span-2 space-y-6">
+                            <!-- عنوان -->
+                            <div>
+                                <label for="{{ form.title.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                    عنوان خبر <span class="text-red-500">*</span>
+                                </label>
+                                <input type="text" 
+                                       id="{{ form.title.id_for_label }}" 
+                                       name="{{ form.title.name }}" 
+                                       value="{{ form.title.value|default:'' }}"
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                       placeholder="عنوان خبر را وارد کنید"
+                                       required>
+                                {% if form.title.errors %}
+                                    <div class="mt-1 text-sm text-red-600">
+                                        {% for error in form.title.errors %}
+                                            <div>{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- خلاصه -->
+                            <div>
+                                <label for="{{ form.summary.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                    خلاصه خبر <span class="text-red-500">*</span>
+                                </label>
+                                <textarea id="{{ form.summary.id_for_label }}" 
+                                          name="{{ form.summary.name }}" 
+                                          rows="3"
+                                          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                          placeholder="خلاصه کوتاهی از خبر..."
+                                          required>{{ form.summary.value|default:'' }}</textarea>
+                                {% if form.summary.errors %}
+                                    <div class="mt-1 text-sm text-red-600">
+                                        {% for error in form.summary.errors %}
+                                            <div>{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- محتوا -->
+                            <div>
+                                <label for="{{ form.content.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                    محتوای خبر <span class="text-red-500">*</span>
+                                </label>
+                                <textarea id="{{ form.content.id_for_label }}" 
+                                          name="{{ form.content.name }}" 
+                                          rows="10"
+                                          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                          placeholder="محتوای کامل خبر را وارد کنید..."
+                                          required>{{ form.content.value|default:'' }}</textarea>
+                                {% if form.content.errors %}
+                                    <div class="mt-1 text-sm text-red-600">
+                                        {% for error in form.content.errors %}
+                                            <div>{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- تنظیمات -->
+                        <div class="space-y-6">
+                            <!-- تصویر شاخص -->
+                            <div>
+                                <label for="{{ form.featured_image.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                    تصویر شاخص
+                                </label>
+                                <input type="file" 
+                                       id="{{ form.featured_image.id_for_label }}" 
+                                       name="{{ form.featured_image.name }}" 
+                                       accept="image/*"
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                {% if form.featured_image.errors %}
+                                    <div class="mt-1 text-sm text-red-600">
+                                        {% for error in form.featured_image.errors %}
+                                            <div>{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- دسته‌بندی -->
+                            <div>
+                                <label for="{{ form.category.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                    دسته‌بندی <span class="text-red-500">*</span>
+                                </label>
+                                <select id="{{ form.category.id_for_label }}" 
+                                        name="{{ form.category.name }}" 
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        required>
+                                    <option value="">انتخاب دسته‌بندی...</option>
+                                    {% for choice in form.category.field.queryset %}
+                                        <option value="{{ choice.pk }}" {% if form.category.value == choice.pk %}selected{% endif %}>
+                                            {{ choice.name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                                {% if form.category.errors %}
+                                    <div class="mt-1 text-sm text-red-600">
+                                        {% for error in form.category.errors %}
+                                            <div>{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- وضعیت -->
+                            <div>
+                                <label for="{{ form.status.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                    وضعیت انتشار
+                                </label>
+                                <select id="{{ form.status.id_for_label }}" 
+                                        name="{{ form.status.name }}" 
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    {% for value, label in form.status.field.choices %}
+                                        <option value="{{ value }}" {% if form.status.value == value %}selected{% endif %}>
+                                            {{ label }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                                {% if form.status.errors %}
+                                    <div class="mt-1 text-sm text-red-600">
+                                        {% for error in form.status.errors %}
+                                            <div>{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- اولویت -->
+                            <div>
+                                <label for="{{ form.priority.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                    اولویت نمایش
+                                </label>
+                                <select id="{{ form.priority.id_for_label }}" 
+                                        name="{{ form.priority.name }}" 
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    {% for value, label in form.priority.field.choices %}
+                                        <option value="{{ value }}" {% if form.priority.value == value %}selected{% endif %}>
+                                            {{ label }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                                {% if form.priority.errors %}
+                                    <div class="mt-1 text-sm text-red-600">
+                                        {% for error in form.priority.errors %}
+                                            <div>{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- تنظیمات SEO -->
+                            <div class="border-t pt-4">
+                                <h3 class="text-lg font-medium text-gray-900 mb-3">تنظیمات SEO</h3>
+                                
+                                <div class="space-y-4">
+                                    <div>
+                                        <label for="{{ form.meta_title.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                            عنوان متا
+                                        </label>
+                                        <input type="text" 
+                                               id="{{ form.meta_title.id_for_label }}" 
+                                               name="{{ form.meta_title.name }}" 
+                                               value="{{ form.meta_title.value|default:'' }}"
+                                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                               placeholder="عنوان برای موتورهای جستجو">
+                                    </div>
+
+                                    <div>
+                                        <label for="{{ form.meta_description.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                            توضیحات متا
+                                        </label>
+                                        <textarea id="{{ form.meta_description.id_for_label }}" 
+                                                  name="{{ form.meta_description.name }}" 
+                                                  rows="2"
+                                                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                                  placeholder="توضیحات برای موتورهای جستجو">{{ form.meta_description.value|default:'' }}</textarea>
+                                    </div>
+
+                                    <div>
+                                        <label for="{{ form.meta_keywords.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                            کلمات کلیدی
+                                        </label>
+                                        <input type="text" 
+                                               id="{{ form.meta_keywords.id_for_label }}" 
+                                               name="{{ form.meta_keywords.name }}" 
+                                               value="{{ form.meta_keywords.value|default:'' }}"
+                                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                               placeholder="کلمات کلیدی (با کاما جدا کنید)">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- تنظیمات اضافی -->
+                            <div class="border-t pt-4">
+                                <h3 class="text-lg font-medium text-gray-900 mb-3">تنظیمات اضافی</h3>
+                                
+                                <div class="space-y-3">
+                                    <div class="flex items-center">
+                                        <input type="checkbox" 
+                                               id="{{ form.is_featured.id_for_label }}" 
+                                               name="{{ form.is_featured.name }}" 
+                                               {% if form.is_featured.value %}checked{% endif %}
+                                               class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                        <label for="{{ form.is_featured.id_for_label }}" class="mr-2 block text-sm text-gray-900">
+                                            خبر ویژه
+                                        </label>
+                                    </div>
+
+                                    <div class="flex items-center">
+                                        <input type="checkbox" 
+                                               id="{{ form.is_pinned.id_for_label }}" 
+                                               name="{{ form.is_pinned.name }}" 
+                                               {% if form.is_pinned.value %}checked{% endif %}
+                                               class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                        <label for="{{ form.is_pinned.id_for_label }}" class="mr-2 block text-sm text-gray-900">
+                                            سنجاق شده
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- دکمه‌های عملیات -->
+                    <div class="mt-8 flex justify-end space-x-4 space-x-reverse">
+                        <a href="{% url 'news:news_list' %}" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition">
+                            <i class="fas fa-times mr-2"></i>انصراف
+                        </a>
+                        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
+                            {% if object %}
+                                <i class="fas fa-save mr-2"></i>ذخیره تغییرات
+                            {% else %}
+                                <i class="fas fa-plus mr-2"></i>ایجاد خبر
+                            {% endif %}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
