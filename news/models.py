@@ -14,7 +14,7 @@ class NewsCategory(models.Model):
     """دسته‌بندی اخبار"""
     
     name = models.CharField(max_length=100, verbose_name="نام")
-    slug = models.SlugField(unique=True, blank=True, verbose_name="نامک")
+    slug = models.SlugField(unique=True, blank=False, verbose_name="نامک")
     description = models.TextField(blank=True, verbose_name="توضیحات")
     color = models.CharField(max_length=20, default='#3b82f6', verbose_name="رنگ")
     icon = models.CharField(max_length=50, blank=True, verbose_name="آیکون")
@@ -38,7 +38,7 @@ class NewsCategory(models.Model):
         return self.name
     
     def save(self, *args, **kwargs):
-        if not self.slug:
+        if not self.slug or self.slug == '':
             self.slug = slugify(self.name)
         super().save(*args, **kwargs)
 

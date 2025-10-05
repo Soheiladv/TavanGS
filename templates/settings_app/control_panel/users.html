@@ -1,44 +1,107 @@
 {% extends 'base/base.html' %}
-{% load i18n %}
+{% load i18n jformat %}
 
 {% block title %}مدیریت کاربران{% endblock %}
 
 {% block content %}
 <div class="container mx-auto px-4 py-10">
-    <h1 class="text-3xl font-bold text-gray-900 mb-8">مدیریت کاربران</h1>
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-primary mb-2">مدیریت کاربران</h1>
+        <p class="text-secondary">مدیریت و نظارت بر کاربران سیستم</p>
+    </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div class="bg-white rounded-lg shadow p-6">
-            <h2 class="text-xl font-semibold mb-4">کاربران اخیر</h2>
-            <div class="divide-y">
-                {% for u in users %}
-                <div class="py-3 flex items-center justify-between">
-                    <div>
-                        <div class="font-medium">{{ u.get_full_name|default:u.email }}</div>
-                        <div class="text-sm text-gray-600">{{ u.email }}</div>
+        <!-- کاربران اخیر -->
+        <div class="card card-fa hover-lift">
+            <div class="card-header">
+                <h2 class="text-xl font-semibold mb-0">
+                    <i class="fas fa-users icon-fa"></i>
+                    کاربران اخیر
+                </h2>
+            </div>
+            <div class="card-body">
+                <div class="space-y-4">
+                    {% for u in users %}
+                    <div class="flex items-center justify-between p-3 bg-light-bg rounded-lg hover:bg-primary-light hover:text-primary transition-all">
+                        <div class="flex items-center space-x-3 space-x-reverse">
+                            <div class="w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center font-semibold">
+                                {{ u.get_full_name|first|default:u.email|first|upper }}
+                            </div>
+                            <div>
+                                <div class="font-medium text-primary">{{ u.get_full_name|default:u.email }}</div>
+                                <div class="text-sm text-muted">{{ u.email }}</div>
+                            </div>
+                        </div>
+                        <div class="text-sm text-muted">
+                            <i class="fas fa-calendar-alt icon-fa-sm"></i>
+                            {{ u.created_at|jformat:"%Y/%m/%d" }}
+                        </div>
                     </div>
-                    <div class="text-sm text-gray-500">{{ u.date_joined|date:"Y/m/d" }}</div>
+                    {% empty %}
+                    <div class="text-center py-8 text-muted">
+                        <i class="fas fa-user-slash text-4xl mb-4"></i>
+                        <p>کاربری یافت نشد.</p>
+                    </div>
+                    {% endfor %}
                 </div>
-                {% empty %}
-                <div class="py-6 text-gray-500">کاربری یافت نشد.</div>
-                {% endfor %}
             </div>
         </div>
 
-        <div class="bg-white rounded-lg shadow p-6">
-            <h2 class="text-xl font-semibold mb-4">کارکنان</h2>
-            <div class="divide-y">
-                {% for u in staff %}
-                <div class="py-3 flex items-center justify-between">
-                    <div>
-                        <div class="font-medium">{{ u.get_full_name|default:u.email }}</div>
-                        <div class="text-sm text-gray-600">{{ u.email }}</div>
+        <!-- کارکنان -->
+        <div class="card card-fa hover-lift">
+            <div class="card-header">
+                <h2 class="text-xl font-semibold mb-0">
+                    <i class="fas fa-user-tie icon-fa"></i>
+                    کارکنان
+                </h2>
+            </div>
+            <div class="card-body">
+                <div class="space-y-4">
+                    {% for u in staff %}
+                    <div class="flex items-center justify-between p-3 bg-light-bg rounded-lg hover:bg-success-light hover:text-success transition-all">
+                        <div class="flex items-center space-x-3 space-x-reverse">
+                            <div class="w-10 h-10 bg-success text-white rounded-full flex items-center justify-center font-semibold">
+                                {{ u.get_full_name|first|default:u.email|first|upper }}
+                            </div>
+                            <div>
+                                <div class="font-medium text-success">{{ u.get_full_name|default:u.email }}</div>
+                                <div class="text-sm text-muted">{{ u.email }}</div>
+                            </div>
+                        </div>
+                        <div class="text-sm text-muted">
+                            <i class="fas fa-calendar-alt icon-fa-sm"></i>
+                            {{ u.created_at|jformat:"%Y/%m/%d" }}
+                        </div>
                     </div>
-                    <div class="text-sm text-gray-500">{{ u.date_joined|date:"Y/m/d" }}</div>
+                    {% empty %}
+                    <div class="text-center py-8 text-muted">
+                        <i class="fas fa-user-tie text-4xl mb-4"></i>
+                        <p>کارمندی یافت نشد.</p>
+                    </div>
+                    {% endfor %}
                 </div>
-                {% empty %}
-                <div class="py-6 text-gray-500">کارمندی یافت نشد.</div>
-                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- آمار کلی -->
+    <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="card card-fa text-center">
+            <div class="card-body">
+                <div class="text-3xl font-bold text-primary mb-2">{{ users|length }}</div>
+                <div class="text-muted">کل کاربران</div>
+            </div>
+        </div>
+        <div class="card card-fa text-center">
+            <div class="card-body">
+                <div class="text-3xl font-bold text-success mb-2">{{ staff|length }}</div>
+                <div class="text-muted">کارکنان</div>
+            </div>
+        </div>
+        <div class="card card-fa text-center">
+            <div class="card-body">
+                <div class="text-3xl font-bold text-info mb-2">{{ users|length|add:staff|length }}</div>
+                <div class="text-muted">مجموع</div>
             </div>
         </div>
     </div>

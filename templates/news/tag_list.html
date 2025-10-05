@@ -1,5 +1,5 @@
 {% extends 'base/base.html' %}
-{% load i18n %}
+{% load i18n jformat rcms_custom_filters %}
 
 {% block title %}مدیریت تگ‌های اخبار{% endblock %}
 
@@ -44,10 +44,10 @@
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                {{ tag.news_count }}
+                                {{ tag.news_count |format_negative }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                {{ tag.created_at|date:"Y/m/d" }}
+                                {{ tag.created_at|jformat:"%Y/%m/%d" |to_persian_number}}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                 <a href="{% url 'news:tag_edit' tag.pk %}" class="text-indigo-600 hover:text-indigo-900 mr-3">

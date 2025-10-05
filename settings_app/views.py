@@ -117,8 +117,8 @@ class UsersManageView(TemplateView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['users'] = User.objects.all().order_by('-date_joined')[:50]
-        context['staff'] = User.objects.filter(is_staff=True).order_by('-date_joined')[:50]
+        context['users'] = User.objects.all().order_by('-created_at')[:50]
+        context['staff'] = User.objects.filter(is_staff=True).order_by('-created_at')[:50]
         return context
 
 
@@ -199,7 +199,11 @@ class SiteTemplateCreateView(CreateView):
     """ایجاد تمپلیت سایت جدید (Staff)"""
     model = SiteTemplate
     template_name = 'settings_app/control_panel/template_form.html'
-    fields = ['name', 'description', 'template_type', 'content', 'is_active', 'is_default']
+    fields = [
+        'name', 'template_type', 'header_config', 'hero_section_config',
+        'content_sections', 'footer_config', 'custom_css', 'custom_js',
+        'layout_grid', 'responsive_breakpoints', 'is_active', 'is_default', 'version'
+    ]
     success_url = reverse_lazy('settings_app:template_list')
     
     def form_valid(self, form):
@@ -212,7 +216,11 @@ class SiteTemplateUpdateView(UpdateView):
     """ویرایش تمپلیت سایت (Staff)"""
     model = SiteTemplate
     template_name = 'settings_app/control_panel/template_form.html'
-    fields = ['name', 'description', 'template_type', 'content', 'is_active', 'is_default']
+    fields = [
+        'name', 'template_type', 'header_config', 'hero_section_config',
+        'content_sections', 'footer_config', 'custom_css', 'custom_js',
+        'layout_grid', 'responsive_breakpoints', 'is_active', 'is_default', 'version'
+    ]
     success_url = reverse_lazy('settings_app:template_list')
     
     def form_valid(self, form):

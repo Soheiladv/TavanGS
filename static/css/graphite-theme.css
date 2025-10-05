@@ -1,0 +1,66 @@
+/* Graphite-inspired theme: simple tokens and nav/footer styles */
+:root {
+  --graphite-bg: #0a0a0b;
+  --graphite-surface: #0f1115;
+  --graphite-text: #e5e7eb;
+  --graphite-muted: #9ca3af;
+  --graphite-primary: #7c3aed; /* violet accent like Graphite */
+  --graphite-primary-contrast: #ffffff;
+  --graphite-ring: rgba(124, 58, 237, 0.35);
+}
+
+body.theme-warm-orange, body {
+  background-color: var(--graphite-bg);
+  color: var(--graphite-text);
+}
+
+.site-header {
+  background: linear-gradient(180deg, rgba(15,17,21,0.85) 0%, rgba(15,17,21,0.55) 100%);
+  -webkit-backdrop-filter: saturate(140%) blur(8px);
+  backdrop-filter: saturate(140%) blur(8px);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.graphite-nav .nav-link {
+  color: var(--graphite-muted);
+  transition: color .2s ease;
+}
+.graphite-nav .nav-link:hover {
+  color: var(--graphite-text);
+}
+.graphite-nav .btn-primary {
+  background-color: var(--graphite-primary);
+  color: var(--graphite-primary-contrast);
+  padding: 0.5rem 0.9rem;
+  border-radius: 10px;
+  box-shadow: 0 0 0 0 rgba(0,0,0,0);
+  transition: box-shadow .2s ease, transform .05s ease;
+}
+.graphite-nav .btn-primary:hover {
+  box-shadow: 0 0 0 4px var(--graphite-ring);
+}
+.graphite-nav .btn-ghost {
+  color: var(--graphite-text);
+  padding: 0.5rem 0.9rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.12);
+}
+
+.main-content {
+  background: radial-gradient(1200px 700px at 80% -200px, rgba(124,58,237,0.15), transparent 60%),
+              radial-gradient(1000px 600px at 10% -150px, rgba(59,130,246,0.12), transparent 55%);
+}
+
+.graphite-footer {
+  background: var(--graphite-surface);
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.graphite-footer h3, .graphite-footer h4 { color: var(--graphite-text); }
+.graphite-footer a { color: var(--graphite-muted); }
+.graphite-footer a:hover { color: var(--graphite-text); }
+
+/* Utility overrides for RTL spacing where needed */
+[dir="rtl"] .space-x-reverse > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 1;
+}
+

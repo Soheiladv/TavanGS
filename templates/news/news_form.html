@@ -222,6 +222,41 @@
                                 </div>
                             </div>
 
+                            <!-- تنظیمات تاریخ -->
+                            <div class="border-t pt-4">
+                                <h3 class="text-lg font-medium text-gray-900 mb-3">تنظیمات تاریخ</h3>
+                                
+                                <div class="space-y-4">
+                                    <div>
+                                        <label for="{{ form.published_at.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                            تاریخ انتشار
+                                        </label>
+                                        <input type="text" 
+                                               id="{{ form.published_at.id_for_label }}" 
+                                               name="{{ form.published_at.name }}" 
+                                               value="{{ form.published_at.value|default:'' }}"
+                                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                               placeholder="1404/01/17 12:30"
+                                               data-jdp="">
+                                        <p class="mt-1 text-sm text-gray-500">تاریخ و زمان انتشار خبر</p>
+                                    </div>
+
+                                    <div>
+                                        <label for="{{ form.expires_at.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                            تاریخ انقضا (اختیاری)
+                                        </label>
+                                        <input type="text" 
+                                               id="{{ form.expires_at.id_for_label }}" 
+                                               name="{{ form.expires_at.name }}" 
+                                               value="{{ form.expires_at.value|default:'' }}"
+                                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                               placeholder="1404/12/29 23:59"
+                                               data-jdp="">
+                                        <p class="mt-1 text-sm text-gray-500">تاریخ انقضای خبر (اختیاری)</p>
+                                    </div>
+                                </div>
+                            </div>
+
                             <!-- تنظیمات اضافی -->
                             <div class="border-t pt-4">
                                 <h3 class="text-lg font-medium text-gray-900 mb-3">تنظیمات اضافی</h3>
@@ -271,4 +306,41 @@
         </div>
     </div>
 </div>
+
+<!-- تقویم جلالی -->
+<script src="https://unpkg.com/jalali-moment/dist/jalali-moment.browser.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // تنظیم تقویم جلالی برای فیلدهای تاریخ
+    const dateFields = document.querySelectorAll('[data-jdp]');
+    
+    dateFields.forEach(function(field) {
+        // تنظیم تقویم جلالی
+        field.addEventListener('click', function() {
+            // اگر مقدار خالی است، تاریخ فعلی جلالی را تنظیم کن
+            if (!this.value) {
+                const now = moment();
+                const jalaliDate = now.format('jYYYY/jMM/jDD HH:mm');
+                this.value = jalaliDate;
+            }
+        });
+        
+        // اعتبارسنجی فرمت تاریخ
+        field.addEventListener('blur', function() {
+            const value = this.value.trim();
+            if (value) {
+                // بررسی فرمت تاریخ جلالی
+                const dateRegex = /^\d{4}\/\d{1,2}\/\d{1,2}(\s+\d{1,2}:\d{2})?$/;
+                if (!dateRegex.test(value)) {
+                    this.style.borderColor = '#ef4444';
+                    this.title = 'فرمت تاریخ صحیح نیست. از فرمت 1404/01/17 12:30 استفاده کنید.';
+                } else {
+                    this.style.borderColor = '#d1d5db';
+                    this.title = '';
+                }
+            }
+        });
+    });
+});
+</script>
 {% endblock %}

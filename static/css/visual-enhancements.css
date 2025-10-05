@@ -1,0 +1,308 @@
+/* ================================================== */
+/* === Visual Enhancements CSS === */
+/* === بهبودهای بصری و جلوه‌های مدرن === */
+/* ================================================== */
+
+/* --- گرادیان‌های زیبا --- */
+.gradient-primary {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+}
+
+.gradient-secondary {
+    background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-dark) 100%);
+}
+
+.gradient-success {
+    background: linear-gradient(135deg, var(--success) 0%, var(--success-dark) 100%);
+}
+
+.gradient-danger {
+    background: linear-gradient(135deg, var(--danger) 0%, var(--danger-dark) 100%);
+}
+
+.gradient-warning {
+    background: linear-gradient(135deg, var(--warning) 0%, var(--warning-dark) 100%);
+}
+
+.gradient-info {
+    background: linear-gradient(135deg, var(--info) 0%, var(--info-dark) 100%);
+}
+
+.gradient-rainbow {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--info) 25%, var(--success) 50%, var(--warning) 75%, var(--danger) 100%);
+}
+
+/* --- دکمه‌های پیشرفته --- */
+.btn-gradient {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    border: none;
+    color: var(--text-light);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-gradient::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
+    transition: var(--transition);
+    z-index: -1;
+}
+
+.btn-gradient:hover::before {
+    left: 0;
+}
+
+.btn-glow {
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+    transition: var(--transition);
+}
+
+.btn-glow:hover {
+    box-shadow: 0 0 30px rgba(99, 102, 241, 0.5);
+    transform: translateY(-2px);
+}
+
+/* --- کارت‌های پیشرفته --- */
+.card-glass {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: var(--shadow-lg);
+}
+
+.card-neon {
+    border: 2px solid var(--primary);
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+    transition: var(--transition);
+}
+
+.card-neon:hover {
+    box-shadow: 0 0 30px rgba(99, 102, 241, 0.5);
+    transform: translateY(-4px);
+}
+
+.card-floating {
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+/* --- انیمیشن‌های پیشرفته --- */
+.animate-bounce-slow {
+    animation: bounce-slow 2s infinite;
+}
+
+@keyframes bounce-slow {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.animate-pulse-slow {
+    animation: pulse-slow 3s infinite;
+}
+
+@keyframes pulse-slow {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.animate-rotate {
+    animation: rotate 2s linear infinite;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.animate-scale {
+    animation: scale 2s ease-in-out infinite;
+}
+
+@keyframes scale {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+/* --- افکت‌های hover پیشرفته --- */
+.hover-lift {
+    transition: var(--transition);
+}
+
+.hover-lift:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-xl);
+}
+
+.hover-glow {
+    transition: var(--transition);
+}
+
+.hover-glow:hover {
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
+}
+
+.hover-scale {
+    transition: var(--transition);
+}
+
+.hover-scale:hover {
+    transform: scale(1.05);
+}
+
+.hover-rotate {
+    transition: var(--transition);
+}
+
+.hover-rotate:hover {
+    transform: rotate(5deg);
+}
+
+/* --- افکت‌های متن --- */
+.text-gradient {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--info) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.text-shadow {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.text-glow {
+    text-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+}
+
+/* --- افکت‌های پس‌زمینه --- */
+.bg-pattern {
+    background-image: 
+        radial-gradient(circle at 25% 25%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 75% 75%, rgba(6, 182, 212, 0.1) 0%, transparent 50%);
+}
+
+.bg-mesh {
+    background-image: 
+        linear-gradient(45deg, rgba(99, 102, 241, 0.1) 25%, transparent 25%),
+        linear-gradient(-45deg, rgba(6, 182, 212, 0.1) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, rgba(16, 185, 129, 0.1) 75%),
+        linear-gradient(-45deg, transparent 75%, rgba(245, 158, 11, 0.1) 75%);
+    background-size: 20px 20px;
+    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+}
+
+/* --- افکت‌های مرز --- */
+.border-gradient {
+    border: 2px solid;
+    border-image: linear-gradient(135deg, var(--primary), var(--info), var(--success)) 1;
+}
+
+.border-dashed {
+    border: 2px dashed var(--primary);
+    border-radius: var(--border-radius);
+}
+
+.border-dotted {
+    border: 2px dotted var(--primary);
+    border-radius: var(--border-radius);
+}
+
+/* --- افکت‌های شفافیت --- */
+.backdrop-blur {
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.backdrop-blur-strong {
+    backdrop-filter: blur(20px);
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* --- افکت‌های سایه --- */
+.shadow-colored {
+    box-shadow: 0 4px 14px 0 rgba(99, 102, 241, 0.25);
+}
+
+.shadow-colored-success {
+    box-shadow: 0 4px 14px 0 rgba(16, 185, 129, 0.25);
+}
+
+.shadow-colored-danger {
+    box-shadow: 0 4px 14px 0 rgba(239, 68, 68, 0.25);
+}
+
+.shadow-colored-warning {
+    box-shadow: 0 4px 14px 0 rgba(245, 158, 11, 0.25);
+}
+
+/* --- افکت‌های loading --- */
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--border-light);
+    border-top: 4px solid var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-dots {
+    display: inline-block;
+}
+
+.loading-dots::after {
+    content: '';
+    animation: dots 1.5s infinite;
+}
+
+@keyframes dots {
+    0%, 20% { content: ''; }
+    40% { content: '.'; }
+    60% { content: '..'; }
+    80%, 100% { content: '...'; }
+}
+
+/* --- افکت‌های responsive --- */
+@media (max-width: 768px) {
+    .hover-lift:hover {
+        transform: translateY(-4px);
+    }
+    
+    .hover-scale:hover {
+        transform: scale(1.02);
+    }
+    
+    .card-floating {
+        animation: none;
+    }
+}
+
+/* --- افکت‌های چاپ --- */
+@media print {
+    .btn-gradient,
+    .card-glass,
+    .card-neon,
+    .card-floating {
+        background: white !important;
+        border: 1px solid #000 !important;
+        box-shadow: none !important;
+        animation: none !important;
+    }
+    
+    .text-gradient {
+        -webkit-text-fill-color: initial !important;
+        color: #000 !important;
+    }
+}

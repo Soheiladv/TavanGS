@@ -1,4 +1,5 @@
 {% load i18n static %}
+{% load system_fonts %}
 {% get_current_language as LANGUAGE_CODE %}
 {% get_current_language_bidi as LANGUAGE_BIDI %}
 <!DOCTYPE html>
@@ -32,57 +33,44 @@
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="{% static 'images/logo.svg' %}">
     
-    <!-- CSS (Local vendor) -->
+    <!-- Fonts (managed by Settings App) -->
     <link href="{% static 'css/fonts.css' %}" rel="stylesheet">
-    {% load system_fonts %}
-    {% include 'settings_app/font_css_include.html' %}
-
-    <link href="{% static 'css/fa-path.css' %}" rel="stylesheet">
-    <link href="{% static 'vendor/bootstrap/bootstrap.min.css' %}" rel="stylesheet">
-    <link href="{% static 'css/all.min.css' %}" rel="stylesheet">
-    <link href="{% static 'css/dynamic-theme.css' %}" rel="stylesheet">
-    <link href="{% url 'settings_app:dynamic_css' %}" rel="stylesheet">
-    <link href="{% static 'css/main.css' %}" rel="stylesheet">
-        <!-- Font Awesome CSS - اولویت بالا -->
-    <link href="{% static 'css/all.min.css' %}" rel="stylesheet" crossorigin="anonymous">
-   <!-- استایل‌های سفارشی -->
-    <link href="{% static 'css/custom.css' %}" rel="stylesheet">
-    <link href="{% static 'css/custom_admin.css' %}" rel="stylesheet">
-    <link href="{% static 'css/custom_base.css' %}" rel="stylesheet">
+    {% include_system_fonts %}
     
-    <!-- RTL Support -->
+    <!-- CSS Framework - Unified -->
+    <link href="{% static 'css/unified.css' %}" rel="stylesheet">
+    <link href="{% static 'css/compatibility.css' %}" rel="stylesheet">
+    <link href="{% static 'css/themes.css' %}" rel="stylesheet">
+    <link href="{% static 'css/visual-enhancements.css' %}" rel="stylesheet">
+    <link href="{% static 'css/persian-enhancements.css' %}" rel="stylesheet">
+    <!-- Graphite-inspired Theme -->
+    <link href="{% static 'css/graphite-theme.css' %}" rel="stylesheet">
+    
+    <!-- External Libraries -->
+    <link href="{% static 'vendor/bootstrap/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/all.min.css' %}" rel="stylesheet" crossorigin="anonymous">
+    
+    <!-- Dynamic Theme -->
+    <link href="{% url 'settings_app:dynamic_css' %}" rel="stylesheet">
+    
+    <!-- Persian Date Picker CSS -->
+    <link href="{% static 'css/persian-datepicker.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/jalalidatepicker.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/jalali-datepicker-custom.css' %}" rel="stylesheet">
+    
+    <!-- Dynamic Theme Variables -->
     <style>
-         @font-face {
-            font-family: 'Vazir';
-            src: url('{% static "fonts/vazir/Vazir-Regular.woff2" %}') format('truetype');
-            font-weight: normal;
-            font-style: normal;
-        }
-
         :root {
             --primary-color: {{ theme_colors.primary }};
             --secondary-color: {{ theme_colors.secondary }};
             --accent-color: {{ theme_colors.accent }};
         }
-        
-        body {
-            font-family: 'Vazir', 'Tahoma', sans-serif;
-        }
-        
-        .text-primary { color: var(--primary-color); }
-        .bg-primary { background-color: var(--primary-color); }
-        .border-primary { border-color: var(--primary-color); }
-        
-        .text-secondary { color: var(--secondary-color); }
-        .bg-secondary { background-color: var(--secondary-color); }
-        
-        .text-accent { color: var(--accent-color); }
-        .bg-accent { background-color: var(--accent-color); }
     </style>
     
     {% block extra_css %}{% endblock %}
 </head>
-<body class="bg-gray-50 text-gray-900">
+<body class="{{ site_settings.theme_class|default:'theme-warm-orange' }}">
+{% comment %} <body class="bg-gray-50 text-gray-900"> {% endcomment %}
     
     <!-- Maintenance Mode Banner -->
     {% if maintenance_mode %}
@@ -107,22 +95,16 @@
                     </a>
                 </div>
                 
-                <!-- Main Navigation -->
-                <div class="hidden md:flex items-center space-x-6 space-x-reverse">
-                    <a href="{% url 'products:home' %}" class="text-gray-700 hover:text-primary font-medium">خانه</a>
-                    <a href="{% url 'products:list' %}" class="text-gray-700 hover:text-primary font-medium">محصولات</a>
-                    <a href="{% url 'services:list' %}" class="text-gray-700 hover:text-primary font-medium">خدمات</a>
-                    <a href="{% url 'news:news_list' %}" class="text-gray-700 hover:text-primary font-medium">اخبار</a>
-                    {% if feature_flags.sandbox %}
-                    <a href="{% url 'products:sandbox' %}" class="text-gray-700 hover:text-primary font-medium">آزمایشگاه</a>
-                    {% endif %}
-                    <a href="{% url 'sales:version_list' %}" class="text-gray-700 hover:text-primary font-medium">نسخه‌ها</a>
-                    <a href="{% url 'sales:demo_request' %}" class="text-gray-700 hover:text-primary font-medium">درخواست دمو</a>
-                    <a href="{% url 'tickets:create' %}" class="text-gray-700 hover:text-primary font-medium">پشتیبانی</a>
-                    <a href="{% url 'products:hero_quiz' %}" class="text-gray-700 hover:text-primary font-medium">کوئیز قهرمان</a>
-                    {% comment %} {% if user.is_staff %} {% endcomment %}
-                    <a href="{% url 'settings_app:control_dashboard' %}" class="text-secondary hover:text-secondary font-semibold">داشبورد مدیریت</a>
-                    {% comment %} {% endif %} {% endcomment %}
+                <!-- Main Navigation (Graphite-style) -->
+                <div class="hidden md:flex items-center space-x-6 space-x-reverse graphite-nav">
+                    <a href="{% url 'products:list' %}" class="nav-link">ویژگی‌ها</a>
+                    <a href="{% url 'services:list' %}" class="nav-link">موارد استفاده</a>
+                    <a href="{% url 'sales:pricing_request' %}" class="nav-link">قیمت‌گذاری</a>
+                    <a href="{% url 'news:news_list' %}" class="nav-link">مستندات</a>
+                    <a href="{% url 'news:news_list' %}" class="nav-link">بلاگ</a>
+                    <a href="{% url 'tickets:create' %}" class="nav-link">تماس</a>
+                    <a href="{% url 'sales:demo_request' %}" class="btn-ghost">درخواست دمو</a>
+                    <a href="{% url 'account_signup' %}" class="btn-primary">شروع رایگان</a>
                 </div>
                 
                 <!-- User Menu -->
@@ -161,26 +143,18 @@
             <!-- Mobile Menu -->
             <div class="md:hidden mt-4 hidden" id="mobile-menu">
                 <div class="flex flex-col space-y-2">
-                    <a href="{% url 'products:home' %}" class="text-gray-700 hover:text-primary py-2">خانه</a>
-                    <a href="{% url 'products:list' %}" class="text-gray-700 hover:text-primary py-2">محصولات</a>
-                    <a href="{% url 'services:list' %}" class="text-gray-700 hover:text-primary py-2">خدمات</a>
-                    <a href="{% url 'news:news_list' %}" class="text-gray-700 hover:text-primary py-2">اخبار</a>
-                    {% if feature_flags.sandbox %}
-                    <a href="{% url 'products:sandbox' %}" class="text-gray-700 hover:text-primary py-2">آزمایشگاه</a>
-                    {% endif %}
-                    <a href="{% url 'sales:version_list' %}" class="text-gray-700 hover:text-primary py-2">نسخه‌ها</a>
+                    <a href="{% url 'products:list' %}" class="text-gray-700 hover:text-primary py-2">ویژگی‌ها</a>
+                    <a href="{% url 'services:list' %}" class="text-gray-700 hover:text-primary py-2">موارد استفاده</a>
+                    <a href="{% url 'sales:pricing_request' %}" class="text-gray-700 hover:text-primary py-2">قیمت‌گذاری</a>
+                    <a href="{% url 'news:news_list' %}" class="text-gray-700 hover:text-primary py-2">مستندات</a>
+                    <a href="{% url 'news:news_list' %}" class="text-gray-700 hover:text-primary py-2">بلاگ</a>
+                    <a href="{% url 'tickets:create' %}" class="text-gray-700 hover:text-primary py-2">تماس</a>
                     <a href="{% url 'sales:demo_request' %}" class="text-gray-700 hover:text-primary py-2">درخواست دمو</a>
-                    <a href="{% url 'tickets:create' %}" class="text-gray-700 hover:text-primary py-2">پشتیبانی</a>
-                    <a href="{% url 'computation_engine:template_list' %}" class="text-gray-700 hover:text-primary py-2">محاسبات</a>
-                    <a href="{% url 'products:hero_quiz' %}" class="text-gray-700 hover:text-primary py-2">کوئیز قهرمان</a>
+                    <a href="{% url 'account_signup' %}" class="text-gray-700 hover:text-primary py-2">شروع رایگان</a>
                     {% if user.is_authenticated %}
                     <a href="{% url 'users:dashboard' %}" class="text-gray-700 hover:text-primary py-2">داشبورد</a>
-                    <a href="{% url 'accounts:custom_theme_designer' %}" class="text-gray-700 hover:text-primary py-2">
-                        <i class="fas fa-palette me-2"></i>طراح تم
-                    </a>
                     {% else %}
                     <a href="{% url 'account_login' %}" class="text-gray-700 hover:text-primary py-2">ورود</a>
-                    <a href="{% url 'account_signup' %}" class="text-gray-700 hover:text-primary py-2">ثبت‌نام</a>
                     {% endif %}
                 </div>
             </div>
@@ -227,7 +201,7 @@
     </main>
     
     <!-- Footer -->
-    <footer class="site-footer {% if site_settings.footer_style == 'full' %}footer-full{% elif site_settings.footer_style == 'minimal' %}footer-minimal{% else %}footer-compact{% endif %}">
+    <footer class="site-footer {% if site_settings.footer_style == 'full' %}footer-full{% elif site_settings.footer_style == 'minimal' %}footer-minimal{% else %}footer-compact{% endif %} graphite-footer">
         <div class="container mx-auto px-4 py-12">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <!-- Company Info -->
@@ -253,23 +227,16 @@
                     </div>
                 </div>
                 
-                <!-- Quick Links -->
+                <!-- Quick Links (Graphite-style) -->
                 <div>
-                    <h4 class="text-lg font-semibold mb-4">لینک‌های سریع</h4>
+                    <h4 class="text-lg font-semibold mb-4">لینک‌های اصلی</h4>
                     <ul class="space-y-2">
-                        <li><a href="{% url 'products:list' %}" class="text-gray-300 hover:text-white">محصولات</a></li>
-                        <li><a href="{% url 'services:list' %}" class="text-gray-300 hover:text-white">خدمات</a></li>
-                        {% if feature_flags.sandbox %}
-                        <li><a href="{% url 'products:sandbox' %}" class="text-gray-300 hover:text-white">آزمایشگاه</a></li>
-                        {% endif %}
-                        <li><a href="{% url 'sales:version_list' %}" class="text-gray-300 hover:text-white">نسخه‌ها</a></li>
-                        <li><a href="{% url 'sales:demo_request' %}" class="text-gray-300 hover:text-white">درخواست دمو</a></li>
-                        <li><a href="{% url 'sales:pricing_request' %}" class="text-gray-300 hover:text-white">درخواست قیمت</a></li>
-                        <li><a href="{% url 'tickets:create' %}" class="text-gray-300 hover:text-white">پشتیبانی</a></li>
-                        <li><a href="{% url 'computation_engine:template_list' %}" class="text-gray-300 hover:text-white">محاسبات</a></li>
-                        {% if user.is_authenticated %}
-                        <li><a href="{% url 'users:dashboard' %}" class="text-gray-300 hover:text-white">داشبورد کاربر</a></li>
-                        {% endif %}
+                        <li><a href="{% url 'products:list' %}" class="text-gray-300 hover:text-white">ویژگی‌ها</a></li>
+                        <li><a href="{% url 'services:list' %}" class="text-gray-300 hover:text-white">موارد استفاده</a></li>
+                        <li><a href="{% url 'sales:pricing_request' %}" class="text-gray-300 hover:text-white">قیمت‌گذاری</a></li>
+                        <li><a href="{% url 'news:news_list' %}" class="text-gray-300 hover:text-white">مستندات</a></li>
+                        <li><a href="{% url 'news:news_list' %}" class="text-gray-300 hover:text-white">بلاگ</a></li>
+                        <li><a href="{% url 'tickets:create' %}" class="text-gray-300 hover:text-white">تماس</a></li>
                     </ul>
                 </div>
                 
@@ -303,7 +270,7 @@
                 <div class="flex space-x-4 space-x-reverse mt-4 md:mt-0">
                     <a href="#" class="text-gray-300 hover:text-white text-sm">حریم خصوصی</a>
                     <a href="#" class="text-gray-300 hover:text-white text-sm">شرایط استفاده</a>
-                    <a href="#" class="text-gray-300 hover:text-white text-sm">درباره ما</a>
+                    <a href="{% url 'sales:demo_request' %}" class="text-gray-300 hover:text-white text-sm">درخواست دمو</a>
                 </div>
             </div>
         </div>
@@ -312,6 +279,22 @@
     <!-- JavaScript (Local vendor) -->
     <script src="{% static 'vendor/jquery/jquery-3.7.1.min.js' %}"></script>
     <script src="{% static 'vendor/bootstrap/bootstrap.bundle.min.js' %}"></script>
+    
+    <!-- Persian Date Picker Libraries -->
+    <script src="{% static 'js/persian-date.min.js' %}"></script>
+    <script src="{% static 'js/persian-datepicker.min.js' %}"></script>
+    <script src="{% static 'js/persian_datepicker_init.js' %}"></script>
+    
+    <!-- Moment.js for Jalali date support -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-jalaali/0.10.0/moment-jalaali.js"></script>
+    
+    <!-- Theme Manager -->
+    <script src="{% static 'js/theme-manager.js' %}"></script>
+    
+    <!-- Jalali Date Picker -->
+    <script src="{% static 'js/jalali-date-picker.js' %}"></script>
+    
     <script src="{% static 'js/main.js' %}"></script>
     
     <!-- Mobile Menu Toggle -->

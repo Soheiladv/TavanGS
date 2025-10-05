@@ -1,5 +1,5 @@
 {% extends "base/base.html" %}
-{% load static rcms_custom_filters i18n jformat %}
+{% load static i18n jformat rcms_custom_filters   %}
 
 {% block title %}اخبار{% endblock %}
 
@@ -228,7 +228,7 @@
                         </select>
                     </div>
                     <div class="col-md-3">
-                        <input type="date" name="date_from" class="form-control" 
+                        <input type="text" name="date_from" class="form-control" data-jdp placeholder="از تاریخ (1404/01/01)" 
                                value="{{ request.GET.date_from }}">
                     </div>
                     <div class="col-md-2">
@@ -274,11 +274,11 @@
                                     <div class="news-card-stats">
                                         <span class="news-card-stat">
                                             <i class="fas fa-eye"></i>
-                                            {{ news.view_count }}
+                                            {{ news.view_count |format_negative }}
                                         </span>
                                         <span class="news-card-stat">
                                             <i class="fas fa-heart"></i>
-                                            {{ news.like_count }}
+                                            {{ news.like_count |format_negative}}
                                         </span>
                                     </div>
                                 </div>
@@ -286,7 +286,7 @@
                                 <div class="mt-2">
                                     <small class="text-muted">
                                         <i class="fas fa-clock me-1"></i>
-                                        {{ news.published_at|jformat:"%Y/%m/%d" }}
+                                        {{ news.published_at|jformat:"%Y/%m/%d"  |to_persian_number}}
                                     </small>
                                 </div>
                             </div>
@@ -362,7 +362,7 @@
                     <p>{{ news.summary|truncatechars:100 }}</p>
                     <small class="text-muted">
                         <i class="fas fa-clock me-1"></i>
-                        {{ news.published_at|jformat:"%Y/%m/%d" }}
+                        {{ news.published_at|jformat:"%Y/%m/%d" |to_persian_number }}
                     </small>
                 </div>
                 {% endfor %}
@@ -387,7 +387,7 @@
                     <p>{{ news.summary|truncatechars:80 }}</p>
                     <small class="text-muted">
                         <i class="fas fa-clock me-1"></i>
-                        {{ news.published_at|jformat:"%Y/%m/%d" }}
+                        {{ news.published_at|jformat:"%Y/%m/%d"  |to_persian_number}}
                     </small>
                 </div>
                 {% endfor %}

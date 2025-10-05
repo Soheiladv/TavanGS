@@ -24,7 +24,7 @@ class CustomUserCreationForm(forms.ModelForm):
                                            required=False
                                            )
     role = forms.ModelChoiceField(
-        queryset=Role.objects.all(),  # فرض کرده‌ایم که مدلی بنام Role دارید
+        queryset=Role.objects.filter(is_active=True),  # فرض کرده‌ایم که مدلی بنام Role دارید
         required=False,
         empty_label="بدون نقش"
     )
@@ -66,7 +66,7 @@ class AssignRoleForm(forms.Form):
         widget=forms.Select(attrs={'class': 'form-control', 'placeholder': 'انتخاب کاربر'})
     )
     roles = forms.ModelMultipleChoiceField(
-        queryset=Role.objects.all(),
+        queryset=Role.objects.filter(is_active=True),
         widget=forms.CheckboxSelectMultiple(attrs={'class': 'form-control'}),
         label="انتخاب نقش‌ها"
     )
@@ -121,7 +121,7 @@ class MyGroupForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['roles'].queryset = Role.objects.all()
+        self.fields['roles'].queryset = Role.objects.filter(is_active=True)
         # self.fields['users'].queryset = get_user_model().objects.all()
         self.fields['name'].widget.attrs.update({'class': 'form-control', 'placeholder': _('نام گروه را وارد کنید')})
 
@@ -153,7 +153,7 @@ class CustomUserForm(forms.ModelForm):
     # role = forms.ModelChoiceField(queryset=Role.objects.all(), required=False)
     password1 = forms.CharField(label="رمز عبور جدید", widget=forms.PasswordInput, required=False)
     roles = forms.ModelMultipleChoiceField(
-        queryset=Role.objects.all(),
+        queryset=Role.objects.filter(is_active=True),
         widget=forms.CheckboxSelectMultiple,
         required=False,
         label=_('نقش‌ها')
@@ -239,7 +239,7 @@ class CustomUserChangeForm(forms.ModelForm):
 class RoleForm(forms.ModelForm):
     class Meta:
         model = Role
-        fields = ['name', 'permissions', 'description', 'parent', ]
+        fields = ['name', 'permissions', 'description', 'parent', 'is_active']
         widgets = {
             'name': forms.TextInput(
                 attrs={'class': 'form-control', 'placeholder': 'عنوان نقش', 'aria-label': 'عنوان نقش', }),
@@ -247,12 +247,35 @@ class RoleForm(forms.ModelForm):
             'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 1, 'placeholder': 'توضیحات نقش',
                                                  'aria-label': 'توضیحات نقش', }),
             'parent': forms.Select(attrs={'class': 'form-control'}),
+            'is_active': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['permissions'].queryset = Permission.objects.select_related('content_type').all()
-        self.fields['parent'].queryset = Role.objects.all()
+        self.fields['parent'].queryset = Role.objects.filter(is_active=True)
+        
+        # تنظیم مقدار پیش‌فرض برای is_active
+        if not self.instance.pk:  # اگر نقش جدید است
+            self.fields['is_active'].initial = True
+        
+        # تنظیم برچسب‌های فارسی
+        self.fields['name'].label = 'عنوان نقش'
+        self.fields['permissions'].label = 'مجوزها'
+        self.fields['description'].label = 'توضیحات نقش'
+        self.fields['parent'].label = 'نقش والدین'
+        self.fields['is_active'].label = 'فعال'
+    
+    def clean(self):
+        cleaned_data = super().clean()
+        parent = cleaned_data.get('parent')
+        is_active = cleaned_data.get('is_active')
+        
+        # اگر نقش والدین غیرفعال است، نقش فرزند نمی‌تواند فعال باشد
+        if parent and parent.is_active == False and is_active:
+            raise forms.ValidationError('نقش والدین غیرفعال است. نقش فرزند نمی‌تواند فعال باشد.')
+        
+        return cleaned_data
 ###############################################             #########################################
 '''برای انتقال وابستگی‌ها به نقش دیگر، یک فرم ایجاد کنید:
 '''
@@ -269,7 +292,7 @@ class AssignRolesToUserForm(forms.Form):
         'class': 'form-control',
         'placeholder': 'انتخاب کاربر',
     }))
-    roles = forms.ModelMultipleChoiceField(queryset=Role.objects.all(), widget=forms.SelectMultiple(attrs={
+    roles = forms.ModelMultipleChoiceField(queryset=Role.objects.filter(is_active=True), widget=forms.SelectMultiple(attrs={
         'class': 'form-control',
     }))
 
@@ -288,7 +311,7 @@ class AssignRolesToGroupForm(forms.Form):
         'class': 'form-control',
         'placeholder': 'انتخاب گروه',
     }))
-    roles = forms.ModelMultipleChoiceField(queryset=Role.objects.all(), widget=forms.SelectMultiple(attrs={
+    roles = forms.ModelMultipleChoiceField(queryset=Role.objects.filter(is_active=True), widget=forms.SelectMultiple(attrs={
         'class': 'form-control',
     }))
 ###########################
@@ -432,16 +455,13 @@ class ProfileUpdateForm1(forms.ModelForm):
     def clean_birth_date(self):
         birth_date_str = self.cleaned_data.get('birth_date')
         logger.info(f"Raw birth_date_str: {birth_date_str}")
-        if birth_date_str:
-            try:
-                j_date = jdatetime.datetime.strptime(birth_date_str, '%Y/%m/%d').date()
-                logger.info(f"Detected Jalali format, converted to: {j_date.togregorian()}")
-                return j_date.togregorian()
-            except ValueError as e:
-                logger.error(f"Error parsing date: {e}")
-                raise forms.ValidationError("تاریخ را به فرمت درست وارد کنید (مثل 1404/01/17)")
-        logger.info("No birth_date provided, returning None")
-        return None
+        from utils.jalali_utils import clean_jalali_date_field, get_jalali_field_config
+        config = get_jalali_field_config('birth_date')
+        return clean_jalali_date_field(
+            birth_date_str, 
+            config['field_name'], 
+            config['default_time']
+        )
 
 class UserRegistrationForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput, label="رمز عبور")
@@ -590,7 +610,7 @@ class UserForm(forms.ModelForm):
 '''
 class RoleTransferForm(forms.Form):
     new_role = forms.ModelChoiceField(
-        queryset=Role.objects.all(),
+        queryset=Role.objects.filter(is_active=True),
         label="انتقال وابستگی‌ها به نقش جدید",
         required=False,
     )
@@ -636,16 +656,13 @@ class TimeLockForm(forms.Form):
         expiry_date = self.cleaned_data.get('expiry_date')
         if not expiry_date:
             raise forms.ValidationError("تاریخ انقضا نمی‌تواند خالی باشد.")
-        try:
-            # اگر تاریخ به صورت رشته است، به jdatetime تبدیل کنید
-            if isinstance(expiry_date, str):
-                expiry_date = jdatetime.datetime.strptime(expiry_date, '%Y/%m/%d').date()
-            # تبدیل به میلادی
-            return expiry_date.togregorian()
-        except ValueError:
-            raise forms.ValidationError("فرمت تاریخ اشتباه است. لطفاً از فرمت ۱۴۰۴/۰۱/۱۷ استفاده کنید.")
-        except Exception as e:
-            raise forms.ValidationError(f"خطا در تبدیل تاریخ: {str(e)}")
+        from utils.jalali_utils import clean_jalali_date_field, get_jalali_field_config
+        config = get_jalali_field_config('expiry_date')
+        return clean_jalali_date_field(
+            expiry_date, 
+            config['field_name'], 
+            config['default_time']
+        )
 
     def __init__(self, *args, **kwargs):
         self.instance = kwargs.pop('instance', None)

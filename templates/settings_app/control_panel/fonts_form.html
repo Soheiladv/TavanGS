@@ -1,26 +1,50 @@
 {% extends 'base/base.html' %}
 {% block title %}افزودن/ویرایش فونت{% endblock %}
 {% block content %}
-<div class="container mx-auto px-4 py-10">
-    <h1 class="text-3xl font-bold text-gray-900 mb-6">افزودن/ویرایش فونت</h1>
 
-    <div class="bg-white rounded-lg shadow p-6 max-w-3xl">
-        <form method="post" enctype="multipart/form-data" class="space-y-4">
-            {% csrf_token %}
-            {{ form.non_field_errors }}
-            {% for field in form %}
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">{{ field.label }}</label>
-                {{ field }}
-                {% if field.help_text %}<p class="text-xs text-gray-500 mt-1">{{ field.help_text }}</p>{% endif %}
-                {% for error in field.errors %}<p class="text-xs text-red-600 mt-1">{{ error }}</p>{% endfor %}
-            </div>
-            {% endfor %}
-            <div class="pt-4 flex items-center space-x-3 space-x-reverse">
-                <button type="submit" class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-opacity-90">ذخیره</button>
-                <a href="{% url 'settings_app:fonts_list' %}" class="text-gray-600 hover:text-gray-800">بازگشت</a>
-            </div>
-        </form>
+<div class="container py-4">
+    <h1 class="h3 fw-bold text-primary mb-4">افزودن/ویرایش فونت</h1>
+
+    <div class="card card-fa">
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+
+                <div class="row g-3">
+                    {% for field in form %}
+                        <div class="col-12">
+                            <label class="form-label">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}
+                            {% for error in field.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="pt-3 d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">ذخیره</button>
+                    <a href="{% url 'settings_app:fonts_list' %}" class="btn btn-outline-secondary">بازگشت</a>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
+
+<script>
+    (function() {
+        var form = document.currentScript.closest('.card').querySelector('form');
+        if (!form) return;
+        var inputs = form.querySelectorAll('input:not([type=checkbox]):not([type=radio]):not([type=file]), textarea');
+        inputs.forEach(function(el){ el.classList.add('form-control'); });
+        var selects = form.querySelectorAll('select');
+        selects.forEach(function(el){ el.classList.add('form-select'); });
+        var files = form.querySelectorAll('input[type=file]');
+        files.forEach(function(el){ el.classList.add('form-control'); });
+        var checks = form.querySelectorAll('input[type=checkbox], input[type=radio]');
+        checks.forEach(function(el){ el.classList.add('form-check-input'); });
+        var labels = form.querySelectorAll('label');
+        labels.forEach(function(el){ el.classList.add('form-label'); });
+    })();
+"</script>
 {% endblock %}

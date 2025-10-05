@@ -1,0 +1,673 @@
+/* ================================================== */
+/* === Theme Management CSS === */
+/* === مدیریت تم‌ها و تغییرات پویا === */
+/* ================================================== */
+
+/* --- تم روشن (پیش‌فرض) --- */
+body.theme-light {
+    /* ColorHunt palette mapping */
+    --primary: #34656D;
+    --primary-hover: #2e585f;
+    --primary-light: #4e8b93;
+    --primary-dark: #26484d;
+    
+    --secondary: #334443;
+    --secondary-hover: #2b3938;
+    --secondary-light: #4a5a59;
+    --secondary-dark: #222d2d;
+    
+    --success: #3da97a; /* harmonized */
+    --success-hover: #059669;
+    --success-light: #a7d9c1;
+    --success-dark: #047857;
+    
+    --danger: #d06161; /* softened to fit palette */
+    --danger-hover: #dc2626;
+    --danger-light: #f0b8b8;
+    --danger-dark: #b91c1c;
+    
+    --warning: #FAEAB1; /* palette sand */
+    --warning-hover: #d97706;
+    --warning-light: #fdf3cf;
+    --warning-dark: #b45309;
+    
+    --info: #6aa9b0; /* derived from primary */
+    --info-hover: #0891b2;
+    --info-light: #b8d7db;
+    --info-dark: #0e7490;
+    
+    --light-bg: #FAF8F1;
+    --dark-bg: #1b2424;
+    --content-bg: #FFFFFF;
+    --sidebar-bg: #334443;
+    --footer-bg: #334443;
+    --navbar-bg: #FAF8F1;
+    --card-bg: #FFFFFF;
+    
+    --text-primary: #334443;
+    --text-secondary: #4e5d5c;
+    --text-muted: #6b7a79;
+    --text-light: #FAF8F1;
+    --text-dark: #222d2d;
+    --text-accent: #34656D;
+    
+    --border-color: #eae3c9;
+    --border-light: #f4efd9;
+    --border-dark: #4a5a59;
+    --border-accent: #34656D;
+}
+
+/* --- تم ColorHunt: fe7743/efeeea/273f4f/000000 --- */
+body.theme-warm-orange {
+    --primary: #FE7743;
+    --primary-hover: #e4683a;
+    --primary-light: #ffa17f;
+    --primary-dark: #b84f25;
+
+    --secondary: #273F4F;
+    --secondary-hover: #203542;
+    --secondary-light: #3c5a6f;
+    --secondary-dark: #16232b;
+
+    --success: #27ae60;
+    --success-hover: #1f8a4c;
+    --success-light: #7dd3a7;
+    --success-dark: #16623a;
+
+    --danger: #E54B4B;
+    --danger-hover: #c43f3f;
+    --danger-light: #f0a3a3;
+    --danger-dark: #8f2b2b;
+
+    --warning: #F0B93A;
+    --warning-hover: #d79f25;
+    --warning-light: #f6d98a;
+    --warning-dark: #b07d1c;
+
+    --info: #4aa3c0;
+    --info-hover: #3c859d;
+    --info-light: #a9d1de;
+    --info-dark: #2a6a80;
+
+    --light-bg: #EFEEEA;
+    --dark-bg: #121212;
+    --content-bg: #FFFFFF;
+    --sidebar-bg: #273F4F;
+    --footer-bg: #273F4F;
+    --navbar-bg: #EFEEEA;
+    --card-bg: #FFFFFF;
+
+    --text-primary: #000000;
+    --text-secondary: #273F4F;
+    --text-muted: #5d6b73;
+    --text-light: #EFEEEA;
+    --text-dark: #0b0b0b;
+    --text-accent: #FE7743;
+
+    --border-color: #e7e4da;
+    --border-light: #f4f2ec;
+    --border-dark: #3c5a6f;
+    --border-accent: #FE7743;
+}
+
+/* --- تم ColorHunt: f8f5e9/9dc08b/3a7d44/df6d14 --- */
+body.theme-olive-green {
+    --primary: #3A7D44; /* سبز تیره */
+    --primary-hover: #316a3a;
+    --primary-light: #5d9a65;
+    --primary-dark: #254a2c;
+
+    --secondary: #9DC08B; /* سبز روشن */
+    --secondary-hover: #86a874;
+    --secondary-light: #c5dcb9;
+    --secondary-dark: #6e9160;
+
+    --success: #3A7D44;
+    --success-hover: #2c5f34;
+    --success-light: #a8d3b0;
+    --success-dark: #204428;
+
+    --danger: #DF6D14;
+    --danger-hover: #c75f10;
+    --danger-light: #f2b785;
+    --danger-dark: #9a450c;
+
+    --warning: #DF6D14;
+    --warning-hover: #c75f10;
+    --warning-light: #f6c498;
+    --warning-dark: #9a450c;
+
+    --info: #6aa39b;
+    --info-hover: #568783;
+    --info-light: #b9d3cf;
+    --info-dark: #3a6661;
+
+    --light-bg: #F8F5E9;
+    --dark-bg: #1f231d;
+    --content-bg: #FFFFFF;
+    --sidebar-bg: #3A7D44;
+    --footer-bg: #3A7D44;
+    --navbar-bg: #F8F5E9;
+    --card-bg: #FFFFFF;
+
+    --text-primary: #254a2c;
+    --text-secondary: #3A7D44;
+    --text-muted: #6b7a69;
+    --text-light: #F8F5E9;
+    --text-dark: #1a2019;
+    --text-accent: #DF6D14;
+
+    --border-color: #e9e4d2;
+    --border-light: #f4f0e0;
+    --border-dark: #5d6f59;
+    --border-accent: #3A7D44;
+}
+
+/* --- تم ColorHunt: 093fb4/fffcfb/ffd8d8/ed3500 --- */
+body.theme-blue-coral {
+    --primary: #093FB4; /* آبی پررنگ */
+    --primary-hover: #073592;
+    --primary-light: #3a69cb;
+    --primary-dark: #062b73;
+
+    --secondary: #ED3500; /* نارنجی-قرمز */
+    --secondary-hover: #c92c00;
+    --secondary-light: #ff8a66;
+    --secondary-dark: #8a1e00;
+
+    --success: #2FA66A;
+    --success-hover: #268658;
+    --success-light: #8fd4b1;
+    --success-dark: #1b5a39;
+
+    --danger: #ED3500;
+    --danger-hover: #c92c00;
+    --danger-light: #ffb8a3;
+    --danger-dark: #8a1e00;
+
+    --warning: #FFD8D8;
+    --warning-hover: #f7bcbc;
+    --warning-light: #ffe9e9;
+    --warning-dark: #e8a9a9;
+
+    --info: #5aa9e6;
+    --info-hover: #4888bb;
+    --info-light: #b9d7f4;
+    --info-dark: #2f6791;
+
+    --light-bg: #FFFCFB;
+    --dark-bg: #0e1320;
+    --content-bg: #FFFFFF;
+    --sidebar-bg: #093FB4;
+    --footer-bg: #093FB4;
+    --navbar-bg: #FFFCFB;
+    --card-bg: #FFFFFF;
+
+    --text-primary: #0b1630;
+    --text-secondary: #093FB4;
+    --text-muted: #5b6b86;
+    --text-light: #FFFCFB;
+    --text-dark: #0a0f1c;
+    --text-accent: #ED3500;
+
+    --border-color: #efe6e5;
+    --border-light: #faf5f4;
+    --border-dark: #3a69cb;
+    --border-accent: #093FB4;
+}
+
+/* --- تم ColorHunt: f4e7e1/ff9b45/d5451b/521c0d --- */
+body.theme-spice-orange {
+    --primary: #FF9B45;
+    --primary-hover: #f08932;
+    --primary-light: #ffc58f;
+    --primary-dark: #c46c22;
+
+    --secondary: #521C0D;
+    --secondary-hover: #41160a;
+    --secondary-light: #7a3a26;
+    --secondary-dark: #2d1007;
+
+    --success: #3aa980;
+    --success-hover: #2e8767;
+    --success-light: #98d3be;
+    --success-dark: #1c5a44;
+
+    --danger: #D5451B;
+    --danger-hover: #b43a17;
+    --danger-light: #ef9b87;
+    --danger-dark: #7c2610;
+
+    --warning: #FF9B45;
+    --warning-hover: #e18735;
+    --warning-light: #ffd1a8;
+    --warning-dark: #b35f16;
+
+    --info: #b1948a;
+    --info-hover: #8d786f;
+    --info-light: #d9c7c1;
+    --info-dark: #5f4d48;
+
+    --light-bg: #F4E7E1;
+    --dark-bg: #1b1411;
+    --content-bg: #FFFFFF;
+    --sidebar-bg: #521C0D;
+    --footer-bg: #521C0D;
+    --navbar-bg: #F4E7E1;
+    --card-bg: #FFFFFF;
+
+    --text-primary: #2b1a14;
+    --text-secondary: #521C0D;
+    --text-muted: #7a594d;
+    --text-light: #F4E7E1;
+    --text-dark: #1a0f0b;
+    --text-accent: #FF9B45;
+
+    --border-color: #eeded7;
+    --border-light: #f7eee9;
+    --border-dark: #7a3a26;
+    --border-accent: #FF9B45;
+}
+
+/* --- تم ColorHunt: 1a1a19/31511e/859f3d/f6fcdf --- */
+body.theme-green-forest {
+    --primary: #859F3D; /* سبز روشن */
+    --primary-hover: #6f8632;
+    --primary-light: #b8cd80;
+    --primary-dark: #4c5e23;
+
+    --secondary: #31511E; /* سبز تیره */
+    --secondary-hover: #274017;
+    --secondary-light: #496b34;
+    --secondary-dark: #1f3412;
+
+    --success: #6BAE3B;
+    --success-hover: #588f30;
+    --success-light: #b9dc98;
+    --success-dark: #3c5a20;
+
+    --danger: #c75151;
+    --danger-hover: #a54141;
+    --danger-light: #e6a0a0;
+    --danger-dark: #7e2f2f;
+
+    --warning: #CDBF63;
+    --warning-hover: #b3a653;
+    --warning-light: #e3daa1;
+    --warning-dark: #8f8240;
+
+    --info: #6aa38e;
+    --info-hover: #588876;
+    --info-light: #b8d4c9;
+    --info-dark: #3c6456;
+
+    --light-bg: #F6FCDF;
+    --dark-bg: #1A1A19;
+    --content-bg: #FFFFFF;
+    --sidebar-bg: #31511E;
+    --footer-bg: #31511E;
+    --navbar-bg: #F6FCDF;
+    --card-bg: #FFFFFF;
+
+    --text-primary: #1A1A19;
+    --text-secondary: #31511E;
+    --text-muted: #5e6a4f;
+    --text-light: #F6FCDF;
+    --text-dark: #141414;
+    --text-accent: #859F3D;
+
+    --border-color: #e7efc4;
+    --border-light: #f2f7de;
+    --border-dark: #5c6f3e;
+    --border-accent: #859F3D;
+}
+
+/* --- تم ColorHunt: 43766c/f8fae5/b19470/76453b --- */
+body.theme-teal-coffee {
+    --primary: #43766C; /* سبز آبی */
+    --primary-hover: #395f57;
+    --primary-light: #6a9b93;
+    --primary-dark: #2c4e47;
+
+    --secondary: #76453B; /* قهوه‌ای */
+    --secondary-hover: #613930;
+    --secondary-light: #9a6a60;
+    --secondary-dark: #4a2f28;
+
+    --success: #4FAF7B;
+    --success-hover: #3f8e63;
+    --success-light: #a6d9c0;
+    --success-dark: #2b5a40;
+
+    --danger: #B45E3C;
+    --danger-hover: #954e32;
+    --danger-light: #ddb29f;
+    --danger-dark: #693620;
+
+    --warning: #B19470;
+    --warning-hover: #967d5d;
+    --warning-light: #d8c3a8;
+    --warning-dark: #6f5a47;
+
+    --info: #6aa9a1;
+    --info-hover: #588b85;
+    --info-light: #b8d5d1;
+    --info-dark: #3c6863;
+
+    --light-bg: #F8FAE5;
+    --dark-bg: #1f2320;
+    --content-bg: #FFFFFF;
+    --sidebar-bg: #76453B;
+    --footer-bg: #76453B;
+    --navbar-bg: #F8FAE5;
+    --card-bg: #FFFFFF;
+
+    --text-primary: #2b312e;
+    --text-secondary: #43766C;
+    --text-muted: #6f7f79;
+    --text-light: #F8FAE5;
+    --text-dark: #1a1d1b;
+    --text-accent: #B19470;
+
+    --border-color: #ecefd8;
+    --border-light: #f4f6e8;
+    --border-dark: #6a9b93;
+    --border-accent: #43766C;
+}
+
+/* --- تم تاریک --- */
+body.theme-dark {
+    --primary: #4e8b93;
+    --primary-hover: #34656D;
+    --primary-light: #7fb2b8;
+    --primary-dark: #2b4e53;
+    
+    --secondary: #2b3938;
+    --secondary-hover: #22302f;
+    --secondary-light: #3a4a49;
+    --secondary-dark: #1b2424;
+    
+    --success: #3da97a;
+    --success-hover: #059669;
+    --success-light: #6fc49b;
+    --success-dark: #047857;
+    
+    --danger: #e07a7a;
+    --danger-hover: #dc2626;
+    --danger-light: #f0b8b8;
+    --danger-dark: #b91c1c;
+    
+    --warning: #CDBE7F;
+    --warning-hover: #d97706;
+    --warning-light: #e6daae;
+    --warning-dark: #b45309;
+    
+    --info: #6aa9b0;
+    --info-hover: #0891b2;
+    --info-light: #8fc0c6;
+    --info-dark: #0e7490;
+    
+    --light-bg: #161f1f;
+    --dark-bg: #0f1616;
+    --content-bg: #1b2424;
+    --sidebar-bg: #141b1b;
+    --footer-bg: #0f1616;
+    --navbar-bg: #141b1b;
+    --card-bg: #1b2424;
+    
+    --text-primary: #FAF8F1;
+    --text-secondary: #d7d2c1;
+    --text-muted: #a4afa9;
+    --text-light: #FAF8F1;
+    --text-dark: #EDE8D9;
+    --text-accent: #7fb2b8;
+    
+    --border-color: #2a3534;
+    --border-light: #344140;
+    --border-dark: #1f2a2a;
+    --border-accent: #4e8b93;
+}
+
+/* --- تم آبی --- */
+body.theme-blue {
+    --primary: #3b82f6;
+    --primary-hover: #2563eb;
+    --primary-light: #93c5fd;
+    --primary-dark: #1d4ed8;
+    
+    --secondary: #64748b;
+    --secondary-hover: #475569;
+    --secondary-light: #94a3b8;
+    --secondary-dark: #334155;
+    
+    --success: #10b981;
+    --success-hover: #059669;
+    --success-light: #6ee7b7;
+    --success-dark: #047857;
+    
+    --danger: #ef4444;
+    --danger-hover: #dc2626;
+    --danger-light: #fca5a5;
+    --danger-dark: #b91c1c;
+    
+    --warning: #f59e0b;
+    --warning-hover: #d97706;
+    --warning-light: #fcd34d;
+    --warning-dark: #b45309;
+    
+    --info: #06b6d4;
+    --info-hover: #0891b2;
+    --info-light: #67e8f9;
+    --info-dark: #0e7490;
+    
+    --light-bg: #eff6ff;
+    --dark-bg: #1e3a8a;
+    --content-bg: #ffffff;
+    --sidebar-bg: #1e40af;
+    --footer-bg: #1e3a8a;
+    --navbar-bg: #ffffff;
+    --card-bg: #ffffff;
+    
+    --text-primary: #1e40af;
+    --text-secondary: #475569;
+    --text-muted: #64748b;
+    --text-light: #ffffff;
+    --text-dark: #1e40af;
+    --text-accent: #3b82f6;
+    
+    --border-color: #dbeafe;
+    --border-light: #eff6ff;
+    --border-dark: #3b82f6;
+    --border-accent: #3b82f6;
+}
+
+/* --- تم سبز --- */
+body.theme-green {
+    --primary: #10b981;
+    --primary-hover: #059669;
+    --primary-light: #6ee7b7;
+    --primary-dark: #047857;
+    
+    --secondary: #64748b;
+    --secondary-hover: #475569;
+    --secondary-light: #94a3b8;
+    --secondary-dark: #334155;
+    
+    --success: #10b981;
+    --success-hover: #059669;
+    --success-light: #6ee7b7;
+    --success-dark: #047857;
+    
+    --danger: #ef4444;
+    --danger-hover: #dc2626;
+    --danger-light: #fca5a5;
+    --danger-dark: #b91c1c;
+    
+    --warning: #f59e0b;
+    --warning-hover: #d97706;
+    --warning-light: #fcd34d;
+    --warning-dark: #b45309;
+    
+    --info: #06b6d4;
+    --info-hover: #0891b2;
+    --info-light: #67e8f9;
+    --info-dark: #0e7490;
+    
+    --light-bg: #ecfdf5;
+    --dark-bg: #064e3b;
+    --content-bg: #ffffff;
+    --sidebar-bg: #065f46;
+    --footer-bg: #064e3b;
+    --navbar-bg: #ffffff;
+    --card-bg: #ffffff;
+    
+    --text-primary: #064e3b;
+    --text-secondary: #475569;
+    --text-muted: #64748b;
+    --text-light: #ffffff;
+    --text-dark: #064e3b;
+    --text-accent: #10b981;
+    
+    --border-color: #d1fae5;
+    --border-light: #ecfdf5;
+    --border-dark: #10b981;
+    --border-accent: #10b981;
+}
+
+/* --- تم بنفش --- */
+body.theme-purple {
+    --primary: #8b5cf6;
+    --primary-hover: #7c3aed;
+    --primary-light: #c4b5fd;
+    --primary-dark: #6d28d9;
+    
+    --secondary: #64748b;
+    --secondary-hover: #475569;
+    --secondary-light: #94a3b8;
+    --secondary-dark: #334155;
+    
+    --success: #10b981;
+    --success-hover: #059669;
+    --success-light: #6ee7b7;
+    --success-dark: #047857;
+    
+    --danger: #ef4444;
+    --danger-hover: #dc2626;
+    --danger-light: #fca5a5;
+    --danger-dark: #b91c1c;
+    
+    --warning: #f59e0b;
+    --warning-hover: #d97706;
+    --warning-light: #fcd34d;
+    --warning-dark: #b45309;
+    
+    --info: #06b6d4;
+    --info-hover: #0891b2;
+    --info-light: #67e8f9;
+    --info-dark: #0e7490;
+    
+    --light-bg: #faf5ff;
+    --dark-bg: #581c87;
+    --content-bg: #ffffff;
+    --sidebar-bg: #6b21a8;
+    --footer-bg: #581c87;
+    --navbar-bg: #ffffff;
+    --card-bg: #ffffff;
+    
+    --text-primary: #581c87;
+    --text-secondary: #475569;
+    --text-muted: #64748b;
+    --text-light: #ffffff;
+    --text-dark: #581c87;
+    --text-accent: #8b5cf6;
+    
+    --border-color: #e9d5ff;
+    --border-light: #faf5ff;
+    --border-dark: #8b5cf6;
+    --border-accent: #8b5cf6;
+}
+
+/* --- انیمیشن تغییر تم --- */
+body {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* --- کلاس‌های کمکی برای تم‌ها --- */
+.theme-switcher {
+    position: fixed;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    z-index: 1000;
+    background: var(--content-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 10px;
+    box-shadow: var(--shadow);
+}
+
+.theme-switcher button {
+    display: block;
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50%;
+    margin: 5px 0;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.theme-switcher button:hover {
+    transform: scale(1.1);
+}
+
+.theme-switcher .theme-light {
+    background: linear-gradient(45deg, #f8f9fa, #ffffff);
+}
+
+.theme-switcher .theme-dark {
+    background: linear-gradient(45deg, #212529, #343a40);
+}
+
+.theme-switcher .theme-blue {
+    background: linear-gradient(45deg, #3498db, #2980b9);
+}
+
+.theme-switcher .theme-green {
+    background: linear-gradient(45deg, #4caf50, #45a049);
+}
+
+.theme-switcher .theme-purple {
+    background: linear-gradient(45deg, #9c27b0, #8e24aa);
+}
+
+/* --- سازگاری با کلاس‌های موجود --- */
+[data-theme="light"] {
+    --primary-color: var(--primary);
+    --secondary-color: var(--secondary);
+    --accent-color: var(--info);
+}
+
+[data-theme="dark"] {
+    --primary-color: var(--primary);
+    --secondary-color: var(--secondary);
+    --accent-color: var(--info);
+}
+
+[data-theme="blue"] {
+    --primary-color: var(--primary);
+    --secondary-color: var(--secondary);
+    --accent-color: var(--info);
+}
+
+[data-theme="green"] {
+    --primary-color: var(--primary);
+    --secondary-color: var(--secondary);
+    --accent-color: var(--info);
+}
+
+[data-theme="purple"] {
+    --primary-color: var(--primary);
+    --secondary-color: var(--secondary);
+    --accent-color: var(--info);
+}

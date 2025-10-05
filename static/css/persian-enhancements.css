@@ -1,0 +1,341 @@
+/* ================================================== */
+/* === Persian/Farsi Specific Enhancements === */
+/* === بهبودهای خاص فارسی و راست به چپ === */
+/* ================================================== */
+
+/* --- بهبود فونت‌های فارسی --- */
+body {
+    font-family: 'Vazir', 'Parastoo', 'Tahoma', 'Arial', sans-serif;
+    font-feature-settings: "liga" 1, "kern" 1;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* --- بهبود خوانایی متن فارسی --- */
+.text-fa {
+    line-height: 1.8;
+    letter-spacing: 0.02em;
+    word-spacing: 0.1em;
+}
+
+.text-fa-sm {
+    line-height: 1.6;
+    letter-spacing: 0.01em;
+}
+
+.text-fa-lg {
+    line-height: 2;
+    letter-spacing: 0.03em;
+}
+
+/* --- بهبود دکمه‌های فارسی --- */
+.btn-fa {
+    font-family: 'Vazir', 'Parastoo', sans-serif;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--border-radius-lg);
+    transition: var(--transition);
+}
+
+.btn-fa:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* --- بهبود کارت‌های فارسی --- */
+.card-fa {
+    border-radius: var(--border-radius-xl);
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+    overflow: hidden;
+}
+
+.card-fa:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+.card-fa .card-header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: var(--text-light);
+    font-weight: 600;
+    padding: 1rem 1.5rem;
+    border: none;
+}
+
+.card-fa .card-body {
+    padding: 1.5rem;
+    background: var(--content-bg);
+}
+
+/* --- بهبود فرم‌های فارسی --- */
+.form-fa .form-control {
+    font-family: 'Vazir', 'Parastoo', sans-serif;
+    font-size: 1rem;
+    padding: 0.75rem 1rem;
+    border-radius: var(--border-radius-lg);
+    border: 2px solid var(--border-color);
+    transition: var(--transition);
+    direction: rtl;
+    text-align: right;
+}
+
+.form-fa .form-control:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    transform: translateY(-1px);
+}
+
+.form-fa .form-label {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+/* --- بهبود جدول‌های فارسی --- */
+.table-fa {
+    font-family: 'Vazir', 'Parastoo', sans-serif;
+    direction: rtl;
+    text-align: right;
+}
+
+.table-fa th {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: var(--text-light);
+    font-weight: 600;
+    padding: 1rem;
+    border: none;
+}
+
+.table-fa td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border-light);
+    vertical-align: middle;
+}
+
+.table-fa tbody tr:hover {
+    background: rgba(99, 102, 241, 0.05);
+    transform: scale(1.01);
+    transition: var(--transition);
+}
+
+/* --- بهبود ناوبری فارسی --- */
+.navbar-fa {
+    background: var(--navbar-bg);
+    box-shadow: var(--shadow-sm);
+    border-bottom: 1px solid var(--border-light);
+}
+
+.navbar-fa .navbar-brand {
+    font-family: 'Vazir', 'Parastoo', sans-serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--primary);
+}
+
+.navbar-fa .nav-link {
+    font-family: 'Vazir', 'Parastoo', sans-serif;
+    font-weight: 500;
+    color: var(--text-secondary);
+    padding: 0.75rem 1rem;
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+}
+
+.navbar-fa .nav-link:hover {
+    color: var(--primary);
+    background: rgba(99, 102, 241, 0.1);
+    transform: translateY(-1px);
+}
+
+/* --- بهبود فوتر فارسی --- */
+.footer-fa {
+    background: linear-gradient(135deg, var(--footer-bg) 0%, var(--dark-bg) 100%);
+    color: var(--text-light);
+    padding: 3rem 0 1rem;
+    margin-top: auto;
+}
+
+.footer-fa h5 {
+    font-family: 'Vazir', 'Parastoo', sans-serif;
+    font-weight: 600;
+    color: var(--text-light);
+    margin-bottom: 1rem;
+}
+
+.footer-fa a {
+    color: var(--text-light);
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.footer-fa a:hover {
+    color: var(--primary);
+    transform: translateX(-5px);
+}
+
+/* --- بهبود انیمیشن‌های فارسی --- */
+.animate-fade-in-fa {
+    animation: fadeInFa 0.8s ease-out;
+}
+
+@keyframes fadeInFa {
+    from {
+        opacity: 0;
+        transform: translateY(30px) translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) translateX(0);
+    }
+}
+
+.animate-slide-in-right-fa {
+    animation: slideInRightFa 0.8s ease-out;
+}
+
+@keyframes slideInRightFa {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.animate-slide-in-left-fa {
+    animation: slideInLeftFa 0.8s ease-out;
+}
+
+@keyframes slideInLeftFa {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* --- بهبود آیکون‌های فارسی --- */
+.icon-fa {
+    font-family: 'Font Awesome 6 Free', 'Vazir', sans-serif;
+    font-weight: 900;
+    margin-left: 0.5rem;
+}
+
+.icon-fa-sm {
+    font-size: 0.875rem;
+}
+
+.icon-fa-lg {
+    font-size: 1.25rem;
+}
+
+.icon-fa-xl {
+    font-size: 1.5rem;
+}
+
+/* --- بهبود رنگ‌های فارسی --- */
+.text-primary-fa {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.text-success-fa {
+    color: var(--success);
+    font-weight: 600;
+}
+
+.text-danger-fa {
+    color: var(--danger);
+    font-weight: 600;
+}
+
+.text-warning-fa {
+    color: var(--warning);
+    font-weight: 600;
+}
+
+.text-info-fa {
+    color: var(--info);
+    font-weight: 600;
+}
+
+/* --- بهبود سایه‌های فارسی --- */
+.shadow-fa {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.shadow-fa-lg {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.shadow-fa-colored {
+    box-shadow: 0 4px 14px 0 rgba(99, 102, 241, 0.25);
+}
+
+/* --- بهبود responsive فارسی --- */
+@media (max-width: 768px) {
+    .text-fa {
+        line-height: 1.6;
+        letter-spacing: 0.01em;
+    }
+    
+    .btn-fa {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+    }
+    
+    .card-fa .card-body {
+        padding: 1rem;
+    }
+    
+    .table-fa th,
+    .table-fa td {
+        padding: 0.5rem;
+        font-size: 0.875rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .text-fa {
+        line-height: 1.5;
+    }
+    
+    .btn-fa {
+        padding: 0.375rem 0.75rem;
+        font-size: 0.8rem;
+    }
+    
+    .card-fa .card-body {
+        padding: 0.75rem;
+    }
+}
+
+/* --- بهبود چاپ فارسی --- */
+@media print {
+    .text-fa {
+        color: #000 !important;
+        font-size: 12pt !important;
+        line-height: 1.5 !important;
+    }
+    
+    .btn-fa,
+    .card-fa {
+        background: white !important;
+        border: 1px solid #000 !important;
+        box-shadow: none !important;
+    }
+    
+    .table-fa th {
+        background: #f0f0f0 !important;
+        color: #000 !important;
+    }
+}

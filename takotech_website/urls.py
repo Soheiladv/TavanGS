@@ -46,6 +46,9 @@ urlpatterns = [
     
     # Health check
     path('health/', TemplateView.as_view(template_name='health.html'), name='health_check'),
+    
+    # Test Jalali Date Picker
+    path('test-jalali/', TemplateView.as_view(template_name='test_jalali_datepicker.html'), name='test_jalali'),
 ]
 
 # Serve media files in development

@@ -1,0 +1,201 @@
+{% extends 'base/base.html' %}
+{% load i18n %}
+{% load jalali_filters rcms_custom_filters jformat %}
+
+{% block title %}{{ news.title }} - {{ company_name }}{% endblock %}
+
+{% block meta_description %}{{ news.meta_description|default:news.summary }}{% endblock %}
+
+{% block meta_keywords %}{{ news.meta_keywords }}{% endblock %}
+
+{% block og_title %}{{ news.title }}{% endblock %}
+{% block og_description %}{{ news.meta_description|default:news.summary }}{% endblock %}
+
+{% block content %}
+<section class="container mx-auto px-4 py-10">
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <!-- Main Content -->
+        <div class="lg:col-span-3">
+            <!-- Breadcrumb -->
+            <nav class="mb-6">
+                <ol class="flex items-center space-x-2 text-sm text-gray-600">
+                    <li><a href="{% url 'news:news_list' %}" class="hover:text-blue-600">{% trans "اخبار" %}</a></li>
+                    <li class="text-gray-400">/</li>
+                    <li><a href="{% url 'news:news_list' %}?category={{ news.category.id }}" class="hover:text-blue-600">{{ news.category.name }}</a></li>
+                    <li class="text-gray-400">/</li>
+                    <li class="text-gray-900">{{ news.title|truncatechars:50 }}</li>
+                </ol>
+            </nav>
+
+            <!-- News Header -->
+            <header class="mb-8">
+                <div class="flex items-center space-x-4 mb-4">
+                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
+                        {{ news.category.name }}
+                    </span>
+                    {% if news.is_featured %}
+                        <span class="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm font-medium">
+                            {% trans "Featured" %}
+                        </span>
+                    {% endif %}
+                    {% if news.is_pinned %}
+                        <span class="px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm font-medium">
+                            {% trans "Pinned" %}
+                        </span>
+                    {% endif %}
+                </div>
+                
+                <h1 class="text-4xl font-bold text-gray-900 mb-4">{{ news.title }}</h1>
+                
+                <div class="flex items-center space-x-6 text-sm text-gray-600 mb-6">
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>🗓️{{ news.published_at|to_jalali:"%Y/%m/%d %H:%M" |to_persian_number}}-⌚ {{ news.published_at|to_jalali:"%H:%M" |to_persian_number}}</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-eye"></i>
+                        <span>{{ news.view_count }} {% trans "نمایش" %}</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-comments"></i>
+                        <span>{{ comments.count }} {% trans "نظرات" %}</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Featured Image -->
+            {% if news.featured_image %}
+                <div class="mb-8">
+                    <img src="{{ news.featured_image.url }}" alt="{{ news.title }}" 
+                         class="w-full h-96 object-cover rounded-lg shadow-lg">
+                </div>
+            {% endif %}
+
+            <!-- News Summary -->
+            {% if news.summary %}
+                <div class="bg-blue-50 border-l-4 border-blue-400 p-6 mb-8">
+                    <p class="text-lg text-blue-800 font-medium">{{ news.summary }}</p>
+                </div>
+            {% endif %}
+
+            <!-- News Content -->
+            <div class="prose prose-lg max-w-none mb-8">
+                {{ news.content|linebreaks }}
+            </div>
+
+            <!-- Tags -->
+            {% if news.tags.exists %}
+                <div class="mb-8">
+                    <h3 class="text-lg font-semibold mb-4">{% trans "Tags" %}</h3>
+                    <div class="flex flex-wrap gap-2">
+                        {% for tag in news.tags.all %}
+                            <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm hover:bg-gray-200 transition-colors">
+                                {{ tag.name }}
+                            </span>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+
+            <!-- Social Share -->
+            <div class="mb-8 p-6 bg-gray-50 rounded-lg">
+                <h3 class="text-lg font-semibold mb-4">{% trans "Share this news" %}</h3>
+                <div class="flex space-x-4">
+                    <a href="https://twitter.com/intent/tweet?text={{ news.title|urlencode }}&url={{ request.build_absolute_uri }}" 
+                       target="_blank" class="flex items-center space-x-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+                        <i class="fab fa-twitter"></i>
+                        <span>{% trans "Twitter" %}</span>
+                    </a>
+                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" 
+                       target="_blank" class="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                        <i class="fab fa-facebook"></i>
+                        <span>{% trans "Facebook" %}</span>
+                    </a>
+                    <a href="https://t.me/share/url?url={{ request.build_absolute_uri }}&text={{ news.title|urlencode }}" 
+                       target="_blank" class="flex items-center space-x-2 px-4 py-2 bg-blue-400 text-white rounded-lg hover:bg-blue-500 transition-colors">
+                        <i class="fab fa-telegram"></i>
+                        <span>{% trans "Telegram" %}</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Comments Section -->
+            <div class="mb-8">
+                <h3 class="text-2xl font-bold mb-6">{% trans "Comments" %} ({{ comments.count }})</h3>
+                
+                <!-- Comment Form -->
+                {% if user.is_authenticated %}
+                    <form method="post" action="{% url 'news:add_comment' news.slug %}" class="mb-8">
+                        {% csrf_token %}
+                        <div class="bg-white p-6 rounded-lg shadow-md">
+                            <h4 class="text-lg font-semibold mb-4">{% trans "Add a comment" %}</h4>
+                            {{ comment_form.content }}
+                            <button type="submit" class="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                                {% trans "Submit Comment" %}
+                            </button>
+                        </div>
+                    </form>
+                {% else %}
+                    <div class="bg-gray-50 p-6 rounded-lg mb-8">
+                        <p class="text-gray-600 mb-4">{% trans "Please log in to add a comment." %}</p>
+                        <a href="{% url 'account_login' %}" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                            {% trans "Login" %}
+                        </a>
+                    </div>
+                {% endif %}
+
+                <!-- Comments List -->
+                <div class="space-y-6">
+                    {% for comment in comments %}
+                        <div class="bg-white p-6 rounded-lg shadow-md">
+                            <div class="flex items-center space-x-4 mb-4">
+                                <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-semibold">
+                                    {{ comment.user.first_name|first|default:comment.user.username|first|upper }}
+                                </div>
+                                <div>
+                                    <h5 class="font-semibold">{{ comment.user.get_full_name|default:comment.user.username }}</h5>
+                                    <p class="text-sm text-gray-600">{{ comment.created_at|to_jalali:"%Y/%m/%d %H:%M" }}</p>
+                                </div>
+                            </div>
+                            <p class="text-gray-800">{{ comment.content|linebreaks }}</p>
+                        </div>
+                    {% empty %}
+                        <div class="text-center py-8 text-gray-600">
+                            <i class="fas fa-comments text-4xl mb-4"></i>
+                            <p>{% trans "No comments yet. Be the first to comment!" %}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="lg:col-span-1">
+            <!-- Related News -->
+            {% if related_news %}
+                <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+                    <h3 class="text-xl font-bold mb-6">{% trans "Related News" %}</h3>
+                    <div class="space-y-4">
+                        {% for related in related_news %}
+                            <div class="border-b border-gray-200 pb-4 last:border-b-0">
+                                <a href="{% url 'news:news_detail' related.slug %}" class="block hover:text-blue-600 transition-colors">
+                                    <h4 class="font-semibold text-sm mb-2 line-clamp-2">{{ related.title }}</h4>
+                                    <p class="text-xs text-gray-600">{{ related.published_at|to_jalali:"%Y/%m/%d" }}</p>
+                                </a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+
+            <!-- Back to News List -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <a href="{% url 'news:news_list' %}" class="flex items-center space-x-2 text-blue-600 hover:text-blue-700 transition-colors">
+                    <i class="fas fa-arrow-right"></i>
+                    <span>{% trans "Back to News List" %}</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

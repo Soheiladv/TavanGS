@@ -1,0 +1,545 @@
+/* ================================================== */
+/* === Compatibility CSS for Existing Classes === */
+/* === سازگاری با کلاس‌های موجود در پروژه    === */
+/* ================================================== */
+
+/* --- سازگاری با کلاس‌های موجود --- */
+.text-primary { color: var(--primary-color, var(--primary)) !important; }
+.bg-primary { background-color: var(--primary-color, var(--primary)) !important; }
+.border-primary { border-color: var(--primary-color, var(--primary)) !important; }
+
+.text-secondary { color: var(--secondary-color, var(--secondary)) !important; }
+.bg-secondary { background-color: var(--secondary-color, var(--secondary)) !important; }
+
+.text-accent { color: var(--accent-color, var(--info)) !important; }
+.bg-accent { background-color: var(--accent-color, var(--info)) !important; }
+
+/* --- سازگاری با TailwindCSS --- */
+.bg-gray-50 { background-color: var(--light-bg) !important; }
+.text-gray-900 { color: var(--text-primary) !important; }
+.text-gray-700 { color: var(--text-secondary) !important; }
+.text-gray-600 { color: var(--text-muted) !important; }
+
+.bg-white { background-color: var(--content-bg) !important; }
+.shadow-lg { box-shadow: var(--shadow-lg) !important; }
+
+/* --- سازگاری با Bootstrap --- */
+.form-control {
+    display: block;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--text-primary);
+    background-color: var(--content-bg);
+    background-clip: padding-box;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+}
+
+.form-control:focus {
+    color: var(--text-primary);
+    background-color: var(--content-bg);
+    border-color: var(--primary);
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.5;
+    text-align: center;
+    text-decoration: none;
+    border: 1px solid transparent;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition);
+    user-select: none;
+}
+
+.btn-primary {
+    color: var(--text-light);
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+    border-color: var(--primary-hover);
+}
+
+/* --- سازگاری با کلاس‌های سفارشی موجود --- */
+.site-header {
+    background-color: var(--navbar-bg);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.header-fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+.header-sticky {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.header-static {
+    position: static;
+}
+
+/* --- سازگاری با انیمیشن‌ها --- */
+.transition-all {
+    transition: var(--transition);
+}
+
+.transition-colors {
+    transition: color var(--transition), background-color var(--transition), border-color var(--transition);
+}
+
+.hover\:bg-opacity-90:hover {
+    background-color: rgba(var(--primary), 0.9);
+}
+
+.hover\:text-primary:hover {
+    color: var(--primary);
+}
+
+/* --- سازگاری با فاصله‌ها --- */
+.space-x-6 > :not([hidden]) ~ :not([hidden]) {
+    margin-right: 1.5rem;
+}
+
+.space-x-4 > :not([hidden]) ~ :not([hidden]) {
+    margin-right: 1rem;
+}
+
+.space-x-2 > :not([hidden]) ~ :not([hidden]) {
+    margin-right: 0.5rem;
+}
+
+.space-x-reverse > :not([hidden]) ~ :not([hidden]) {
+    --tw-space-x-reverse: 1;
+}
+
+/* --- سازگاری با Flexbox --- */
+.flex {
+    display: flex;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+/* --- سازگاری با اندازه‌ها --- */
+.h-10 {
+    height: 2.5rem;
+}
+
+.w-auto {
+    width: auto;
+}
+
+.text-xl {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+}
+
+.text-sm {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+}
+
+.font-bold {
+    font-weight: 700;
+}
+
+.font-medium {
+    font-weight: 500;
+}
+
+.font-semibold {
+    font-weight: 600;
+}
+
+/* --- سازگاری با رنگ‌ها --- */
+.text-white {
+    color: var(--text-light);
+}
+
+.bg-yellow-500 {
+    background-color: var(--warning);
+}
+
+/* --- سازگاری با موقعیت‌یابی --- */
+.relative {
+    position: relative;
+}
+
+.absolute {
+    position: absolute;
+}
+
+.left-0 {
+    left: 0;
+}
+
+.right-0 {
+    right: 0;
+}
+
+.top-0 {
+    top: 0;
+}
+
+.mt-2 {
+    margin-top: 0.5rem;
+}
+
+.ml-2 {
+    margin-left: 0.5rem;
+}
+
+.mr-2 {
+    margin-right: 0.5rem;
+}
+
+.ml-3 {
+    margin-left: 0.75rem;
+}
+
+.px-4 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.py-2 {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+.py-4 {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+/* --- سازگاری با نمایش --- */
+.hidden {
+    display: none;
+}
+
+.block {
+    display: block;
+}
+
+.inline-flex {
+    display: inline-flex;
+}
+
+/* --- سازگاری با Border Radius --- */
+.rounded-md {
+    border-radius: var(--border-radius);
+}
+
+.rounded-lg {
+    border-radius: var(--border-radius-lg);
+}
+
+/* --- سازگاری با Shadow --- */
+.shadow-lg {
+    box-shadow: var(--shadow-lg);
+}
+
+/* --- سازگاری با Opacity --- */
+.opacity-0 {
+    opacity: 0;
+}
+
+.invisible {
+    visibility: hidden;
+}
+
+.group:hover .group-hover\:opacity-100 {
+    opacity: 1;
+}
+
+.group:hover .group-hover\:visible {
+    visibility: visible;
+}
+
+/* --- سازگاری با Hover --- */
+.hover\:bg-gray-100:hover {
+    background-color: var(--light-bg);
+}
+
+/* --- سازگاری با Width --- */
+.w-48 {
+    width: 12rem;
+}
+
+/* --- سازگاری با Z-Index --- */
+.z-1000 {
+    z-index: 1000;
+}
+
+/* --- سازگاری با Container --- */
+.container {
+    width: 100%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.mx-auto {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* --- سازگاری با Responsive --- */
+@media (min-width: 768px) {
+    .md\:flex {
+        display: flex;
+    }
+}
+
+/* --- سازگاری با Text Decoration --- */
+.no-underline {
+    text-decoration: none;
+}
+
+/* --- سازگاری با List Style --- */
+.list-none {
+    list-style-type: none;
+}
+
+/* --- سازگاری با Overflow --- */
+.overflow-hidden {
+    overflow: hidden;
+}
+
+/* --- سازگاری با Transform --- */
+.transform {
+    transform: translateZ(0);
+}
+
+.scale-105:hover {
+    transform: scale(1.05);
+}
+
+.-translate-y-1:hover {
+    transform: translateY(-0.25rem);
+}
+
+/* --- سازگاری با Duration --- */
+.duration-300 {
+    transition-duration: 300ms;
+}
+
+/* --- سازگاری با Ease --- */
+.ease-out {
+    transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+}
+
+/* --- سازگاری با Line Height --- */
+.leading-tight {
+    line-height: 1.25;
+}
+
+.leading-normal {
+    line-height: 1.5;
+}
+
+/* --- سازگاری با Letter Spacing --- */
+.tracking-wide {
+    letter-spacing: 0.025em;
+}
+
+/* --- سازگاری با Text Transform --- */
+.uppercase {
+    text-transform: uppercase;
+}
+
+.lowercase {
+    text-transform: lowercase;
+}
+
+.capitalize {
+    text-transform: capitalize;
+}
+
+/* --- سازگاری با Text Align --- */
+.text-center {
+    text-align: center;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.text-left {
+    text-align: left;
+}
+
+/* --- سازگاری با Vertical Align --- */
+.align-top {
+    vertical-align: top;
+}
+
+.align-middle {
+    vertical-align: middle;
+}
+
+.align-bottom {
+    vertical-align: bottom;
+}
+
+/* --- سازگاری با White Space --- */
+.whitespace-nowrap {
+    white-space: nowrap;
+}
+
+.whitespace-pre {
+    white-space: pre;
+}
+
+.whitespace-pre-line {
+    white-space: pre-line;
+}
+
+/* --- سازگاری با Word Break --- */
+.break-words {
+    word-break: break-word;
+}
+
+.break-all {
+    word-break: break-all;
+}
+
+/* --- سازگاری با Content --- */
+.content-center {
+    align-content: center;
+}
+
+.content-start {
+    align-content: flex-start;
+}
+
+.content-end {
+    align-content: flex-end;
+}
+
+.content-between {
+    align-content: space-between;
+}
+
+.content-around {
+    align-content: space-around;
+}
+
+/* --- سازگاری با Self --- */
+.self-auto {
+    align-self: auto;
+}
+
+.self-start {
+    align-self: flex-start;
+}
+
+.self-end {
+    align-self: flex-end;
+}
+
+.self-center {
+    align-self: center;
+}
+
+.self-stretch {
+    align-self: stretch;
+}
+
+/* --- سازگاری با Place Items --- */
+.place-items-center {
+    place-items: center;
+}
+
+.place-items-start {
+    place-items: start;
+}
+
+.place-items-end {
+    place-items: end;
+}
+
+.place-items-stretch {
+    place-items: stretch;
+}
+
+/* --- سازگاری با Place Content --- */
+.place-content-center {
+    place-content: center;
+}
+
+.place-content-start {
+    place-content: start;
+}
+
+.place-content-end {
+    place-content: end;
+}
+
+.place-content-between {
+    place-content: space-between;
+}
+
+.place-content-around {
+    place-content: space-around;
+}
+
+.place-content-evenly {
+    place-content: space-evenly;
+}
+
+.place-content-stretch {
+    place-content: stretch;
+}
+
+/* --- سازگاری با Place Self --- */
+.place-self-auto {
+    place-self: auto;
+}
+
+.place-self-start {
+    place-self: start;
+}
+
+.place-self-end {
+    place-self: end;
+}
+
+.place-self-center {
+    place-self: center;
+}
+
+.place-self-stretch {
+    place-self: stretch;
+}

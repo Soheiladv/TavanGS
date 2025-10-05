@@ -4,6 +4,9 @@ News App Forms - News Management Forms
 
 from django import forms
 from django.contrib.auth import get_user_model
+from django.utils.translation import gettext_lazy as _
+import jdatetime
+from utils.jalali_utils import clean_jalali_date_field, get_jalali_field_config, get_jalali_date_widget_attrs
 from .models import News, NewsCategory, NewsComment, NewsTag
 
 User = get_user_model()
@@ -67,14 +70,12 @@ class NewsForm(forms.ModelForm):
             'is_pinned': forms.CheckboxInput(attrs={
                 'class': 'form-check-input'
             }),
-            'published_at': forms.DateTimeInput(attrs={
-                'class': 'form-control',
-                'type': 'datetime-local'
-            }),
-            'expires_at': forms.DateTimeInput(attrs={
-                'class': 'form-control',
-                'type': 'datetime-local'
-            })
+            'published_at': forms.TextInput(attrs=get_jalali_date_widget_attrs(
+                placeholder=get_jalali_field_config('published_at')['placeholder']
+            )),
+            'expires_at': forms.TextInput(attrs=get_jalali_date_widget_attrs(
+                placeholder=get_jalali_field_config('expires_at')['placeholder']
+            ))
         }
     
     def __init__(self, *args, **kwargs):
@@ -104,6 +105,26 @@ class NewsForm(forms.ModelForm):
         self.fields['is_featured'].help_text = 'خبرهای ویژه در بالای فهرست نمایش داده می‌شوند'
         self.fields['is_pinned'].help_text = 'خبرهای سنجاق شده همیشه در بالای فهرست نمایش داده می‌شوند'
         self.fields['expires_at'].help_text = 'تاریخ انقضای خبر (اختیاری)'
+    
+    def clean_published_at(self):
+        """تبدیل تاریخ جلالی به میلادی"""
+        published_at = self.cleaned_data.get('published_at')
+        config = get_jalali_field_config('published_at')
+        return clean_jalali_date_field(
+            published_at, 
+            config['field_name'], 
+            config['default_time']
+        )
+    
+    def clean_expires_at(self):
+        """تبدیل تاریخ جلالی به میلادی"""
+        expires_at = self.cleaned_data.get('expires_at')
+        config = get_jalali_field_config('expires_at')
+        return clean_jalali_date_field(
+            expires_at, 
+            config['field_name'], 
+            config['default_time']
+        )
 
 
 class NewsCategoryForm(forms.ModelForm):

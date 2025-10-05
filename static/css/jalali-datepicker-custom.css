@@ -1,0 +1,249 @@
+/* Jalali Date Picker Custom Styles */
+/* Ensure proper styling for Persian date picker integration */
+
+/* Persian Date Picker Container */
+.pdatepicker {
+    direction: rtl !important;
+    font-family: 'Vazir', 'Tahoma', sans-serif !important;
+}
+
+/* Persian Date Picker Calendar */
+.pdatepicker .pdatepicker-calendar {
+    direction: rtl !important;
+    font-family: 'Vazir', 'Tahoma', sans-serif !important;
+}
+
+/* Persian Date Picker Header */
+.pdatepicker .pdatepicker-header {
+    background-color: #3b82f6 !important;
+    color: white !important;
+    border-radius: 8px 8px 0 0 !important;
+}
+
+/* Persian Date Picker Month/Year Navigation */
+.pdatepicker .pdatepicker-month,
+.pdatepicker .pdatepicker-year {
+    color: white !important;
+    font-weight: bold !important;
+}
+
+/* Persian Date Picker Navigation Arrows */
+.pdatepicker .pdatepicker-prev,
+.pdatepicker .pdatepicker-next {
+    color: white !important;
+}
+
+.pdatepicker .pdatepicker-prev:hover,
+.pdatepicker .pdatepicker-next:hover {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Persian Date Picker Days */
+.pdatepicker .pdatepicker-day {
+    font-family: 'Vazir', 'Tahoma', sans-serif !important;
+    text-align: center !important;
+    padding: 8px !important;
+    border-radius: 4px !important;
+    transition: all 0.2s ease !important;
+}
+
+.pdatepicker .pdatepicker-day:hover {
+    background-color: #e5e7eb !important;
+    color: #1f2937 !important;
+}
+
+/* Persian Date Picker Selected Day */
+.pdatepicker .pdatepicker-day.pdatepicker-selected {
+    background-color: #3b82f6 !important;
+    color: white !important;
+    font-weight: bold !important;
+}
+
+/* Persian Date Picker Today */
+.pdatepicker .pdatepicker-day.pdatepicker-today {
+    background-color: #f3f4f6 !important;
+    color: #1f2937 !important;
+    font-weight: bold !important;
+    border: 2px solid #3b82f6 !important;
+}
+
+/* Persian Date Picker Other Month Days */
+.pdatepicker .pdatepicker-day.pdatepicker-other-month {
+    color: #9ca3af !important;
+}
+
+/* Persian Date Picker Disabled Days */
+.pdatepicker .pdatepicker-day.pdatepicker-disabled {
+    color: #d1d5db !important;
+    cursor: not-allowed !important;
+}
+
+/* Persian Date Picker Week Headers */
+.pdatepicker .pdatepicker-week-header {
+    background-color: #f9fafb !important;
+    color: #374151 !important;
+    font-weight: bold !important;
+    font-family: 'Vazir', 'Tahoma', sans-serif !important;
+}
+
+/* Persian Date Picker Time Picker */
+.pdatepicker .pdatepicker-time {
+    background-color: #f9fafb !important;
+    border-top: 1px solid #e5e7eb !important;
+    padding: 10px !important;
+}
+
+.pdatepicker .pdatepicker-time input {
+    font-family: 'Vazir', 'Tahoma', sans-serif !important;
+    text-align: center !important;
+    border: 1px solid #d1d5db !important;
+    border-radius: 4px !important;
+    padding: 5px !important;
+}
+
+/* Persian Date Picker Footer */
+.pdatepicker .pdatepicker-footer {
+    background-color: #f9fafb !important;
+    border-top: 1px solid #e5e7eb !important;
+    padding: 10px !important;
+}
+
+/* Persian Date Picker Buttons */
+.pdatepicker .pdatepicker-button {
+    background-color: #3b82f6 !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 4px !important;
+    padding: 8px 16px !important;
+    font-family: 'Vazir', 'Tahoma', sans-serif !important;
+    cursor: pointer !important;
+    transition: background-color 0.2s ease !important;
+}
+
+.pdatepicker .pdatepicker-button:hover {
+    background-color: #2563eb !important;
+}
+
+/* Persian Date Picker Input Field Styling */
+input[data-jdp] {
+    font-family: 'Vazir', 'Tahoma', sans-serif !important;
+    direction: rtl !important;
+    text-align: right !important;
+}
+
+input[data-jdp]:focus {
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+}
+
+/* Persian Date Picker Validation States */
+input[data-jdp].border-red-500 {
+    border-color: #ef4444 !important;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1) !important;
+}
+
+input[data-jdp].border-green-500 {
+    border-color: #10b981 !important;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1) !important;
+}
+
+input[data-jdp].border-yellow-500 {
+    border-color: #f59e0b !important;
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1) !important;
+}
+
+/* Persian Date Picker Animation */
+.pdatepicker {
+    animation: fadeIn 0.3s ease-in-out !important;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Persian Date Picker Responsive Design */
+@media (max-width: 768px) {
+    .pdatepicker {
+        width: 100% !important;
+        max-width: 300px !important;
+    }
+    
+    .pdatepicker .pdatepicker-day {
+        padding: 6px !important;
+        font-size: 14px !important;
+    }
+}
+
+/* Persian Date Picker Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+    .pdatepicker {
+        background-color: #1f2937 !important;
+        color: #f9fafb !important;
+        border: 1px solid #374151 !important;
+    }
+    
+    .pdatepicker .pdatepicker-header {
+        background-color: #1e40af !important;
+    }
+    
+    .pdatepicker .pdatepicker-day {
+        color: #f9fafb !important;
+    }
+    
+    .pdatepicker .pdatepicker-day:hover {
+        background-color: #374151 !important;
+    }
+    
+    .pdatepicker .pdatepicker-day.pdatepicker-selected {
+        background-color: #1e40af !important;
+    }
+    
+    .pdatepicker .pdatepicker-day.pdatepicker-today {
+        background-color: #374151 !important;
+        border-color: #1e40af !important;
+    }
+}
+
+/* Persian Date Picker Z-Index Fix */
+.pdatepicker {
+    z-index: 9999 !important;
+}
+
+/* Persian Date Picker RTL Support */
+.pdatepicker {
+    direction: rtl !important;
+}
+
+.pdatepicker .pdatepicker-calendar {
+    direction: rtl !important;
+}
+
+.pdatepicker .pdatepicker-day {
+    text-align: center !important;
+}
+
+/* Persian Date Picker Custom Scrollbar */
+.pdatepicker::-webkit-scrollbar {
+    width: 8px;
+}
+
+.pdatepicker::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.pdatepicker::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+.pdatepicker::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
